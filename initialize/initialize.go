@@ -22,7 +22,6 @@ type project struct {
 	Files []string
 }
 
-
 type projectRegistry struct {
 	projects []project
 }
@@ -108,7 +107,7 @@ func createCProject() project {
 		Tool: "clang",
 		Arguments: []string{"manual"},
 		Folders: []string{"src"},
-		Files: []string{"MakeFile", "TODO.md", "README.md"},
+		Files: []string{"TODO.md", "README.md"},
 	}
 
 	return program
