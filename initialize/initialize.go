@@ -12,8 +12,7 @@ import (
 
 const initProjectList = `
 Rust
-Go
-C`
+Go`
 
 type project struct {
 	Language string
@@ -66,7 +65,7 @@ func (p *project) initialize() error {
 	if p.Tool == "go" && len(p.Arguments) >= 3 && p.Arguments[0] == "mod" {
 		utils.MakeFile("main.go", false)
 	}
-	
+
 	return nil
 }
 
