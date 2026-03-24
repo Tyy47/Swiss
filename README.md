@@ -18,7 +18,7 @@ If an update is available for Swiss. Download the repo and run ``swiss -i`` or `
 ## FAQ
 
 ### Why Go?
-Go is a simple language that doesn't get in the way of developing programs. I needed a lower leveled language for easy system calls and no compiler annoyance. Go is most likely the best choice in that regard.
+Go is a simple language that doesn't get in the way of developing programs. I needed a language for easy system calls and no compiler annoyance. Go is most likely the best choice in that regard.
 
 ### Why are there no packages outside of the standard library?
 I want Swiss to be "my own". Meaning, I want to create everything from scratch. Another perk of this, it lowers the risk of supply chain attacks through libraries as well as breakage from outside packages. I want this program to be expanded upon indefinitely without the reliance of others for critical systems. If there is any problems in the future with compiling the program it's because of something I broke or the standard library got changed in some way.
