@@ -18,12 +18,10 @@ type project struct {
 	Language string
 	Tool string
 	Arguments []string
+	Folders []string
+	Files []string
 }
 
-type Items struct {
-	folders []string
-	files []string
-}
 
 type projectRegistry struct {
 	projects []project
@@ -41,18 +39,13 @@ func (p *projectRegistry) addToRegistry(newProject project) {
 	p.projects = append(p.projects, newProject)
 }
 
-
-func (i *Items) createItems() {
-	for file := range len(i.files) {
-		utils.MakeFile(i.files[file], false)
-	}
-
-	for folder := range len(i.folders) {
-		utils.MakeFolder(i.folders[folder], false)
-	}
-}
-
 func (p *project) initialize() error {
+	var err error
+	if p.Arguments[0] == "manual" {
+		p.manualInitialize(p.Folders, p.Files)
+		return err
+	}
+
 	command := exec.Command(p.Tool, p.Arguments...)
 
 	command.Stdout = os.Stdout
@@ -67,6 +60,17 @@ func (p *project) initialize() error {
 	}
 
 	return nil
+}
+
+func (p *project) manualInitialize(folders []string, files []string) {
+	for file := range files {
+		utils.MakeFile(files[file], false)
+	}
+
+	for folder := range folders {
+		utils.MakeFolder(folders[folder], false)
+	}
+	// Success message is made in the HandleInput() function
 }
 
 func createRustProject() project {
@@ -98,6 +102,18 @@ func createGoProject() project {
 	}
 }
 
+func createCProject() project {
+	program := project{
+		Language: "c",
+		Tool: "clang",
+		Arguments: []string{"manual"},
+		Folders: []string{"src"},
+		Files: []string{"MakeFile", "TODO.md", "README.md"},
+	}
+
+	return program
+}
+
 func HandleInput(argument string) {
 	argument = strings.ToLower(argument)
 	for project := range len(registry.projects) {
@@ -117,4 +133,5 @@ func HandleInput(argument string) {
 func init() {
 	registry.projects = append(registry.projects, createRustProject())
 	registry.projects = append(registry.projects, createGoProject())
+	registry.projects = append(registry.projects, createCProject())
 }
