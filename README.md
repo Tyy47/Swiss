@@ -1,5 +1,5 @@
-<center><h1>Swiss</h1></center>
-<center>A cli army knife of tools for developers</center>
+<h1 align="center">Swiss</h1>
+<p align="center">A cli army knife of tools for developers</p>
 <hr>
 
 ## Install
