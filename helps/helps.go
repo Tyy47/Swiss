@@ -12,7 +12,6 @@ func DisplayHelp() {
 │                                                │
 ╰────────────────────────────────────────────────╯
 help: Opens the help menu.
-todo: Creates a TODO.md file.
 dict <string>: Shows system commands based on the shell argument provided.
 build <string>: Allows you to build program via swiss.
 init <string>: Inits a project using Swiss.

@@ -10,7 +10,7 @@ import (
 	"swiss/messages"
 )
 
-const VERSION_NUMBER string = "0.0.1"
+const VERSION_NUMBER string = "1.0.0"
 
 
 func PrintVersionNumber() {

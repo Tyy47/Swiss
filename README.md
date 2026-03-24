@@ -2,6 +2,8 @@
 <p align="center">A cli army knife of tools for developers</p>
 <hr>
 
+[Documentation](./DOCS.md) 
+
 ## Install
 
 ### Binary:
@@ -16,7 +18,7 @@ If an update is available for Swiss. Download the repo and run ``swiss -i`` or `
 ## FAQ
 
 ### Why Go?
-Go is a simple language that doesn't get in the way of developing programs. I needed a lower leveled language for easy system calls and no compilier annoyance. Go is most likely the best choice in that regard.
+Go is a simple language that doesn't get in the way of developing programs. I needed a lower leveled language for easy system calls and no compiler annoyance. Go is most likely the best choice in that regard.
 
 ### Why are there no packages outside of the standard library?
 I want Swiss to be "my own". Meaning, I want to create everything from scratch. Another perk of this, it lowers the risk of supply chain attacks through libraries as well as breakage from outside packages. I want this program to be expanded upon indefinitely without the reliance of others for critical systems. If there is any problems in the future with compiling the program it's because of something I broke or the standard library got changed in some way.
@@ -24,5 +26,5 @@ I want Swiss to be "my own". Meaning, I want to create everything from scratch. 
 ### There is a bug in Swiss, how do I report it?
 Create an issue report stating what command you we're running, what you expected to happen, and what actually happened.
 
-### I'd like to contribue to Swiss!
+### I'd like to contribute to Swiss!
 I'd like this project to be kept as my own but I'm open to suggestions of improvements or other tools that could be added. Feel free to open a issue report with the "Suggestion" post flag and I'll take a look!
