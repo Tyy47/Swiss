@@ -1,8 +1,8 @@
 <h1 align="center">Swiss</h1>
 <p align="center">A cli army knife of tools for developers</p>
-<div align="center">[Documentation](./DOCS.md) </div>
 <hr>
 
+[Documentation](./DOCS.md) 
 
 ## Install
 
