@@ -68,9 +68,9 @@ func buildHandler() {
 			case "-h", "--help":
 				helps.BuildHelp()
 			case "-l", "--list":
-				build.PrintSupportedBuildLanguages()
+				build.PrintBuildProgramList()
 			default:
-				build.CheckLanguageAndBuild(args[2])
+				build.HandleBuildInput(args[2])
 			}
 		} else {
 			helps.BuildHelp()
@@ -88,9 +88,9 @@ func runHandler() {
 			case "-h", "--help":
 				helps.BuildHelp()
 			case "-l", "--list":
-				build.PrintSupportedRunLanguages()
+				build.PrintRunProgramList()
 			default:
-				build.CheckLanguageAndRun(args[2])
+				build.HandleRunInput(args[2])
 			}
 		} else {
 			helps.BuildHelp()
