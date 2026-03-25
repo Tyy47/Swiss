@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
 	"swiss/messages"
 )
 
@@ -15,8 +16,8 @@ Go: Go
 `
 
 type run struct {
-	Language string
-	Tool string
+	Language  string
+	Tool      string
 	Arguments []string
 }
 
@@ -43,7 +44,6 @@ func (r *run) initializeRun() error {
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 
-
 	if err := command.Run(); err != nil {
 		return err
 	}
@@ -53,8 +53,8 @@ func (r *run) initializeRun() error {
 
 func runRustProject() run {
 	runRust := run{
-		Language: "rust",
-		Tool: "cargo",
+		Language:  "rust",
+		Tool:      "cargo",
 		Arguments: []string{"run"},
 	}
 
@@ -63,8 +63,8 @@ func runRustProject() run {
 
 func runGoProject() run {
 	goRun := run{
-		Language: "go",
-		Tool: "go",
+		Language:  "go",
+		Tool:      "go",
 		Arguments: []string{"run", "main.go"},
 	}
 

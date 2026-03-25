@@ -9,7 +9,6 @@ import (
 	"swiss/utils"
 )
 
-
 func ArgParser() {
 	// Grabs arguments via wrapper
 	args := utils.GatherArgs()
@@ -17,7 +16,7 @@ func ArgParser() {
 	if len(args) > 1 {
 		switch args[1] {
 		case "help", "-h":
-			helpHandler()
+			helps.DisplayHelp()
 		case "version", "-v":
 			utils.PrintVersionNumber()
 		case "dict":
@@ -34,12 +33,8 @@ func ArgParser() {
 			createHandler()
 		}
 	} else {
-		helpHandler()
+		helps.DisplayHelp()
 	}
-}
-
-func helpHandler() {
-	helps.DisplayHelp()
 }
 
 func dictHandler() {

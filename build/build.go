@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
 	"swiss/messages"
 	"swiss/utils"
 )
@@ -15,10 +16,9 @@ Rust: Cargo
 C: Clang
 Go: Go`
 
-
 type build struct {
-	Language string
-	Tool string
+	Language  string
+	Tool      string
 	Arguments []string
 }
 
@@ -45,7 +45,6 @@ func (b *build) initialize() error {
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 
-
 	if err := command.Run(); err != nil {
 		return err
 	}
@@ -55,8 +54,8 @@ func (b *build) initialize() error {
 
 func buildRustProject() build {
 	rustBuild := build{
-		Language: "rust",
-		Tool: "cargo",
+		Language:  "rust",
+		Tool:      "cargo",
 		Arguments: []string{"build", "--release"},
 	}
 
@@ -65,8 +64,8 @@ func buildRustProject() build {
 
 func buildGoProject() build {
 	goBuild := build{
-		Language: "go",
-		Tool: "go",
+		Language:  "go",
+		Tool:      "go",
 		Arguments: []string{"build"},
 	}
 
@@ -75,8 +74,8 @@ func buildGoProject() build {
 
 func buildCProject() build {
 	cBuild := build{
-		Language: "c",
-		Tool: "clang",
+		Language:  "c",
+		Tool:      "clang",
 		Arguments: []string{"main.c", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-g", "-o", "main"},
 	}
 
@@ -103,20 +102,18 @@ func SwissInstall() {
 	// Builds Go program
 	registry.builds[0].initialize()
 
-	command := exec.Command("mv", "swiss", "/home/" + utils.GetUsersName() + "/.local/bin/")
+	command := exec.Command("mv", "swiss", "/home/"+utils.GetUsersName()+"/.local/bin/")
 
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
-
 
 	if err := command.Run(); err != nil {
 		messages.Error("Swiss install failed. Check output above.")
 		return
 	}
-	
+
 	messages.Success("Swiss installed successfully! Use 'swiss' in the terminal to gain access to the program.")
 }
-
 
 func init() {
 	registry.builds = append(registry.builds, buildGoProject())

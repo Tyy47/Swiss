@@ -113,6 +113,18 @@ func createCProject() project {
 	return program
 }
 
+func createHTMLProject() project {
+	program := project{
+		Language: "html",
+		Tool: "html",
+		Arguments: []string{"manual"},
+		Folders: []string{},
+		Files: []string{"TODO.md", "index.html", "styles.css", "main.js"},
+	}
+
+	return program
+}
+
 func HandleInput(argument string) {
 	argument = strings.ToLower(argument)
 	for project := range len(registry.projects) {
@@ -133,4 +145,5 @@ func init() {
 	registry.projects = append(registry.projects, createRustProject())
 	registry.projects = append(registry.projects, createGoProject())
 	registry.projects = append(registry.projects, createCProject())
+	registry.projects = append(registry.projects, createHTMLProject())
 }

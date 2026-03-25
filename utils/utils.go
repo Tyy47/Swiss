@@ -10,7 +10,7 @@ import (
 	"swiss/messages"
 )
 
-const VERSION_NUMBER string = "1.0.0"
+const VERSION_NUMBER string = "1.0.1"
 
 
 func PrintVersionNumber() {
@@ -74,9 +74,7 @@ func MakeFile(file string, muted bool) {
 			return
 		}
 	}
-	if muted {
-		return
-	} else {
+	if !muted {
 		messages.Success(file + " file created.")
 	}
 }
@@ -99,9 +97,7 @@ func MakeFolder(folder string, muted bool) {
 			return
 		}
 	}
-	if muted {
-		return
-	} else {
+	if !muted {
 		messages.Success("Successfully created " + folder + ".")
 	}
 }
