@@ -99,20 +99,26 @@ func HandleBuildInput(argument string) {
 }
 
 func SwissInstall() {
-	// Builds Go program
-	registry.builds[0].initialize()
+	system := utils.GetOperatingSystem()
+	if system == "linux" {
+		// Builds Go program
+		registry.builds[0].initialize()
 
-	command := exec.Command("mv", "swiss", "/home/"+utils.GetUsersName()+"/.local/bin/")
+		command := exec.Command("mv", "swiss", "/home/"+utils.GetUsersName()+"/.local/bin/")
 
-	command.Stdout = os.Stdout
-	command.Stderr = os.Stderr
+		command.Stdout = os.Stdout
+		command.Stderr = os.Stderr
 
-	if err := command.Run(); err != nil {
-		messages.Error("Swiss install failed. Check output above.")
+		if err := command.Run(); err != nil {
+			messages.Error("Swiss install failed. Check output above.")
+			return
+		}
+
+		messages.Success("Swiss installed successfully! Use 'swiss' in the terminal to gain access to the program.")
+	} else {
+		messages.Warning("Swiss install is not supported for " + system + ".")
 		return
 	}
-
-	messages.Success("Swiss installed successfully! Use 'swiss' in the terminal to gain access to the program.")
 }
 
 func init() {
