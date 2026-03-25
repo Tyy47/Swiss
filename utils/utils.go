@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/user"
+	"runtime"
 	"swiss/colors"
 	"swiss/messages"
 )
@@ -61,6 +62,11 @@ func GetUsersName() string {
 	}
 
 	return user.Username
+}
+
+func GetOperatingSystem() string {
+	// Returns Windows, Linux, or Darwin ( Apple )
+	return runtime.GOOS
 }
 
 func MakeFile(file string, muted bool) {

@@ -10,7 +10,6 @@
     1. Added an HTML init to create TODO.md, index.html, styles.css, and main.js files.
     2. Added C and HTML init options to list
 
-
 ## Misc:
 
     1. Removed unnecessary help wrapper and now printing the help menu directly
