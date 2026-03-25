@@ -12,7 +12,9 @@ import (
 
 const initProjectList = `
 Rust
-Go`
+Go
+C
+HTML`
 
 type project struct {
 	Language string
