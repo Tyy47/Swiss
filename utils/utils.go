@@ -11,7 +11,7 @@ import (
 	"swiss/messages"
 )
 
-const VERSION_NUMBER string = "1.0.1"
+const VERSION_NUMBER string = "1.0.2"
 
 
 func PrintVersionNumber() {
@@ -105,5 +105,16 @@ func MakeFolder(folder string, muted bool) {
 	}
 	if !muted {
 		messages.Success("Successfully created " + folder + ".")
+	}
+}
+
+func MoveFileToFolder(oldPath string, newPath string, muted bool) {
+	if err := os.Rename(oldPath, newPath); err != nil {
+		messages.Error("Unable to move file: " + err.Error())
+		return
+	}
+
+	if !muted {
+		messages.Success("Successfully moved " + oldPath + " to " + newPath + ".")
 	}
 }
