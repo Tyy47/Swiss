@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"os/user"
 	"runtime"
 	"swiss/colors"
@@ -117,4 +118,15 @@ func MoveFileToFolder(oldPath string, newPath string, muted bool) {
 	if !muted {
 		messages.Success("Successfully moved " + oldPath + " to " + newPath + ".")
 	}
+}
+
+func DoesToolExist(tool string) bool {
+	command := exec.Command(tool, "-v")
+
+	if err := command.Run(); err != nil {
+		messages.Error(tool + " is not installed or added to path.")
+		return false
+	}
+
+	return true
 }

@@ -68,8 +68,7 @@ container stats: Views resource usages of containers.
 login -u <username : string>: Login into Docker Hub
 push <username : string>/<image_name : string>: Publish an image to Docker Hub
 search <image_name : string>: Searches Docker Hub for image.
-pull <image_name : string>: Pulls image from Docker Hub.
-`
+pull <image_name : string>: Pulls image from Docker Hub.`
 
 func PrintPowershellCommands() {
 	fmt.Println(commandListPowershell)
