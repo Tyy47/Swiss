@@ -47,6 +47,8 @@ func dictHandler() {
 			commanddict.PrintBashCommands()
 		case "ps":
 			commanddict.PrintPowershellCommands()
+		case "git":
+			commanddict.PrintGitCommands()
 		default:
 			helps.CommandHelp()
 		}

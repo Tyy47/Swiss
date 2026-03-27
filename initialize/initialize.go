@@ -12,10 +12,10 @@ import (
 )
 
 const initProjectList = `
-Rust
-Go
-C
-HTML`
+Rust - Cargo
+Go - Go
+C - Swiss
+HTML - Swiss`
 
 type project struct {
 	Language  string
