@@ -32,8 +32,9 @@ Command Dictionary Module - Contains a variety of sub commands that show the mos
 -h --help: Opens the help menu
 ps: Prints Powershell command dictionary.
 bash: Prints Bash command dictionary.
-
-	`
+git: Prints git command dictionary.
+docker: Prints docker command dictionary.
+`
 	fmt.Println(help_menu)
 }
 

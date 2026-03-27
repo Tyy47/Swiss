@@ -49,6 +49,8 @@ func dictHandler() {
 			commanddict.PrintPowershellCommands()
 		case "git":
 			commanddict.PrintGitCommands()
+		case "dock", "d", "docker":
+			commanddict.PrintDockerCommands()
 		default:
 			helps.CommandHelp()
 		}
