@@ -23,7 +23,6 @@ type project struct {
 	Arguments []string
 	Folders   []string
 	Files     []string
-	GitInit   bool
 }
 
 type projectRegistry struct {
@@ -86,6 +85,20 @@ func (p *project) manualInitialize(language string, folders []string, files []st
 	// Success message is made in the HandleInput() function
 }
 
+func flagHandler() {
+	args := utils.GatherAdditionalArgs()
+
+	if len(args) >= 1 {
+		for arg := range args {
+			if args[arg] == "-g" || args[arg] == "--git" {
+				gitInit()
+			}
+		}
+	} else {
+		return
+	}
+}
+
 // Inits git in current directory when called.
 func gitInit() error {
 	init := exec.Command("git", "init")
@@ -122,7 +135,6 @@ func createRustProject() project {
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"init"},
-		GitInit:   true,
 	}
 
 	return program
@@ -135,7 +147,6 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", args[3]},
-			GitInit:   true,
 		}
 		return program
 	} else {
@@ -143,7 +154,6 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", "project"},
-			GitInit:   true,
 		}
 		return program
 	}
@@ -156,7 +166,6 @@ func createCProject() project {
 		Arguments: []string{"manual"},
 		Folders:   []string{"src"},
 		Files:     []string{"TODO.md", "README.md", "main.c"},
-		GitInit:   true,
 	}
 
 	return program
@@ -169,7 +178,6 @@ func createHTMLProject() project {
 		Arguments: []string{"manual"},
 		Folders:   []string{},
 		Files:     []string{"TODO.md", "index.html", "styles.css", "main.js"},
-		GitInit:   true,
 	}
 
 	return program
@@ -183,15 +191,10 @@ func HandleInput(argument string) {
 				log.Fatal(err)
 				return
 			} else {
-				switch registry.projects[project].GitInit {
-				case true:
-					gitInit()
-					messages.Success(registry.projects[project].Language + " project has been created.")
-					return
-				case false:
-					messages.Success(registry.projects[project].Language + " project has been created.")
-					return
-				}
+				flagHandler()
+				messages.Success(registry.projects[project].Language + " project has been created.")
+				return
+
 			}
 		}
 	}

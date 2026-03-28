@@ -5,6 +5,7 @@
 
 When initializing a C, HTML, or Go project. Git will initialize as well.
 When initing a C project. main.c will be moved to the src/ directory when created.
+Removed automatic git init when initializing a project via Swiss. To have git created alongside your project, use the -g or --git after the language name to create a .git repo.
 
 ## Command Dictionary
 
