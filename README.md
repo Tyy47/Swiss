@@ -4,6 +4,12 @@
 
 [Documentation](./DOCS.md) 
 
+## What is Swiss?
+Swiss is a multitool in the world of programming. It was built on the premise of being reliable and transportable, a tool that you can carry everywhere with no issues.
+
+## What does Swiss provide?
+Swiss provides reliability to a developer who just wants things to work. We all love to tinker, but sometimes we want something to just work out of the box with no issues. Swiss is meant to be a tool that provides everything a developer might need with no issues.
+
 ## Install
 
 ### Binary:
