@@ -1,23 +1,38 @@
 package create
 
 import (
+	"swiss/helps"
 	"swiss/utils"
 )
 
-// Make a create folder function and a create file function.
+func CreateItems() {
+	args := utils.GatherArgs()
+	var fileToggle bool = false
+	var folderToggle bool = false
 
-func CreateFiles() {
-	args := utils.GatherAdditionalArgs()
+	if len(args) > 2 {
+		for argument := range args {
+			if args[argument] == "file" {
+				fileToggle = true
+				folderToggle = false
+				continue
+			}
 
-	for files := range len(args) {
-		utils.MakeFile(args[files], false)
-	}
-}
+			if args[argument] == "folder" {
+				fileToggle = false
+				folderToggle = true
+				continue
+			}
 
-func CreateFolders() {
-	args := utils.GatherAdditionalArgs()
+			if folderToggle {
+				utils.MakeFolder(args[argument], false)
+			}
 
-	for folders := range len(args) {
-		utils.MakeFolder(args[folders], false)
+			if fileToggle {
+				utils.MakeFile(args[argument], false)
+			}
+		}
+	} else {
+		helps.CreateHelp()
 	}
 }

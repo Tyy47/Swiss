@@ -120,25 +120,7 @@ func initHandler() {
 }
 
 func createHandler() {
-	args := utils.GatherArgs()
-	if len(args) > 2 {
-		if args[1] == "create" {
-			switch args[2] {
-			case "-h", "--help":
-				helps.CreateHelp()
-			case "file", "files":
-				create.CreateFiles()
-			case "folder", "folders":
-				create.CreateFolders()
-			default:
-				helps.CreateHelp()
-			}
-		} else {
-			helps.CreateHelp()
-		}
-	} else {
-		helps.CreateHelp()
-	}
+	create.CreateItems()
 }
 
 func main() {
