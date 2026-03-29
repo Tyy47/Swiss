@@ -130,3 +130,4 @@ func DoesToolExist(tool string) bool {
 
 	return true
 }
+

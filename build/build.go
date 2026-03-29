@@ -121,6 +121,69 @@ func SwissInstall() {
 	}
 }
 
+func UpdateSwiss() {
+	// Make directory to clone into
+	utils.MakeFolder("swiss_install", true)
+	
+	// Clone the repository
+	clone := exec.Command("git", "clone", "https://github.com/Tyy47/Swiss.git", "swiss_install/")
+
+	if err := clone.Run(); err != nil {
+		messages.Error("Unable to clone Swiss repo. Install manually or create a bug report on the repository.")
+		fmt.Println(err)
+		return
+	}
+
+	// Change directory into cloned repo
+	if err := os.Chdir("swiss_install"); err != nil {
+		messages.Error("Unable to change directory into swiss_install. Exiting.")
+		fmt.Println(err)
+		return
+	}
+
+	// Prompt the user to either go install or move to local/bin
+	messages.Note("Select the number associated with the option in order to continue.")
+	fmt.Println("How would you like to install Swiss?")
+	fmt.Println("1. Go Install\n2. Move to local/bin ( Linux only )")
+	for {
+		var userInput string
+		fmt.Scanln(&userInput)
+
+		switch userInput {
+		case "1":
+			// Go install here
+			install := exec.Command("go", "install")
+
+			if err := install.Run(); err != nil {
+				messages.Error("Unable to install Swiss using Go Install.")
+				fmt.Println(err)
+				break
+			}
+
+			messages.Success("Swiss successfully installed!")
+			break
+
+		case "2":
+			// Move to bin here
+			SwissInstall()
+			break
+		default:
+			// Not a correct option
+			messages.Warning("Incorrect option, try again.")
+			continue
+		}
+		break
+	}
+
+	messages.Note("Cleaning up install files...")
+	if err := os.RemoveAll("./swiss_install"); err != nil {
+		messages.Error("Unable to remove install files.")
+		fmt.Println(err)
+		return
+	}
+	messages.Success("Install files cleaned up and Swiss is installed!")
+}
+
 func init() {
 	registry.builds = append(registry.builds, buildGoProject())
 	registry.builds = append(registry.builds, buildRustProject())

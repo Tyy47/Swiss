@@ -23,6 +23,8 @@ func ArgParser() {
 			dictHandler()
 		case "install", "-i":
 			build.SwissInstall()
+		case "update", "-u":
+			build.UpdateSwiss()
 		case "build":
 			buildHandler()
 		case "run":
