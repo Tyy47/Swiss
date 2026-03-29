@@ -130,14 +130,14 @@ func UpdateSwiss() {
 
 	if err := clone.Run(); err != nil {
 		messages.Error("Unable to clone Swiss repo. Install manually or create a bug report on the repository.")
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 
 	// Change directory into cloned repo
 	if err := os.Chdir("swiss_install"); err != nil {
 		messages.Error("Unable to change directory into swiss_install. Exiting.")
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 
@@ -156,17 +156,14 @@ func UpdateSwiss() {
 
 			if err := install.Run(); err != nil {
 				messages.Error("Unable to install Swiss using Go Install.")
-				fmt.Println(err)
+				log.Fatal(err)
 				break
 			}
 
 			messages.Success("Swiss successfully installed!")
-			break
-
 		case "2":
 			// Move to bin here
 			SwissInstall()
-			break
 		default:
 			// Not a correct option
 			messages.Warning("Incorrect option, try again.")
@@ -176,9 +173,16 @@ func UpdateSwiss() {
 	}
 
 	messages.Note("Cleaning up install files...")
-	if err := os.RemoveAll("./swiss_install"); err != nil {
+	if err := os.Chdir(".."); err != nil {
+		messages.Error("Unable to change directory.")
+		log.Fatal(err)
+		return
+	}
+
+
+	if err := os.RemoveAll("swiss_install"); err != nil {
 		messages.Error("Unable to remove install files.")
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 	messages.Success("Install files cleaned up and Swiss is installed!")
