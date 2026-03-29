@@ -25,6 +25,7 @@ The Create module. Create files and or folders through Swiss on mass.
 ### Init
 The Init module. Init a project using Swiss with the available project templates available.
 
-`swiss init -h` or `--help` to print out the help menu for the Init module \
-`swiss init -l` or `--list` to print out a list of languages Swiss can initialize projects for \
+`swiss init -h` or `--help` to print out the help menu for the Init module. \
+`swiss init -l` or `--list` to print out a list of languages Swiss can initialize. \
+`swiss init <language : string> -g` or `--git` will init a git repo while creating your project. \
 `swiss init <language : string> [project name : string]` Inits a project based on the language provided and the project name for certain languages.
