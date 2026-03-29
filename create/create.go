@@ -12,13 +12,13 @@ func CreateItems() {
 
 	if len(args) > 2 {
 		for argument := range args {
-			if args[argument] == "file" {
+			if args[argument] == "file" || args[argument] == "files" || args[argument] == "fi" {
 				fileToggle = true
 				folderToggle = false
 				continue
 			}
 
-			if args[argument] == "folder" {
+			if args[argument] == "folder" || args[argument] == "folders" || args[argument] == "fo" {
 				fileToggle = false
 				folderToggle = true
 				continue
