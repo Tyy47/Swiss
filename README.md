@@ -32,5 +32,5 @@ I want Swiss to be "my own". Meaning, I want to create everything from scratch. 
 ### There is a bug in Swiss, how do I report it?
 Create an issue report stating what command you we're running, what you expected to happen, and what actually happened.
 
-### I'd like to contribute to Swiss!
+### How can I contribute to Swiss?
 I'd like this project to be kept as my own but I'm open to suggestions of improvements or other tools that could be added. Feel free to open a issue report with the "Suggestion" post flag and I'll take a look!
