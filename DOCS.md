@@ -7,6 +7,8 @@ A collection of misc commands
 
 `swiss` or `swiss -h` will print out the help menu. \
 `swiss -v` or `swiss version` will print out the version name. \
+`swiss -v` or `swiss install` will place a Swiss executable in your loca/bin. ( Linux command only ) \
+`swiss -u` or `swiss update` will clone the repo into an install folder, then will prompt you for install choice. \
 
 ### Build
 The Build module. Build/Compile or Run programs based on the language provided and that is available via Swiss.

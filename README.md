@@ -18,8 +18,8 @@ Prepackaged binaries are available to download via the releases section. After d
 ### Go:
 Running ``go install`` inside of the Swiss directory will install the program in a PATH'd location via Go.
 
-### Updates via Swiss ( Linux Only )
-If an update is available for Swiss. Download the repo and run ``swiss -i`` or ``swiss install`` to have Swiss be compiled and placed in ~/.local/bin. Make sure local/bin is added to your PATH.
+### Updates via Swiss
+If an update is available for Swiss. Run `swiss -u` or `swiss update` to update Swiss. It will make an install directory locally and clone the Swiss repo into that folder then cd into it. It will then prompt you for the Go install route or the local/bin install, which is only available for Linux. After install, make sure either Go's install path is added to your system PATH, for the Linux only option, make sure ~/.local/bin is added to your PATH.
 
 ## FAQ
 

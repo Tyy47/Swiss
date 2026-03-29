@@ -16,7 +16,7 @@ Dashboard module?
         3. Untracked files counter
 
 
-Update:
+Update: - DONE
 
     1. Make a directory;
     2. Git clone swiss into new directory;
@@ -24,4 +24,11 @@ Update:
     4. Prompt user for install choice (Go install or move to local/bin (Linux only));
     5. Finish install
     6. CD out of cloned repo.
-    7. Delete folder.
+    7. Delete folder
+
+
+
+Next:
+
+    1. Add update function to documentation
+    2. Make README Update Swiss section
