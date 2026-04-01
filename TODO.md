@@ -1,34 +1,26 @@
+# Swiss 1.1.0 and 1.0.3
 
-README:
-    1. What is Swiss?
-
-
-Backup module? 
-    Have the input take in a file or a folder. Copy it, zip it up to compress it and name it based on the name - date - time.
-
-Clipboard module?
-    Create a "config" location somewhere on the machine, have it store a copy file, then paste from that file when paste is called.
-
-Dashboard module?
-    Have a project dashboard that shows:
-        1. Project name.
-        2. Current git branch
-        3. Untracked files counter
+## Misc:
+Github:
+    1. Create projects on issue board
 
 
-Update: - DONE
-
-    1. Make a directory;
-    2. Git clone swiss into new directory;
-    3. CD into directory;
-    4. Prompt user for install choice (Go install or move to local/bin (Linux only));
-    5. Finish install
-    6. CD out of cloned repo.
-    7. Delete folder
+1.0.3:
+    1. Consolidate modules into utils ( colors, messages, helps maybe ).
+    
 
 
-
-Next:
-
-    1. Add update function to documentation
-    2. Make README Update Swiss section
+1.1.0:
+0. "Rebuilt Arg Parser"
+        0.1: Rebuild custom arg parser from the ground up to work on a registry based command system. This will result in a better handling of arguments, aswell as getting rid of the eventual 30 way switch case statement that is on track if not changed.
+    1. "Net" module:
+        1.1: Port scanner
+        1.2: IP Address Pinging
+        1.3: WHOIS Lookup
+        1.4: HTTP 'Probe': Similer to a curl request to grab http status code and http information.
+        1.5: Advanced Ping: Similer to the default systems ping but provides more information regarding to packets and other related network information.
+    2. "Generator" module
+        2.1: Passwords
+        2.2: UUID
+        2.3: Hex Codes ( Based on main color input or random otherwise )
+        2.4: "Secret" codes, strings of letters, numbers and symbols created based on users number.
