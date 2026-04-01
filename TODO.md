@@ -2,11 +2,11 @@
 
 ## Misc:
 Github: \
-    1. Create projects on issue board \
+    1. Create projects on issue board 
 
 
 1.0.3: \
-    1. Consolidate modules into utils ( colors, messages, helps maybe ). \
+    1. Consolidate modules into utils ( colors, messages, helps maybe ). 
     
 
 
@@ -23,4 +23,4 @@ Github: \
         2.1: Passwords \
         2.2: UUID \
         2.3: Hex Codes ( Based on main color input or random otherwise ) \
-        2.4: "Secret" codes, strings of letters, numbers and symbols created based on users number. \
+        2.4: "Secret" codes, strings of letters, numbers and symbols created based on users number. 
