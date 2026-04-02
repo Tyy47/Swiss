@@ -1,9 +1,8 @@
-package colors
+package utils
 
-// Colors "enum"
+// Colors const array
 const (
 	// Modifiers
-
 	ColorBlack  = "\033[1;90m"
 	ColorRed    = "\033[1;91m"
 	ColorGreen  = "\033[1;92m"

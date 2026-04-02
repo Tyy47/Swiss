@@ -4,7 +4,6 @@ import (
 	"swiss/build"
 	"swiss/command-dict"
 	"swiss/create"
-	"swiss/helps"
 	"swiss/initialize"
 	"swiss/utils"
 )
@@ -16,7 +15,7 @@ func ArgParser() {
 	if len(args) > 1 {
 		switch args[1] {
 		case "help", "-h":
-			helps.DisplayHelp()
+			utils.DisplayHelp()
 		case "version", "-v":
 			utils.PrintVersionNumber()
 		case "dict":
@@ -35,7 +34,7 @@ func ArgParser() {
 			createHandler()
 		}
 	} else {
-		helps.DisplayHelp()
+		utils.DisplayHelp()
 	}
 }
 
@@ -44,7 +43,7 @@ func dictHandler() {
 	if len(args) > 2 {
 		switch args[2] {
 		case "-h", "--help":
-			helps.CommandHelp()
+			utils.CommandHelp()
 		case "bash":
 			commanddict.PrintBashCommands()
 		case "ps":
@@ -54,10 +53,10 @@ func dictHandler() {
 		case "dock", "d", "docker":
 			commanddict.PrintDockerCommands()
 		default:
-			helps.CommandHelp()
+			utils.CommandHelp()
 		}
 	} else {
-		helps.CommandHelp()
+		utils.CommandHelp()
 	} 
 }
 
@@ -67,17 +66,17 @@ func buildHandler() {
 		if args[1] == "build" {
 			switch args[2] {
 			case "-h", "--help":
-				helps.BuildHelp()
+				utils.BuildHelp()
 			case "-l", "--list":
 				build.PrintBuildProgramList()
 			default:
 				build.HandleBuildInput(args[2])
 			}
 		} else {
-			helps.BuildHelp()
+			utils.BuildHelp()
 		}
 	} else {
-		helps.BuildHelp()
+		utils.BuildHelp()
 	}
 }
 
@@ -87,17 +86,17 @@ func runHandler() {
 		if args[1] == "run" {
 			switch args[2] {
 			case "-h", "--help":
-				helps.BuildHelp()
+				utils.BuildHelp()
 			case "-l", "--list":
 				build.PrintRunProgramList()
 			default:
 				build.HandleRunInput(args[2])
 			}
 		} else {
-			helps.BuildHelp()
+			utils.BuildHelp()
 		}
 	} else {
-		helps.BuildHelp()
+		utils.BuildHelp()
 	}
 }
 
@@ -107,17 +106,17 @@ func initHandler() {
 		if args[1] == "init" {
 			switch args[2] {
 			case "-h", "--help":
-				helps.InitHelp()
+				utils.InitHelp()
 			case "-l", "--list":
 				initialize.PrintInitProjectList()
 			default:
 				initialize.HandleInput(args[2])
 			}
 		} else {
-			helps.InitHelp()
+			utils.InitHelp()
 		}
 	} else {
-		helps.InitHelp()
+		utils.InitHelp()
 	}
 }
 

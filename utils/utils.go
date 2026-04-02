@@ -8,15 +8,13 @@ import (
 	"os/exec"
 	"os/user"
 	"runtime"
-	"swiss/colors"
-	"swiss/messages"
 )
 
 const VERSION_NUMBER string = "1.0.2"
 
 
 func PrintVersionNumber() {
-	fmt.Println("Swiss version number: " + colors.ColorGreen + VERSION_NUMBER + colors.ColorReset)
+	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
 }
 
 // Gathers argument via the os library
@@ -72,7 +70,7 @@ func GetOperatingSystem() string {
 
 func MakeFile(file string, muted bool) {
 	if CheckFileExists(file) {
-		messages.Warning(file + " file exists.")
+		Warning(file + " file exists.")
 		return
 	} else {
 		err := os.WriteFile(file, []byte(""), 0o666)
@@ -82,7 +80,7 @@ func MakeFile(file string, muted bool) {
 		}
 	}
 	if !muted {
-		messages.Success(file + " file created.")
+		Success(file + " file created.")
 	}
 }
 
@@ -90,33 +88,33 @@ func MakeFolder(folder string, muted bool) {
 	dirInfo, err := CheckFolderExists(folder)
 
 	if err != nil {
-		messages.Error("Unable to create directory.")
+		Error("Unable to create directory.")
 		return
 	}
 
 	if dirInfo {
-		messages.Warning(folder + "folder exists.")
+		Warning(folder + "folder exists.")
 		return
 	} else {
 		err := os.Mkdir(folder, 0755)
 		if err != nil {
-			messages.Error(err.Error())
+			Error(err.Error())
 			return
 		}
 	}
 	if !muted {
-		messages.Success("Successfully created " + folder + ".")
+		Success("Successfully created " + folder + ".")
 	}
 }
 
 func MoveFileToFolder(oldPath string, newPath string, muted bool) {
 	if err := os.Rename(oldPath, newPath); err != nil {
-		messages.Error("Unable to move file: " + err.Error())
+		Error("Unable to move file: " + err.Error())
 		return
 	}
 
 	if !muted {
-		messages.Success("Successfully moved " + oldPath + " to " + newPath + ".")
+		Success("Successfully moved " + oldPath + " to " + newPath + ".")
 	}
 }
 
@@ -124,7 +122,7 @@ func DoesToolExist(tool string) bool {
 	command := exec.Command(tool, "-v")
 
 	if err := command.Run(); err != nil {
-		messages.Error(tool + " is not installed or added to path.")
+		Error(tool + " is not installed or added to path.")
 		return false
 	}
 

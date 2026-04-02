@@ -6,8 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	"swiss/messages"
+	"swiss/utils"
 )
 
 const runProgramList = `
@@ -30,7 +29,7 @@ var runStorage = runRegistry{
 }
 
 func PrintRunProgramList() {
-	messages.Note("Languages are listed with their build tools.")
+	utils.Note("Languages are listed with their build tools.")
 	fmt.Println(buildProgramList)
 }
 
@@ -79,12 +78,12 @@ func HandleRunInput(argument string) {
 				log.Fatal(err)
 				return
 			} else {
-				messages.Success(runStorage.runs[run].Language + " project has been ran.")
+				utils.Success(runStorage.runs[run].Language + " project has been ran.")
 				return
 			}
 		}
 	}
-	messages.Error("Unable to find " + argument + " in registry list.")
+	utils.Error("Unable to find " + argument + " in registry list.")
 }
 
 func init() {

@@ -1,7 +1,6 @@
 package create
 
 import (
-	"swiss/helps"
 	"swiss/utils"
 )
 
@@ -33,6 +32,6 @@ func CreateItems() {
 			}
 		}
 	} else {
-		helps.CreateHelp()
+		utils.CreateHelp()
 	}
 }

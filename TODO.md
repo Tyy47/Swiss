@@ -17,8 +17,8 @@ Github: \
         1.1: Port scanner \
         1.2: IP Address Pinging \
         1.3: WHOIS Lookup \
-        1.4: HTTP 'Probe': Similer to a curl request to grab http status code and http information. \
-        1.5: Advanced Ping: Similer to the default systems ping but provides more information regarding to packets and other related network information. \
+        1.4: HTTP 'Probe': Similar to a curl request to grab http status code and http information. \
+        1.5: Advanced Ping: Similar to the default systems ping but provides more information regarding to packets and other related network information. \
     2. "Generator" module \
         2.1: Passwords \
         2.2: UUID \
