@@ -6,13 +6,11 @@ Github: \
 
 
 1.0.3: \
-    1. Consolidate modules into utils ( colors, messages, helps maybe ). 
+    1. Consolidate modules into utils ( colors, messages, helps maybe ). - DONE
     
 
 
 1.1.0: \
-0. "Rebuilt Arg Parser" \
-        0.1: Rebuild custom arg parser from the ground up to work on a registry based command system. This will result in a better handling of arguments, aswell as getting rid of the eventual 30 way switch case statement that is on track if not changed. \
     1. "Net" module: \
         1.1: Port scanner \
         1.2: IP Address Pinging \
