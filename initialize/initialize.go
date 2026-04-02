@@ -6,8 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	"swiss/messages"
 	"swiss/utils"
 )
 
@@ -54,7 +52,7 @@ func (p *project) initialize() error {
 	command.Stderr = os.Stderr
 
 	if err := command.Run(); err != nil {
-		messages.Error(p.Language + " project failed to initialize. Check output below for more details.")
+		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
 		return err
 	}
 
@@ -104,7 +102,7 @@ func gitInit() error {
 	init := exec.Command("git", "init")
 
 	if err := init.Run(); err != nil {
-		messages.Error("Unable to init git")
+		utils.Error("Unable to init git")
 		return err
 	}
 
@@ -114,18 +112,18 @@ func gitInit() error {
 	add := exec.Command("git", "add", ".")
 
 	if err := add.Run(); err != nil {
-		messages.Error("Unable to add files to git project")
+		utils.Error("Unable to add files to git project")
 		return err
 	}
 
 	mainBranch := exec.Command("git", "branch", "-M", "main")
 
 	if err := mainBranch.Run(); err != nil {
-		messages.Error("Unable to change main branch to 'main'.")
+		utils.Error("Unable to change main branch to 'main'.")
 		return err
 	}
 
-	messages.Success("Git has been initialized.")
+	utils.Success("Git has been initialized.")
 
 	return nil
 }
@@ -192,13 +190,13 @@ func HandleInput(argument string) {
 				return
 			} else {
 				flagHandler()
-				messages.Success(registry.projects[project].Language + " project has been created.")
+				utils.Success(registry.projects[project].Language + " project has been created.")
 				return
 
 			}
 		}
 	}
-	messages.Error("Unable to find " + argument + " in registry list.")
+	utils.Error("Unable to find " + argument + " in registry list.")
 }
 
 func init() {
