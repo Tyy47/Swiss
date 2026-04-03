@@ -1,10 +1,20 @@
 
+IP Addresses: 
+104.18.27.120
+104.18.26.120
+2606:4700::6812:1b78
+2606:4700::6812:1a78
+
 Name Servers: 
-ns2.amzndns.net.
-ns1.amzndns.co.uk.
-ns2.amzndns.org.
-ns2.amzndns.co.uk.
-ns1.amzndns.com.
-ns2.amzndns.com.
-ns1.amzndns.net.
-ns1.amzndns.org.
+elliott.ns.cloudflare.com.
+hera.ns.cloudflare.com.
+
+CName Records: 
+example.com.
+
+TXT Records: 
+v=spf1 -all
+_k2n1y4vw3qtb4skdx9e7dxt97qrmmq9
+
+MX Records: 
+Host: .

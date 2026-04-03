@@ -98,8 +98,13 @@ func NetHelp() {
 Net module - A variety of networking tools.
 
 -h --help: Opens the help menu.
+connect <domain : string>: Prints out an http response code when connecting to the domain and port.
 addr <domain : string>: Prints out the IPv4 and v6 addresses of the given domain.
 ns <domain : string>: Prints out the name servers of the current domain.
+cname <domain : string>: Prints out the cname records for the given domain.
+txt <domain : string>: Prints out txt records for the given domain.
+mx <domain : string>: Prints out mx records for the given domain.
+gather <domain : string>: Compiles all information that the net module offers and outputs it to a file.
 `
 	fmt.Println(help_menu)
 }

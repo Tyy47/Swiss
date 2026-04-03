@@ -134,10 +134,18 @@ func netHandler() {
 			switch args[2] {
 			case "-h", "--help":
 				utils.NetHelp()
+			case "connect":
+				network.Connection(args[3])
 			case "addr":
 				network.GetAddresses(args[3], false)
 			case "ns":
 				network.GetNameServer(args[3], false)
+			case "cname":
+				network.GetCNameRecords(args[3], false)
+			case "txt":
+				network.GetTXTRecords(args[3], false)
+			case "mx":
+				network.GetMXRecords(args[3], false)
 			case "gather":
 				network.GatherData(args[3])
 			}

@@ -6,18 +6,19 @@ import (
 	"log"
 	"net"
 	"os"
+
 	"swiss/utils"
 )
 
 type FileReturn struct {
 	name string
-	file  *os.File
-	err string
+	file *os.File
+	err  string
 }
 
 var outputFile = FileReturn{
 	name: "swiss_net_output",
-	err: "File already exists",
+	err:  "File already exists",
 }
 
 func Connection(endpoint string) {
@@ -68,7 +69,6 @@ func GetAddresses(endpoint string, writeToFile bool) {
 
 func GetNameServer(endpoint string, writeToFile bool) {
 	conn, err := net.LookupNS(endpoint)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,6 +97,77 @@ func GetNameServer(endpoint string, writeToFile bool) {
 	}
 }
 
+func GetCNameRecords(endpoint string, writeToFile bool) {
+	conn, err := net.LookupCNAME(endpoint)
+	utils.CrashCheck(err)
+
+	if writeToFile {
+		write := bufio.NewWriter(outputFile.file)
+		if _, err := write.WriteString("\nCName Records: \n"); err != nil {
+			utils.CrashCheck(err)
+		}
+
+		_, err := write.WriteString(conn)
+		if err != nil {
+			utils.CrashCheck(err)
+		}
+
+		write.Flush()
+	} else {
+		utils.Success("CName Records for " + endpoint + ".")
+		fmt.Println(conn)
+	}
+}
+
+func GetTXTRecords(endpoint string, writeToFile bool) {
+	conn, err := net.LookupTXT(endpoint)
+	utils.CrashCheck(err)
+
+	if writeToFile {
+		write := bufio.NewWriter(outputFile.file)
+		if _, err := write.WriteString("\n\nTXT Records: \n"); err != nil {
+			utils.CrashCheck(err)
+		}
+
+		for rows := range conn {
+			_, err := write.WriteString(conn[rows] + "\n")
+			utils.CrashCheck(err)
+		}
+
+		write.Flush()
+	} else {
+		utils.Success("TXT Records for " + endpoint + ".")
+		for rows := range conn {
+			fmt.Println(conn[rows])
+		}
+	}
+}
+
+func GetMXRecords(endpoint string, writeToFile bool) {
+	conn, err := net.LookupMX(endpoint)
+	utils.CrashCheck(err)
+
+	if writeToFile {
+		write := bufio.NewWriter(outputFile.file)
+		if _, err := write.WriteString("\nMX Records: \n"); err != nil {
+			utils.CrashCheck(err)
+		}
+
+		for rows := range conn {
+			_, err := write.WriteString("Host: " + conn[rows].Host + "\n")
+			utils.CrashCheck(err)
+		}
+
+		write.Flush()
+	} else {
+		utils.Success("MX Records for " + endpoint + ".")
+
+		for rows := range conn {
+			fmt.Println("Host: " + conn[rows].Host + "\n")
+		}
+	}
+}
+
 // Creates the output file for net
 func initFileCreation() {
 	if !utils.CheckFileExists(outputFile.name) {
@@ -119,9 +190,8 @@ func GatherData(endpoint string) {
 	initFileCreation()
 	GetAddresses(endpoint, true)
 	GetNameServer(endpoint, true)
+	GetCNameRecords(endpoint, true)
+	GetTXTRecords(endpoint, true)
+	GetMXRecords(endpoint, true)
+	utils.Success("Written data to " + outputFile.name + " for endpoint " + endpoint + ".")
 }
-
-
-
-
-
