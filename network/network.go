@@ -21,6 +21,12 @@ var outputFile = FileReturn{
 	err:  "File already exists",
 }
 
+func networkCrashError(err error, endpoint string, data string) {
+	if err != nil {
+		utils.Error("Unable to gather " + data + " from " + endpoint + ".")
+	}
+}
+
 func Connection(endpoint string) {
 	conn, err := net.Dial("tcp", endpoint)
 	if err != nil {
@@ -40,9 +46,7 @@ func Connection(endpoint string) {
 // Takes an endpoint as a string and prints the IPv4 and v6 address of the domain.
 func GetAddresses(endpoint string, writeToFile bool) {
 	conn, err := net.LookupIP(endpoint)
-	if err != nil {
-		utils.Error("Unable to connect: Unknown host.")
-	}
+	networkCrashError(err, endpoint, "IP addresses")
 
 	if writeToFile {
 		write := bufio.NewWriter(outputFile.file)
@@ -56,7 +60,7 @@ func GetAddresses(endpoint string, writeToFile bool) {
 
 			if _, err := write.WriteString(val + "\n"); err != nil {
 				utils.CrashCheck(err)
-			}
+	}
 		}
 
 		write.Flush()
@@ -69,9 +73,7 @@ func GetAddresses(endpoint string, writeToFile bool) {
 
 func GetNameServer(endpoint string, writeToFile bool) {
 	conn, err := net.LookupNS(endpoint)
-	if err != nil {
-		log.Fatal(err)
-	}
+	networkCrashError(err, endpoint, "Name servers")
 
 	if writeToFile {
 		write := bufio.NewWriter(outputFile.file)
@@ -99,11 +101,11 @@ func GetNameServer(endpoint string, writeToFile bool) {
 
 func GetCNameRecords(endpoint string, writeToFile bool) {
 	conn, err := net.LookupCNAME(endpoint)
-	utils.CrashCheck(err)
+	networkCrashError(err, endpoint, "CNAME records")
 
 	if writeToFile {
 		write := bufio.NewWriter(outputFile.file)
-		if _, err := write.WriteString("\nCName Records: \n"); err != nil {
+		if _, err := write.WriteString("\nCNAME Records: \n"); err != nil {
 			utils.CrashCheck(err)
 		}
 
@@ -114,14 +116,14 @@ func GetCNameRecords(endpoint string, writeToFile bool) {
 
 		write.Flush()
 	} else {
-		utils.Success("CName Records for " + endpoint + ".")
+		utils.Success("CNAME Records for " + endpoint + ".")
 		fmt.Println(conn)
 	}
 }
 
 func GetTXTRecords(endpoint string, writeToFile bool) {
 	conn, err := net.LookupTXT(endpoint)
-	utils.CrashCheck(err)
+	networkCrashError(err, endpoint, "TXT records")
 
 	if writeToFile {
 		write := bufio.NewWriter(outputFile.file)
@@ -145,7 +147,7 @@ func GetTXTRecords(endpoint string, writeToFile bool) {
 
 func GetMXRecords(endpoint string, writeToFile bool) {
 	conn, err := net.LookupMX(endpoint)
-	utils.CrashCheck(err)
+	networkCrashError(err, endpoint, "MX records")
 
 	if writeToFile {
 		write := bufio.NewWriter(outputFile.file)
