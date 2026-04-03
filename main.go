@@ -5,6 +5,7 @@ import (
 	"swiss/command-dict"
 	"swiss/create"
 	"swiss/initialize"
+	"swiss/network"
 	"swiss/utils"
 )
 
@@ -32,6 +33,8 @@ func ArgParser() {
 			initHandler()
 		case "create":
 			createHandler()
+		case "net":
+			netHandler()
 		}
 	} else {
 		utils.DisplayHelp()
@@ -122,6 +125,28 @@ func initHandler() {
 
 func createHandler() {
 	create.CreateItems()
+}
+
+func netHandler() {
+	args := utils.GatherArgs()
+	if len(args) > 3 {
+		if args[1] == "net" {
+			switch args[2] {
+			case "-h", "--help":
+				utils.NetHelp()
+			case "addr":
+				network.GetAddresses(args[3], false)
+			case "ns":
+				network.GetNameServer(args[3], false)
+			case "gather":
+				network.GatherData(args[3])
+			}
+		} else {
+			utils.NetHelp()
+		}
+	} else {
+		utils.NetHelp()
+	}
 }
 
 func main() {

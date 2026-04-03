@@ -17,6 +17,15 @@ func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
 }
 
+// Checks if an error has a value, if so, returns an empty value, an error message and the fatal log.
+func CrashCheck(err error) {
+	if err != nil {
+		Error("Swiss has crashed! View output below to learn more.")
+		log.Fatal(err)
+		return
+	}
+}
+
 // Gathers argument via the os library
 func GatherArgs() []string {
 	args := os.Args; return args

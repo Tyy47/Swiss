@@ -16,6 +16,7 @@ dict <string>: Shows system commands based on the shell argument provided.
 build <string>: Allows you to build program via swiss.
 init <string>: Inits a project using Swiss.
 create <string>: Make a set of folders/files using Swiss.
+net: A set of networking tools.
 	`
 	fmt.Println(help_menu)
 }
@@ -83,6 +84,22 @@ Init module - Initialize a project using Swiss.
 -l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
 -g --git: Inits git alongside your project.
 init <string> [name: string]: Inits a project based on the given input. 
+`
+	fmt.Println(help_menu)
+}
+
+func NetHelp() {
+	var help_menu string = `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Net module - A variety of networking tools.
+
+-h --help: Opens the help menu.
+addr <domain : string>: Prints out the IPv4 and v6 addresses of the given domain.
+ns <domain : string>: Prints out the name servers of the current domain.
 `
 	fmt.Println(help_menu)
 }
