@@ -22,3 +22,14 @@ Github: \
         2.2: UUID \
         2.3: Hex Codes ( Based on main color input or random otherwise ) \
         2.4: "Secret" codes, strings of letters, numbers and symbols created based on users number. 
+
+
+
+Command struct
+    -- Name string
+    -- Subcommands []Subcommand
+
+
+Subcommand struct 
+    -- Name ( flag or argument )
+    -- Handler func(x y or z)
