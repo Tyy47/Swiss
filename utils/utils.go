@@ -12,6 +12,12 @@ import (
 
 const VERSION_NUMBER string = "1.0.2"
 
+// Global Arguments
+var (
+	Arguments           = gatherArgs()
+	AdditionalArguments = gatherAdditionalArgs()
+)
+
 
 func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
@@ -27,19 +33,16 @@ func CrashCheck(err error) {
 }
 
 // Gathers argument via the os library
-func GatherArgs() []string {
+func gatherArgs() []string {
 	args := os.Args; return args
 }
 
-func GatherAdditionalArgs() []string {
-	var additional []string
-	args := GatherArgs()
-
-	for _, v := range args[3:] {
-		additional = append(additional, v)
+func gatherAdditionalArgs() []string {
+	if len(Arguments) < 3 {
+		return []string{}
 	}
 
-	return additional
+	return Arguments[3:]
 }
 
 func CheckFileExists(fileName string) bool {
