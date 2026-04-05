@@ -70,8 +70,13 @@ func runGoProject() run {
 	return goRun
 }
 
-func HandleRunInput(argument string) {
-	argument = strings.ToLower(argument)
+func HandleRunInput() {
+	if len(utils.Arguments) < 3 {
+		return
+	}
+
+	argument := strings.ToLower(utils.Arguments[2])
+
 	for run := range len(runStorage.runs) {
 		if argument == runStorage.runs[run].Language {
 			if err := runStorage.runs[run].initializeRun(); err != nil {

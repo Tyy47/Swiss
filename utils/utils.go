@@ -45,6 +45,14 @@ func gatherAdditionalArgs() []string {
 	return Arguments[3:]
 }
 
+func CheckArguments(args []string, length int, index int) string {
+	if len(args) <= length {
+		return ""
+	} else {
+		return args[index]
+	}
+}
+
 func CheckFileExists(fileName string) bool {
 	info, err := os.Stat(fileName)
 	if errors.Is(err, os.ErrNotExist) {
@@ -105,7 +113,7 @@ func MakeFolder(folder string, muted bool) {
 	}
 
 	if dirInfo {
-		Warning(folder + "folder exists.")
+		Warning(folder + " folder exists.")
 		return
 	} else {
 		err := os.Mkdir(folder, 0755)

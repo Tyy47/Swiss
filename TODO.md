@@ -38,9 +38,10 @@ Subcommand struct
 
 Move modules over to new arg parsing system
 
-BUILD
-RUN
-DICT
-INIT
-NET
-CREATE
+BUILD - DONE
+RUN - DONE
+DICT - DONE
+INIT - DONE
+NET - DONE 
+CREATE 
+UPDATE

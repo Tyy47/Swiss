@@ -21,13 +21,16 @@ var outputFile = FileReturn{
 	err:  "File already exists",
 }
 
-func networkCrashError(err error, endpoint string, data string) {
+var endpoint = utils.CheckArguments(utils.Arguments, 3, 3)
+
+func networkCrashError(err error, data string) {
 	if err != nil {
 		utils.Error("Unable to gather " + data + " from " + endpoint + ".")
+		os.Exit(1)
 	}
 }
 
-func Connection(endpoint string) {
+func Connection() {
 	conn, err := net.Dial("tcp", endpoint)
 	if err != nil {
 		log.Fatal(err)
@@ -44,130 +47,144 @@ func Connection(endpoint string) {
 }
 
 // Takes an endpoint as a string and prints the IPv4 and v6 address of the domain.
-func GetAddresses(endpoint string, writeToFile bool) {
+func GetAddresses() {
 	conn, err := net.LookupIP(endpoint)
-	networkCrashError(err, endpoint, "IP addresses")
+	networkCrashError(err, "IP addresses")
 
-	if writeToFile {
-		write := bufio.NewWriter(outputFile.file)
-
-		if _, err := write.WriteString("\nIP Addresses: \n"); err != nil {
-			utils.CrashCheck(err)
-		}
-
-		for rows := range conn {
-			val := conn[rows].String()
-
-			if _, err := write.WriteString(val + "\n"); err != nil {
-				utils.CrashCheck(err)
-	}
-		}
-
-		write.Flush()
-	} else {
-		for rows := range conn {
-			fmt.Println(conn[rows])
-		}
+	for rows := range conn {
+		fmt.Println(conn[rows])
 	}
 }
 
-func GetNameServer(endpoint string, writeToFile bool) {
+func writeAddresses() {
+	conn, err := net.LookupIP(endpoint)
+	networkCrashError(err, "IP Addresses")
+	write := bufio.NewWriter(outputFile.file)
+
+	if _, err := write.WriteString("\nIP Addresses: \n"); err != nil {
+		utils.CrashCheck(err)
+	}
+
+	for rows := range conn {
+		val := conn[rows].String()
+
+		if _, err := write.WriteString(val + "\n"); err != nil {
+			utils.CrashCheck(err)
+		}
+	}
+
+	write.Flush()
+}
+
+func GetNameServer() {
 	conn, err := net.LookupNS(endpoint)
-	networkCrashError(err, endpoint, "Name servers")
+	networkCrashError(err, "Name servers")
 
-	if writeToFile {
-		write := bufio.NewWriter(outputFile.file)
-		if _, err := write.WriteString("\nName Servers: \n"); err != nil {
-			utils.CrashCheck(err)
-		}
-		for rows := range conn {
-			val := conn[rows].Host + "\n"
-
-			_, err := write.WriteString(val)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		write.Flush()
-	} else {
-		utils.Success("\nNameservers for " + endpoint + ".")
-		for rows := range conn {
-			val := conn[rows].Host + "\n"
-			fmt.Println(val)
-		}
+	utils.Success("\nNameservers for " + endpoint + ".")
+	for rows := range conn {
+		val := conn[rows].Host + "\n"
+		fmt.Println(val)
 	}
 }
 
-func GetCNameRecords(endpoint string, writeToFile bool) {
-	conn, err := net.LookupCNAME(endpoint)
-	networkCrashError(err, endpoint, "CNAME records")
+func writeNameServer() {
+	conn, err := net.LookupNS(endpoint)
+	networkCrashError(err, "Name servers")
 
-	if writeToFile {
-		write := bufio.NewWriter(outputFile.file)
-		if _, err := write.WriteString("\nCNAME Records: \n"); err != nil {
-			utils.CrashCheck(err)
-		}
+	write := bufio.NewWriter(outputFile.file)
+	if _, err := write.WriteString("\nName Servers: \n"); err != nil {
+		utils.CrashCheck(err)
+	}
+	for rows := range conn {
+		val := conn[rows].Host + "\n"
 
-		_, err := write.WriteString(conn)
+		_, err := write.WriteString(val)
 		if err != nil {
-			utils.CrashCheck(err)
+			log.Fatal(err)
 		}
-
-		write.Flush()
-	} else {
-		utils.Success("CNAME Records for " + endpoint + ".")
-		fmt.Println(conn)
 	}
+
+	write.Flush()
 }
 
-func GetTXTRecords(endpoint string, writeToFile bool) {
+func GetCNameRecords() {
+	conn, err := net.LookupCNAME(endpoint)
+	networkCrashError(err, "CNAME records")
+
+	utils.Success("CNAME Records for " + endpoint + ".")
+	fmt.Println(conn)
+}
+
+func writeCNameRecords() {
+	conn, err := net.LookupCNAME(endpoint)
+	networkCrashError(err, "CNAME records")
+
+	write := bufio.NewWriter(outputFile.file)
+	if _, err := write.WriteString("\nCNAME Records: \n"); err != nil {
+		utils.CrashCheck(err)
+	}
+
+	_, errr := write.WriteString(conn)
+	if errr != nil {
+		utils.CrashCheck(err)
+	}
+
+	write.Flush()
+}
+
+func GetTXTRecords() {
 	conn, err := net.LookupTXT(endpoint)
-	networkCrashError(err, endpoint, "TXT records")
+	networkCrashError(err, "TXT records")
 
-	if writeToFile {
-		write := bufio.NewWriter(outputFile.file)
-		if _, err := write.WriteString("\n\nTXT Records: \n"); err != nil {
-			utils.CrashCheck(err)
-		}
-
-		for rows := range conn {
-			_, err := write.WriteString(conn[rows] + "\n")
-			utils.CrashCheck(err)
-		}
-
-		write.Flush()
-	} else {
-		utils.Success("TXT Records for " + endpoint + ".")
-		for rows := range conn {
-			fmt.Println(conn[rows])
-		}
+	utils.Success("TXT Records for " + endpoint + ".")
+	for rows := range conn {
+		fmt.Println(conn[rows])
 	}
 }
 
-func GetMXRecords(endpoint string, writeToFile bool) {
-	conn, err := net.LookupMX(endpoint)
-	networkCrashError(err, endpoint, "MX records")
+func writeTXTRecords() {
+	conn, err := net.LookupTXT(endpoint)
+	networkCrashError(err, "TXT records")
 
-	if writeToFile {
-		write := bufio.NewWriter(outputFile.file)
-		if _, err := write.WriteString("\nMX Records: \n"); err != nil {
-			utils.CrashCheck(err)
-		}
-
-		for rows := range conn {
-			_, err := write.WriteString("Host: " + conn[rows].Host + "\n")
-			utils.CrashCheck(err)
-		}
-
-		write.Flush()
-	} else {
-		utils.Success("MX Records for " + endpoint + ".")
-
-		for rows := range conn {
-			fmt.Println("Host: " + conn[rows].Host + "\n")
-		}
+	write := bufio.NewWriter(outputFile.file)
+	if _, err := write.WriteString("\n\nTXT Records: \n"); err != nil {
+		utils.CrashCheck(err)
 	}
+
+	for rows := range conn {
+		_, err := write.WriteString(conn[rows] + "\n")
+		utils.CrashCheck(err)
+	}
+
+	write.Flush()
+}
+
+func GetMXRecords() {
+	conn, err := net.LookupMX(endpoint)
+	networkCrashError(err, "MX records")
+
+	utils.Success("MX Records for " + endpoint + ".")
+
+	for rows := range conn {
+		fmt.Println("Host: " + conn[rows].Host + "\n")
+	}
+}
+
+func writeMXRecords() {
+	conn, err := net.LookupMX(endpoint)
+	networkCrashError(err, "MX records")
+
+	write := bufio.NewWriter(outputFile.file)
+	if _, err := write.WriteString("\nMX Records: \n"); err != nil {
+		utils.CrashCheck(err)
+	}
+
+	for rows := range conn {
+		_, err := write.WriteString("Host: " + conn[rows].Host + "\n")
+		utils.CrashCheck(err)
+	}
+
+	write.Flush()
 }
 
 // Creates the output file for net
@@ -188,12 +205,12 @@ func initFileCreation() {
 }
 
 // Culminates all of the data in the above functions, then outputs all the data into a file for viewing.
-func GatherData(endpoint string) {
+func GatherData() {
 	initFileCreation()
-	GetAddresses(endpoint, true)
-	GetNameServer(endpoint, true)
-	GetCNameRecords(endpoint, true)
-	GetTXTRecords(endpoint, true)
-	GetMXRecords(endpoint, true)
+	writeAddresses()
+	writeNameServer()
+	writeCNameRecords()
+	writeTXTRecords()
+	writeMXRecords()
 	utils.Success("Written data to " + outputFile.name + " for endpoint " + endpoint + ".")
 }

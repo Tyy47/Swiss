@@ -181,8 +181,12 @@ func createHTMLProject() project {
 	return program
 }
 
-func HandleInput(argument string) {
-	argument = strings.ToLower(argument)
+func HandleInput() {
+	if len(utils.Arguments) < 3 {
+		return
+	}
+
+	argument := strings.ToLower(utils.Arguments[2])
 	for project := range len(registry.projects) {
 		if argument == registry.projects[project].Language {
 			if err := registry.projects[project].initialize(); err != nil {

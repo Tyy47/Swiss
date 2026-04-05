@@ -4,6 +4,10 @@ import (
 	"slices"
 
 	"swiss/build"
+	commanddict "swiss/command-dict"
+	"swiss/create"
+	"swiss/initialize"
+	"swiss/network"
 	"swiss/utils"
 )
 
@@ -64,6 +68,16 @@ func swissInstallCommand() Command {
 	return install
 }
 
+func swissUpdateCommand() Command {
+	update := Command{
+		Name: "update",
+		Flags: []string{"-u"},
+		Handler: build.UpdateSwiss,
+	}
+
+	return update
+}
+
 func buildCommand() Command {
 	build := Command{
 		Name:    "build",
@@ -73,7 +87,9 @@ func buildCommand() Command {
 				Name: "build",
 				Flags: map[string]func(){
 					"-h": utils.BuildHelp,
+					"--help": utils.BuildHelp,
 					"-l": build.PrintBuildProgramList,
+					"--list": build.PrintBuildProgramList,
 					"go": build.HandleBuildInput,
 					"rust": build.HandleBuildInput,
 					"c": build.HandleBuildInput,
@@ -83,6 +99,115 @@ func buildCommand() Command {
 	}
 
 	return build
+}
+
+func runRunCommand() Command {
+	run := Command{
+		Name: "run",
+		HelpMenu: utils.BuildHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "run",
+				Flags: map[string]func(){
+					"-h": utils.BuildHelp,
+					"--help": utils.BuildHelp,
+					"-l": build.PrintRunProgramList,
+					"--list": build.PrintRunProgramList,
+					"go": build.HandleRunInput,
+					"rust": build.HandleRunInput,
+					"c": build.HandleRunInput,
+				},
+			},
+		},
+	}
+
+	return run
+}
+
+func dictionaryCommand() Command {
+	dict := Command{
+		Name: "dict",
+		HelpMenu: utils.CommandHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "dict",
+				Flags: map[string]func(){
+					"-h": utils.CommandHelp,
+					"--help": utils.CommandHelp,
+					"ps": commanddict.PrintPowershellCommands,
+					"bash": commanddict.PrintBashCommands,
+					"git": commanddict.PrintGitCommands,
+					"docker": commanddict.PrintDockerCommands,
+				},
+			},
+		},
+	}
+
+	return dict
+}
+
+func initCommand() Command {
+	init := Command{
+		Name: "init",
+		HelpMenu: utils.InitHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "init",
+				Flags: map[string]func(){
+					"-h": utils.InitHelp,
+					"--help": utils.InitHelp,
+					"-l": initialize.PrintInitProjectList,
+					"--list": initialize.PrintInitProjectList,
+					"rust": initialize.HandleInput,
+					"go": initialize.HandleInput,
+					"c": initialize.HandleInput,
+					"html": initialize.HandleInput,
+				},
+			},
+		},
+	}
+
+	return init
+}
+
+func createCommand() Command {
+	create := Command{
+		Name: "create",
+		HelpMenu: utils.CreateHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "create",
+				Flags: map[string]func(){
+					"-h": utils.CreateHelp,
+					"--help": utils.CreateHelp,
+					"create": create.CreateItems,
+				},
+			},
+		},
+	}
+	return create
+}
+
+func netCommand() Command {
+	net := Command{
+		Name: "net",
+		HelpMenu: utils.NetHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "net",
+				Flags: map[string]func(){
+					"-h": utils.NetHelp,
+					"--help": utils.NetHelp,
+					"connect": network.Connection,
+					"cname": network.GetMXRecords,
+					"txt": network.GetTXTRecords,
+					"mx": network.GetMXRecords,
+					"gather": network.GatherData,
+				},
+			},
+		},
+	}
+	return net
 }
 
 // Find and run command in registry
@@ -143,5 +268,11 @@ func init() {
 	registerCommand(helpCommand())
 	registerCommand(versionCommand())
 	registerCommand(swissInstallCommand())
+	registerCommand(swissUpdateCommand())
 	registerCommand(buildCommand())
+	registerCommand(runRunCommand())
+	registerCommand(dictionaryCommand())
+	registerCommand(initCommand())
+	registerCommand(netCommand())
+	registerCommand(createCommand())
 }
