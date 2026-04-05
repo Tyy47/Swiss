@@ -12,12 +12,12 @@ type Command struct {
 	Flags       []string
 	Subcommands []Subcommand
 	Handler     func()
+	HelpMenu    func()
 }
 
 type Subcommand struct {
-	Name    string
-	Flags   []string
-	Handler func()
+	Name  string
+	Flags map[string]func()
 }
 
 type CommandRegistry struct {
@@ -31,12 +31,6 @@ var GlobalCommandRegistry = CommandRegistry{}
 func registerCommand(command Command) {
 	GlobalCommandRegistry.Registry = append(GlobalCommandRegistry.Registry, command)
 }
-
-// Global Arguments
-var (
-	Arguments           = utils.GatherArgs()
-	AdditionalArguments = utils.GatherAdditionalArgs()
-)
 
 // Registering commands //
 
@@ -70,21 +64,72 @@ func swissInstallCommand() Command {
 	return install
 }
 
+func buildCommand() Command {
+	build := Command{
+		Name:    "build",
+		HelpMenu: utils.BuildHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "build",
+				Flags: map[string]func(){
+					"-h": utils.BuildHelp,
+					"-l": build.PrintBuildProgramList,
+					"go": build.HandleBuildInput,
+					"rust": build.HandleBuildInput,
+					"c": build.HandleBuildInput,
+				},
+			},
+		},
+	}
+
+	return build
+}
+
 // Find and run command in registry
 func runCommand() {
-	if len(Arguments) > 1 {
-		for command := range GlobalCommandRegistry.Registry {
-			if len(Arguments) > 1 && Arguments[1] == GlobalCommandRegistry.Registry[command].Name || slices.Contains(GlobalCommandRegistry.Registry[command].Flags, Arguments[1]) {
-				GlobalCommandRegistry.Registry[command].Handler()
+	if len(utils.Arguments) < 2 {
+		utils.DisplayHelp()
+		return
+	}
+
+	for _, command := range GlobalCommandRegistry.Registry {
+		if utils.Arguments[1] == command.Name || slices.Contains(command.Flags, utils.Arguments[1]) {
+			if len(command.Subcommands) > 0 {
+				runSubcommand(command)
 				return
-			} else if len(Arguments) < 1 {
-				utils.DisplayHelp()
+			}
+			command.Handler()
+			return
+		}
+	}
+	utils.Warning(utils.Arguments[1] + " is not an available command.")
+}
+
+func runSubcommand(command Command) {
+	if len(utils.Arguments) < 2 { 
+		command.HelpMenu()
+		return
+	}
+
+	for _, arg := range utils.Arguments[1:] {
+		for _, sub := range command.Subcommands {
+			if arg == sub.Name {
+				for _, arg := range utils.Arguments {
+					if handler, ok := sub.Flags[arg]; ok {
+						handler()
+						return
+					}
+				}
+				// No flag found, printing commands help menu
+				command.HelpMenu()
 				return
 			}
 		}
-		utils.Warning(Arguments[1] + " is not an available command.")
+	}
+	if len(utils.Arguments) > 2 {
+		utils.Warning(utils.Arguments[2] + " is not a valid subcommand.")
 	} else {
-		utils.DisplayHelp()
+		command.HelpMenu()
 	}
 }
 
@@ -94,7 +139,9 @@ func main() {
 
 // Registers command into registry on program startup
 func init() {
+	// Register Commands
 	registerCommand(helpCommand())
 	registerCommand(versionCommand())
 	registerCommand(swissInstallCommand())
+	registerCommand(buildCommand())
 }

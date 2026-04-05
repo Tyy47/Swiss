@@ -81,8 +81,14 @@ func buildCProject() build {
 	return cBuild
 }
 
-func HandleBuildInput(argument string) {
+func HandleBuildInput() {
+	if len(utils.Arguments) < 3 {
+		return
+	}
+
+	argument := utils.Arguments[2]
 	argument = strings.ToLower(argument)
+
 	for build := range len(registry.builds) {
 		if argument == registry.builds[build].Language {
 			if err := registry.builds[build].initialize(); err != nil {

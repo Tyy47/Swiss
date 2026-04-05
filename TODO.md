@@ -33,3 +33,14 @@ Command struct
 Subcommand struct 
     -- Name ( flag or argument )
     -- Handler func(x y or z)
+    -- Map of flags and functions. Have the keys be the flags and the values be calls to the functions
+
+
+Move modules over to new arg parsing system
+
+BUILD
+RUN
+DICT
+INIT
+NET
+CREATE

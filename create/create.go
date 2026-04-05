@@ -5,7 +5,7 @@ import (
 )
 
 func CreateItems() {
-	args := utils.GatherArgs()
+	args := utils.Arguments
 	var fileToggle bool = false
 	var folderToggle bool = false
 

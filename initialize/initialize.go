@@ -84,7 +84,7 @@ func (p *project) manualInitialize(language string, folders []string, files []st
 }
 
 func flagHandler() {
-	args := utils.GatherAdditionalArgs()
+	args := utils.AdditionalArguments
 
 	if len(args) >= 1 {
 		for arg := range args {
@@ -139,7 +139,7 @@ func createRustProject() project {
 }
 
 func createGoProject() project {
-	args := utils.GatherArgs()
+	args := utils.Arguments
 	if len(args) >= 4 {
 		program := project{
 			Language:  "go",
