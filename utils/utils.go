@@ -10,7 +10,7 @@ import (
 	"runtime"
 )
 
-const VERSION_NUMBER string = "1.0.2"
+const VERSION_NUMBER string = "1.1.0"
 
 // Global Arguments
 var (
