@@ -29,6 +29,7 @@ UPDATE - DONE
 Update Changelog.md - DONE \
 Update DOCs.md with net module documentation - DONE \
 Update version number - DONE \
+Remove "return" on line 248 in main.go \
 Remove copy.md \
 Add zig support to build, run, and init \
 Add port checking functionality to network module \
