@@ -1,14 +1,4 @@
-# Swiss 1.1.0 and 1.0.3
-
-## Misc:
-Github: \
-    1. Create projects on issue board 
-
-
-1.0.3: \
-    1. Consolidate modules into utils ( colors, messages, helps maybe ). - DONE
-    
-
+# Swiss 1.1.0
 
 1.1.0: \
     1. "Net" module: \
@@ -53,4 +43,5 @@ Update DOCs.md with net module documentation - DONE \
 Update version number - DONE \
 Add zig support to build and run \
 Add port checking functionality to network module \
-Start work on generator module \
+Add better documentation of functions and objects throughout the program. \
+Start work on generator module
