@@ -34,9 +34,10 @@ add <items : string>: Adds files or folders to repositories tracking.
 rm <items : string>: Remove files or folders from repository tracking.
 commit -m <message : string>: Adds a commit message to the repository.
 
--- Getting Changes
+-- Changes
 pull: Pulls changes to branch from the repository.
-push: Pushes changes to branch to the repository.`
+push: Pushes changes to branch to the repository.
+stash: Put away, grab, or clear changes you've stashed`
 
 const commandListDocker string = `
 == A list of Docker commands. Visit the official documentation to learn more or -h on the commands to view help in the terminal. ==
