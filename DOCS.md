@@ -8,7 +8,7 @@ A collection of misc commands
 `swiss` or `swiss -h` will print out the help menu. \
 `swiss -v` or `swiss version` will print out the version name. \
 `swiss -v` or `swiss install` will place a Swiss executable in your local/bin. ( Linux command only ) \
-`swiss -u` or `swiss update` will clone the repo into an install folder, then will prompt you for install choice. \
+`swiss -u` or `swiss update` will clone the repo into an install folder, then will prompt you for install choice. 
 
 ### Build
 The Build module. Build/Compile or Run programs based on the language provided and that is available via Swiss.
@@ -16,7 +16,7 @@ The Build module. Build/Compile or Run programs based on the language provided a
 `swiss build -h` or `swiss build --help` to print out the build help menu. \
 `swiss build -l` or `--list` will print out a list of languages that can be built/compiled via Swiss.
 `swiss build <language : string>` will build/compile the program based on the language provided and that is available via Swiss. \
-`swiss run <language : string>` will run the program based on the language provided and that is available via Swiss. \
+`swiss run <language : string>` will run the program based on the language provided and that is available via Swiss. 
 
 ### Create
 The Create module. Create files and or folders through Swiss on mass.
@@ -42,4 +42,4 @@ The Net module. Gather a variety of networking related information about a given
 `swiss cname <domain : string>` Prints out the cname records for the given domain. \
 `swiss txt <domain : string>` Prints out txt records for the given domain. \
 `swiss mx <domain : string>` Prints out mx records for the given domain. \
-`swiss gather <domain : string>` Compiles all information that the net module offers and outputs it to a file. \
+`swiss gather <domain : string>` Compiles all information that the net module offers and outputs it to a file. 
