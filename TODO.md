@@ -8,10 +8,9 @@
         1.4: HTTP 'Probe': Similar to a curl request to grab http status code and http information. \
         1.5: Advanced Ping: Similar to the default systems ping but provides more information regarding to packets and other related network information. \
     2. "Generator" module \
-        2.1: Passwords \
-        2.2: UUID \
-        2.3: Hex Codes ( Based on main color input or random otherwise ) \
-        2.4: "Secret" codes, strings of letters, numbers and symbols created based on users number. 
+        2.1: UUID \
+        2.2: Hex Codes ( Based on main color input or random otherwise ) \
+        2.3: "Secret" codes, strings of letters, numbers and symbols created based on users number. 
 
 
 
@@ -41,7 +40,12 @@ UPDATE - DONE
 Update Changelog.md - DONE \
 Update DOCs.md with net module documentation - DONE \
 Update version number - DONE \
-Add zig support to build and run \
+Remove copy.md \
+Add zig support to build, run, and init \
 Add port checking functionality to network module \
 Add better documentation of functions and objects throughout the program. \
-Start work on generator module
+Start work on generator module \
+Plan next module
+
+Module Ideas:
+Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push.
