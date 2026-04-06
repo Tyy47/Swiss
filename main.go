@@ -11,6 +11,7 @@ import (
 	"swiss/utils"
 )
 
+// Command struct to store information about modules commands
 type Command struct {
 	Name        string
 	Flags       []string
@@ -19,11 +20,13 @@ type Command struct {
 	HelpMenu    func()
 }
 
+// Subcommand struct to store information about a given commands flags and associated functions through a map
 type Subcommand struct {
 	Name  string
 	Flags map[string]func()
 }
 
+// Command storage struct
 type CommandRegistry struct {
 	Registry []Command
 }
@@ -70,8 +73,8 @@ func swissInstallCommand() Command {
 
 func swissUpdateCommand() Command {
 	update := Command{
-		Name: "update",
-		Flags: []string{"-u"},
+		Name:    "update",
+		Flags:   []string{"-u"},
 		Handler: build.UpdateSwiss,
 	}
 
@@ -80,19 +83,19 @@ func swissUpdateCommand() Command {
 
 func buildCommand() Command {
 	build := Command{
-		Name:    "build",
+		Name:     "build",
 		HelpMenu: utils.BuildHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "build",
 				Flags: map[string]func(){
-					"-h": utils.BuildHelp,
+					"-h":     utils.BuildHelp,
 					"--help": utils.BuildHelp,
-					"-l": build.PrintBuildProgramList,
+					"-l":     build.PrintBuildProgramList,
 					"--list": build.PrintBuildProgramList,
-					"go": build.HandleBuildInput,
-					"rust": build.HandleBuildInput,
-					"c": build.HandleBuildInput,
+					"go":     build.HandleBuildInput,
+					"rust":   build.HandleBuildInput,
+					"c":      build.HandleBuildInput,
 				},
 			},
 		},
@@ -103,19 +106,19 @@ func buildCommand() Command {
 
 func runRunCommand() Command {
 	run := Command{
-		Name: "run",
+		Name:     "run",
 		HelpMenu: utils.BuildHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "run",
 				Flags: map[string]func(){
-					"-h": utils.BuildHelp,
+					"-h":     utils.BuildHelp,
 					"--help": utils.BuildHelp,
-					"-l": build.PrintRunProgramList,
+					"-l":     build.PrintRunProgramList,
 					"--list": build.PrintRunProgramList,
-					"go": build.HandleRunInput,
-					"rust": build.HandleRunInput,
-					"c": build.HandleRunInput,
+					"go":     build.HandleRunInput,
+					"rust":   build.HandleRunInput,
+					"c":      build.HandleRunInput,
 				},
 			},
 		},
@@ -126,17 +129,17 @@ func runRunCommand() Command {
 
 func dictionaryCommand() Command {
 	dict := Command{
-		Name: "dict",
+		Name:     "dict",
 		HelpMenu: utils.CommandHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "dict",
 				Flags: map[string]func(){
-					"-h": utils.CommandHelp,
+					"-h":     utils.CommandHelp,
 					"--help": utils.CommandHelp,
-					"ps": commanddict.PrintPowershellCommands,
-					"bash": commanddict.PrintBashCommands,
-					"git": commanddict.PrintGitCommands,
+					"ps":     commanddict.PrintPowershellCommands,
+					"bash":   commanddict.PrintBashCommands,
+					"git":    commanddict.PrintGitCommands,
 					"docker": commanddict.PrintDockerCommands,
 				},
 			},
@@ -148,20 +151,20 @@ func dictionaryCommand() Command {
 
 func initCommand() Command {
 	init := Command{
-		Name: "init",
+		Name:     "init",
 		HelpMenu: utils.InitHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "init",
 				Flags: map[string]func(){
-					"-h": utils.InitHelp,
+					"-h":     utils.InitHelp,
 					"--help": utils.InitHelp,
-					"-l": initialize.PrintInitProjectList,
+					"-l":     initialize.PrintInitProjectList,
 					"--list": initialize.PrintInitProjectList,
-					"rust": initialize.HandleInput,
-					"go": initialize.HandleInput,
-					"c": initialize.HandleInput,
-					"html": initialize.HandleInput,
+					"rust":   initialize.HandleInput,
+					"go":     initialize.HandleInput,
+					"c":      initialize.HandleInput,
+					"html":   initialize.HandleInput,
 				},
 			},
 		},
@@ -172,13 +175,13 @@ func initCommand() Command {
 
 func createCommand() Command {
 	create := Command{
-		Name: "create",
+		Name:     "create",
 		HelpMenu: utils.CreateHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "create",
 				Flags: map[string]func(){
-					"-h": utils.CreateHelp,
+					"-h":     utils.CreateHelp,
 					"--help": utils.CreateHelp,
 					"create": create.CreateItems,
 				},
@@ -190,19 +193,19 @@ func createCommand() Command {
 
 func netCommand() Command {
 	net := Command{
-		Name: "net",
+		Name:     "net",
 		HelpMenu: utils.NetHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "net",
 				Flags: map[string]func(){
-					"-h": utils.NetHelp,
-					"--help": utils.NetHelp,
+					"-h":      utils.NetHelp,
+					"--help":  utils.NetHelp,
 					"connect": network.Connection,
-					"cname": network.GetMXRecords,
-					"txt": network.GetTXTRecords,
-					"mx": network.GetMXRecords,
-					"gather": network.GatherData,
+					"cname":   network.GetMXRecords,
+					"txt":     network.GetTXTRecords,
+					"mx":      network.GetMXRecords,
+					"gather":  network.GatherData,
 				},
 			},
 		},
@@ -231,7 +234,7 @@ func runCommand() {
 }
 
 func runSubcommand(command Command) {
-	if len(utils.Arguments) < 2 { 
+	if len(utils.Arguments) < 2 {
 		command.HelpMenu()
 		return
 	}

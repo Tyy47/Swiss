@@ -43,5 +43,12 @@ RUN - DONE
 DICT - DONE
 INIT - DONE
 NET - DONE 
-CREATE 
-UPDATE
+CREATE - DONE
+UPDATE - DONE
+
+04/06/26:
+
+Update Changelog.md
+Update DOCs.md with net module documentation
+Update version number
+Start work on generator module
