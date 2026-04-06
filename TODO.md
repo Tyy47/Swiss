@@ -38,17 +38,19 @@ Subcommand struct
 
 Move modules over to new arg parsing system
 
-BUILD - DONE
-RUN - DONE
-DICT - DONE
-INIT - DONE
-NET - DONE 
-CREATE - DONE
+BUILD - DONE \
+RUN - DONE \
+DICT - DONE \
+INIT - DONE \
+NET - DONE \
+CREATE - DONE \
 UPDATE - DONE
 
 04/06/26:
 
-Update Changelog.md
-Update DOCs.md with net module documentation
-Update version number
-Start work on generator module
+Update Changelog.md - DONE \
+Update DOCs.md with net module documentation - DONE \
+Update version number - DONE \
+Add zig support to build and run \
+Add port checking functionality to network module \
+Start work on generator module \
