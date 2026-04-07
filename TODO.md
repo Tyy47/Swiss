@@ -31,11 +31,11 @@ Update DOCs.md with net module documentation - DONE \
 Update version number - DONE \
 Remove "return" on line 248 in main.go - DONE \
 Remove copy.md - DONE
+Add zig support to build, run, and init - DONE \
 
 04/07/26:
 
-Add zig support to build, run, and init - DONE \
-Add port checking functionality to network module \
+Add port checking functionality to network module - DONE \
 Add better documentation of functions and objects throughout the program. \
 Start work on generator module \
 Plan next module
@@ -44,3 +44,7 @@ Module Ideas:
 
 Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. \
 Web init? I.E `swiss init web -s or -r or -v` will init a project using vite and the flags will make a Svelte, React, or Vanilla web based project.
+
+vanilla - bun create vite my-vanilla-app --template vanilla-ts
+react - bun create vite my-react-app --template react-ts
+svelte - bun create vite my-svelte-app --template svelte-ts

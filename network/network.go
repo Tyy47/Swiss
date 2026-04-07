@@ -23,8 +23,10 @@ var outputFile = FileReturn{
 	err:  "File already exists",
 }
 
-var endpoint = utils.CheckArguments(utils.Arguments, 3, 3)
-var port = utils.CheckArguments(utils.Arguments, 4, 4)
+var (
+	endpoint = utils.CheckArguments(utils.Arguments, 3, 3)
+	port     = utils.CheckArguments(utils.Arguments, 4, 4)
+)
 
 func networkCrashError(err error, data string) {
 	if err != nil {
@@ -50,14 +52,12 @@ func Connection() {
 }
 
 func GetPortStatus() {
-
 	port, err := strconv.Atoi(port)
 	if err != nil || port < 1 || port > 65535 {
-		utils.Error("Port " +  strconv.Itoa(port) + " is CLOSED.")
+		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED.")
 		utils.Note("Reason: Port exceeds or is under port range 0-65535")
 		return
 	}
-	
 
 	address := endpoint + ":" + strconv.Itoa(port)
 	timeout := 3 * time.Second
@@ -68,7 +68,7 @@ func GetPortStatus() {
 		utils.Note("Reason: " + err.Error())
 		return
 	}
-	
+
 	conn.Close()
 
 	utils.Success("Port " + strconv.Itoa(port) + " is OPEN.")

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
 	"swiss/utils"
 )
 
@@ -34,10 +35,6 @@ var registry = projectRegistry{
 
 func PrintInitProjectList() {
 	fmt.Println(initProjectList)
-}
-
-func (p *projectRegistry) addToRegistry(newProject project) {
-	p.projects = append(p.projects, newProject)
 }
 
 func (p *project) initialize() error {
@@ -186,8 +183,8 @@ func createHTMLProject() project {
 
 func createZigProject() project {
 	program := project{
-		Language: "zig",
-		Tool: "zig",
+		Language:  "zig",
+		Tool:      "zig",
 		Arguments: []string{"init"},
 	}
 
