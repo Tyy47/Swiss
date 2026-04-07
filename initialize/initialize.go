@@ -13,7 +13,8 @@ const initProjectList = `
 Rust - Cargo
 Go - Go
 C - Swiss
-HTML - Swiss`
+HTML - Swiss
+Zig - Zig`
 
 type project struct {
 	Language  string
@@ -108,6 +109,8 @@ func gitInit() error {
 
 	// Make gitignore before adding files to repo so it can get added.
 	utils.MakeFile(".gitignore", false)
+	utils.MakeFile("TODO.md", false)
+	utils.MakeFile("README.md", false)
 
 	add := exec.Command("git", "add", ".")
 
@@ -163,7 +166,7 @@ func createCProject() project {
 		Tool:      "clang",
 		Arguments: []string{"manual"},
 		Folders:   []string{"src"},
-		Files:     []string{"TODO.md", "README.md", "main.c"},
+		Files:     []string{"main.c"},
 	}
 
 	return program
@@ -176,6 +179,16 @@ func createHTMLProject() project {
 		Arguments: []string{"manual"},
 		Folders:   []string{},
 		Files:     []string{"TODO.md", "index.html", "styles.css", "main.js"},
+	}
+
+	return program
+}
+
+func createZigProject() project {
+	program := project{
+		Language: "zig",
+		Tool: "zig",
+		Arguments: []string{"init"},
 	}
 
 	return program
@@ -208,4 +221,5 @@ func init() {
 	registry.projects = append(registry.projects, createGoProject())
 	registry.projects = append(registry.projects, createCProject())
 	registry.projects = append(registry.projects, createHTMLProject())
+	registry.projects = append(registry.projects, createZigProject())
 }

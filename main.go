@@ -96,6 +96,7 @@ func buildCommand() Command {
 					"go":     build.HandleBuildInput,
 					"rust":   build.HandleBuildInput,
 					"c":      build.HandleBuildInput,
+					"zig": build.HandleBuildInput,
 				},
 			},
 		},
@@ -165,6 +166,7 @@ func initCommand() Command {
 					"go":     initialize.HandleInput,
 					"c":      initialize.HandleInput,
 					"html":   initialize.HandleInput,
+					"zig": initialize.HandleInput,
 				},
 			},
 		},
@@ -245,11 +247,9 @@ func runSubcommand(command Command) {
 				for _, arg := range utils.Arguments {
 					if handler, ok := sub.Flags[arg]; ok {
 						handler()
-						return
 					}
 				}
-				// No flag found, printing commands help menu
-				command.HelpMenu()
+			} else {
 				return
 			}
 		}

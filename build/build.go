@@ -13,7 +13,8 @@ import (
 const buildProgramList = `
 Rust: Cargo
 C: Clang
-Go: Go`
+Go: Go
+Zig: Zig`
 
 type build struct {
 	Language  string
@@ -79,6 +80,16 @@ func buildCProject() build {
 	}
 
 	return cBuild
+}
+
+func buildZigProject() build {
+	zigBuild := build{
+		Language: "zig",
+		Tool: "zig",
+		Arguments: []string{"build"},
+	}
+
+	return zigBuild
 }
 
 func HandleBuildInput() {
@@ -197,4 +208,5 @@ func init() {
 	registry.builds = append(registry.builds, buildGoProject())
 	registry.builds = append(registry.builds, buildRustProject())
 	registry.builds = append(registry.builds, buildCProject())
+	registry.builds = append(registry.builds, buildZigProject())
 }
