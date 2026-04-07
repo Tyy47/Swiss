@@ -99,6 +99,7 @@ Net module - A variety of networking tools.
 
 -h --help: Opens the help menu.
 connect <domain : string>: Prints out an http response code when connecting to the domain and port.
+port <domain : string> <port : string> Attempts to connect to the domain and check if the port is opened or closed.
 addr <domain : string>: Prints out the IPv4 and v6 addresses of the given domain.
 ns <domain : string>: Prints out the name servers of the current domain.
 cname <domain : string>: Prints out the cname records for the given domain.

@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
+	"time"
 
 	"swiss/utils"
 )
@@ -22,6 +24,7 @@ var outputFile = FileReturn{
 }
 
 var endpoint = utils.CheckArguments(utils.Arguments, 3, 3)
+var port = utils.CheckArguments(utils.Arguments, 4, 4)
 
 func networkCrashError(err error, data string) {
 	if err != nil {
@@ -44,6 +47,31 @@ func Connection() {
 
 	defer conn.Close()
 	fmt.Println(status)
+}
+
+func GetPortStatus() {
+
+	port, err := strconv.Atoi(port)
+	if err != nil || port < 1 || port > 65535 {
+		utils.Error("Port " +  strconv.Itoa(port) + " is CLOSED.")
+		utils.Note("Reason: Port exceeds or is under port range 0-65535")
+		return
+	}
+	
+
+	address := endpoint + ":" + strconv.Itoa(port)
+	timeout := 3 * time.Second
+
+	conn, err := net.DialTimeout("tcp", address, timeout)
+	if err != nil {
+		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED.")
+		utils.Note("Reason: " + err.Error())
+		return
+	}
+	
+	conn.Close()
+
+	utils.Success("Port " + strconv.Itoa(port) + " is OPEN.")
 }
 
 // Takes an endpoint as a string and prints the IPv4 and v6 address of the domain.
