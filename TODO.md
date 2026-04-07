@@ -10,7 +10,7 @@
 -    Advanced Ping: Similar to the default systems ping but provides more information regarding to packets and other related network information.
 
 ### "Generator" module:
- -   UUID
+ -   UUID: Random numbers and letters in a certain order 12 - 4 - 4 - 4 - 12
  -   Hex Codes ( Based on main color input or random otherwise )
  -   "Secret" codes, strings of letters, numbers and symbols created based on users number. 
 
