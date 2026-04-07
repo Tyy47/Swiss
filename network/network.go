@@ -54,7 +54,7 @@ func Connection() {
 func GetPortStatus() {
 	port, err := strconv.Atoi(port)
 	if err != nil || port < 1 || port > 65535 {
-		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED.")
+		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
 		utils.Note("Reason: Port exceeds or is under port range 0-65535")
 		return
 	}
@@ -64,14 +64,14 @@ func GetPortStatus() {
 
 	conn, err := net.DialTimeout("tcp", address, timeout)
 	if err != nil {
-		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED.")
+		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
 		utils.Note("Reason: " + err.Error())
 		return
 	}
 
 	conn.Close()
 
-	utils.Success("Port " + strconv.Itoa(port) + " is OPEN.")
+	utils.Success("Port " + strconv.Itoa(port) + " is OPEN on " + endpoint + ".")
 }
 
 // Takes an endpoint as a string and prints the IPv4 and v6 address of the domain.
