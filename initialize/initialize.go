@@ -15,7 +15,10 @@ Rust - Cargo
 Go - Go
 C - Swiss
 HTML - Swiss
-Zig - Zig`
+Zig - Zig
+Vanilla TS Web App - Bun/Vite
+Svelte Web App - Bun/Vite
+React Web App - Bun/Vite`
 
 type project struct {
 	Language  string
@@ -79,6 +82,10 @@ func (p *project) manualInitialize(language string, folders []string, files []st
 	}
 
 	// Success message is made in the HandleInput() function
+}
+
+func registerProjects(project ...project) {
+	registry.projects = append(registry.projects, project...)
 }
 
 func flagHandler() {
@@ -191,6 +198,61 @@ func createZigProject() project {
 	return program
 }
 
+func createVanillaWebProject() project {
+	var projectName string
+
+	if len(utils.Arguments) < 4 {
+		projectName = "my-app"
+	} else {
+		projectName = utils.Arguments[3]
+	}
+
+	program := project{
+		Language:  "web",
+		Tool:      "bun",
+		Arguments: []string{"create", "vite", projectName, "--template", "vanilla-ts"},
+	}
+
+	return program
+}
+
+func createReactProject() project {
+	var projectName string
+
+	if len(utils.Arguments) < 4 {
+		projectName = "my-app"
+	} else {
+		projectName = utils.Arguments[3]
+	}
+
+	program := project{
+		Language:  "react",
+		Tool:      "bun",
+		Arguments: []string{"create", "vite", projectName, "--template", "react-ts"},
+	}
+
+	return program
+}
+
+func createSvelteProject() project {
+	var projectName string
+
+	if len(utils.Arguments) < 4 {
+		projectName = "my-app"
+	} else {
+		projectName = utils.Arguments[3]
+	}
+
+	program := project{
+		Language:  "svelte",
+		Tool:      "bun",
+		Arguments: []string{"create", "vite", projectName, "--template", "svelte-ts"},
+	}
+
+	return program
+
+}
+
 func HandleInput() {
 	if len(utils.Arguments) < 3 {
 		return
@@ -214,9 +276,16 @@ func HandleInput() {
 }
 
 func init() {
-	registry.projects = append(registry.projects, createRustProject())
-	registry.projects = append(registry.projects, createGoProject())
-	registry.projects = append(registry.projects, createCProject())
-	registry.projects = append(registry.projects, createHTMLProject())
-	registry.projects = append(registry.projects, createZigProject())
+	projectArray := []project{
+		createGoProject(),
+		createRustProject(),
+		createCProject(),
+		createHTMLProject(),
+		createZigProject(),
+		createVanillaWebProject(),
+		createReactProject(),
+		createSvelteProject(),
+	}
+
+	registerProjects(projectArray...)
 }

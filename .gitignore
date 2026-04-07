@@ -2,3 +2,8 @@ release/
 testing/
 swiss
 swiss_net_output
+
+
+# Added by cargo
+
+/target
