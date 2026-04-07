@@ -48,3 +48,5 @@ Web init? I.E `swiss init web -s or -r or -v` will init a project using vite and
 vanilla - bun create vite my-vanilla-app --template vanilla-ts
 react - bun create vite my-react-app --template react-ts
 svelte - bun create vite my-svelte-app --template svelte-ts
+
+The above is done but i'm thinking of refactoring the init module. It wasn't built with the current arg parser in mind and needs to be rebuilt.
