@@ -35,8 +35,8 @@ type CommandRegistry struct {
 var GlobalCommandRegistry = CommandRegistry{}
 
 // Add command to command storage
-func registerCommand(command Command) {
-	GlobalCommandRegistry.Registry = append(GlobalCommandRegistry.Registry, command)
+func registerCommand(command ...Command) {
+	GlobalCommandRegistry.Registry = append(GlobalCommandRegistry.Registry, command...)
 }
 
 // Registering commands //
@@ -274,14 +274,18 @@ func main() {
 // Registers command into registry on program startup
 func init() {
 	// Register Commands
-	registerCommand(helpCommand())
-	registerCommand(versionCommand())
-	registerCommand(swissInstallCommand())
-	registerCommand(swissUpdateCommand())
-	registerCommand(buildCommand())
-	registerCommand(runRunCommand())
-	registerCommand(dictionaryCommand())
-	registerCommand(initCommand())
-	registerCommand(netCommand())
-	registerCommand(createCommand())
+	commandArray := []Command{
+		helpCommand(),
+		versionCommand(),
+		swissInstallCommand(),
+		swissUpdateCommand(),
+		buildCommand(),
+		runRunCommand(),
+		dictionaryCommand(),
+		initCommand(),
+		netCommand(),
+		createCommand(),
+	}
+
+	registerCommand(commandArray...)
 }
