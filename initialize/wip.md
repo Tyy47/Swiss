@@ -82,7 +82,7 @@ func (pt *ProjectTemplate) InitializeProject() error {
 	command.Stderr = os.Stderr
 
 	if err := command.Run(); err != nil {
-		utils.Error(pt.Language + " project has failed to initalize.")
+		utils.Error(pt.Language + " project has failed to initialize.")
 		utils.Note("Reason: " + err.Error())
 		return err
 	}
@@ -141,7 +141,7 @@ func golangProject() ProjectTemplate {
 		Language:   "go",
 		BuildTool:  "go",
 		InitTimes:  0,
-		Flags:      []string{"build"},
+		Flags:      []string{"mod", "init", "project"},
 		Files:      []string{"main.go"},
 		ManualInit: false,
 	}
@@ -159,26 +159,26 @@ func searchInitRegistry(Language string) bool {
 }
 
 func ParseInput() {
-	if len(utils.Arguments) < 3 {
+	if len(utils.Arguments) < 4 {
 		return
 	}
 
-	for arg := range utils.Arguments[2:] {
-		for project := range len(pRegistry.Projects) {
-			argument := strings.ToLower(utils.Arguments[arg])
-			if argument == pRegistry.Projects[project].Language {
+	for _, arg := range utils.Arguments[2:] {
+		arg = strings.ToLower(arg)
+		for project := range pRegistry.Projects {
+			if arg == pRegistry.Projects[project].Language {
 				if pRegistry.Projects[project].InitTimes > 0 {
-					utils.Warning(pRegistry.Projects[project].Language + " has been initalized already.")
+					utils.Warning(pRegistry.Projects[project].Language + " has been initialized already.")
 					return
 				}
 				if err := pRegistry.Projects[project].InitializeProject(); err != nil {
 					log.Fatal(err)
 					return
-				} else {
-					pRegistry.Projects[project].FlagHandler()
-					pRegistry.Projects[project].InitTimes += 1
-					utils.Success(pRegistry.Projects[project].Language + " project has been created.")
 				}
+
+				pRegistry.Projects[project].FlagHandler()
+				pRegistry.Projects[project].InitTimes += 1
+				utils.Success(pRegistry.Projects[project].Language + " project has been created.")
 			}
 		}
 	}
