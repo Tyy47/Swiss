@@ -55,10 +55,13 @@ The above is done but i'm thinking of refactoring the init module. It wasn't bui
 
 Init struct:
 - Name of language - Used to name the struct in order to locate it by matching against the users arguments.
-- Build tool - Used to build the language when running a command
+- Build tool - Used to build the language when running a command.
 - Init Times - Tracks if the language has been init'd in the same line of arguments, if its equal to one then don't execute the handler function and move to the next language.
-- Flags - Contains the arguments that it needs in order to build
+- Flags - Contains the arguments that it needs in order to build.
 - Additional Flags - Contains additional optional or needed flags in order to create a project. I.E swiss init web -S will init a svelte project and -R a react project
-- Compilier handler function or Method - Each init'd project struct handles its own project creation
+- Compiler handler function or Method - Each init'd project struct handles its own project creation.
+- Manual init bool flag - Checks if a program needs to be manually init'd.
+- Manual Files - An array of file names that will get created during manual init.
+- Manual Folders - An array of folder names that will get created during manual init.
 
 Then, when a language is called via arguments, it'll call its own handler function or method to execute its init process rather then the current buggy setup calling > 1 times when initing a project.
