@@ -26,6 +26,7 @@ type project struct {
 	Arguments []string
 	Folders   []string
 	Files     []string
+	ManualInit bool
 }
 
 type projectRegistry struct {
@@ -41,10 +42,23 @@ func PrintInitProjectList() {
 }
 
 func (p *project) initialize() error {
-	var err error
-	if p.Arguments[0] == "manual" {
-		p.manualInitialize(p.Language, p.Folders, p.Files)
-		return err
+	if p.ManualInit {
+		for file := range p.Files {
+			utils.MakeFile(p.Files[file], false)
+		}
+
+		for folder := range p.Folders {
+			utils.MakeFolder(p.Folders[folder], false)
+		}
+
+		// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
+		switch strings.ToLower(p.Language) {
+		case "c":
+			utils.MoveFileToFolder("./main.c", "./src/main.c", true)
+		default:
+			return nil
+		}
+		return nil
 	}
 
 	command := exec.Command(p.Tool, p.Arguments...)
@@ -62,26 +76,6 @@ func (p *project) initialize() error {
 	}
 
 	return nil
-}
-
-func (p *project) manualInitialize(language string, folders []string, files []string) {
-	for file := range files {
-		utils.MakeFile(files[file], false)
-	}
-
-	for folder := range folders {
-		utils.MakeFolder(folders[folder], false)
-	}
-
-	// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
-	switch strings.ToLower(language) {
-	case "c":
-		utils.MoveFileToFolder("./main.c", "./src/main.c", true)
-	default:
-		return
-	}
-
-	// Success message is made in the HandleInput() function
 }
 
 func registerProjects(project ...project) {
@@ -140,6 +134,7 @@ func createRustProject() project {
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"init"},
+		ManualInit: false,
 	}
 
 	return program
@@ -152,6 +147,7 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", args[3]},
+			ManualInit: false,
 		}
 		return program
 	} else {
@@ -159,6 +155,7 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", "project"},
+			ManualInit: false,
 		}
 		return program
 	}
@@ -168,9 +165,9 @@ func createCProject() project {
 	program := project{
 		Language:  "c",
 		Tool:      "clang",
-		Arguments: []string{"manual"},
 		Folders:   []string{"src"},
 		Files:     []string{"main.c"},
+		ManualInit: true,
 	}
 
 	return program
@@ -180,9 +177,9 @@ func createHTMLProject() project {
 	program := project{
 		Language:  "html",
 		Tool:      "html",
-		Arguments: []string{"manual"},
 		Folders:   []string{},
 		Files:     []string{"TODO.md", "index.html", "styles.css", "main.js"},
+		ManualInit: true,
 	}
 
 	return program
@@ -193,6 +190,7 @@ func createZigProject() project {
 		Language:  "zig",
 		Tool:      "zig",
 		Arguments: []string{"init"},
+		ManualInit: false,
 	}
 
 	return program
@@ -211,6 +209,7 @@ func createVanillaWebProject() project {
 		Language:  "web",
 		Tool:      "bun",
 		Arguments: []string{"create", "vite", projectName, "--template", "vanilla-ts"},
+		ManualInit: false,
 	}
 
 	return program
@@ -229,6 +228,7 @@ func createReactProject() project {
 		Language:  "react",
 		Tool:      "bun",
 		Arguments: []string{"create", "vite", projectName, "--template", "react-ts"},
+		ManualInit: false,
 	}
 
 	return program
@@ -247,6 +247,7 @@ func createSvelteProject() project {
 		Language:  "svelte",
 		Tool:      "bun",
 		Arguments: []string{"create", "vite", projectName, "--template", "svelte-ts"},
+		ManualInit: false,
 	}
 
 	return program
