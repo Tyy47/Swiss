@@ -11,21 +11,21 @@ import (
 )
 
 const initProjectList = `
-Rust - Cargo
-Go - Go
-C - Swiss
-HTML - Swiss
-Zig - Zig
-Vanilla TS Web App - Bun/Vite
-Svelte Web App - Bun/Vite
-React Web App - Bun/Vite`
+Rust - Cargo: swiss init rust
+Go - Go: swiss init go [module name here]
+C - Swiss: swiss init c
+HTML - Swiss: swiss init html
+Zig - Zig: swiss init zig
+Vanilla TS Web App - Bun/Vite: swiss init web, -v or --vanilla
+Svelte Web App - Bun/Vite: swiss init web -s or --svelte
+React Web App - Bun/Vite: swiss init web -r or --svelte` 
 
 type project struct {
-	Language  string
-	Tool      string
-	Arguments []string
-	Folders   []string
-	Files     []string
+	Language   string
+	Tool       string
+	Arguments  []string
+	Folders    []string
+	Files      []string
 	ManualInit bool
 }
 
@@ -42,7 +42,6 @@ func PrintInitProjectList() {
 }
 
 func (p *project) initialize() error {
-
 	for file := range p.Files {
 		utils.MakeFile(p.Files[file], false)
 	}
@@ -71,7 +70,7 @@ func (p *project) initialize() error {
 		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -145,9 +144,9 @@ func jjInit() error {
 
 func createRustProject() project {
 	program := project{
-		Language:  "rust",
-		Tool:      "cargo",
-		Arguments: []string{"init"},
+		Language:   "rust",
+		Tool:       "cargo",
+		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
 
@@ -158,19 +157,19 @@ func createGoProject() project {
 	args := utils.Arguments
 	if len(args) >= 4 {
 		program := project{
-			Language:  "go",
-			Tool:      "go",
-			Arguments: []string{"mod", "init", args[3]},
-			Files: []string{"main.go"},
+			Language:   "go",
+			Tool:       "go",
+			Arguments:  []string{"mod", "init", args[3]},
+			Files:      []string{"main.go"},
 			ManualInit: false,
 		}
 		return program
 	} else {
 		program := project{
-			Language:  "go",
-			Tool:      "go",
-			Arguments: []string{"mod", "init", "project"},
-			Files: []string{"main.go"},
+			Language:   "go",
+			Tool:       "go",
+			Arguments:  []string{"mod", "init", "project"},
+			Files:      []string{"main.go"},
 			ManualInit: false,
 		}
 		return program
@@ -179,10 +178,10 @@ func createGoProject() project {
 
 func createCProject() project {
 	program := project{
-		Language:  "c",
-		Tool:      "clang",
-		Folders:   []string{"src"},
-		Files:     []string{"main.c"},
+		Language:   "c",
+		Tool:       "clang",
+		Folders:    []string{"src"},
+		Files:      []string{"main.c"},
 		ManualInit: true,
 	}
 
@@ -191,10 +190,10 @@ func createCProject() project {
 
 func createHTMLProject() project {
 	program := project{
-		Language:  "html",
-		Tool:      "html",
-		Folders:   []string{},
-		Files:     []string{"TODO.md", "index.html", "styles.css", "main.js"},
+		Language:   "html",
+		Tool:       "html",
+		Folders:    []string{},
+		Files:      []string{"TODO.md", "index.html", "styles.css", "main.js"},
 		ManualInit: true,
 	}
 
@@ -203,74 +202,54 @@ func createHTMLProject() project {
 
 func createZigProject() project {
 	program := project{
-		Language:  "zig",
-		Tool:      "zig",
-		Arguments: []string{"init"},
+		Language:   "zig",
+		Tool:       "zig",
+		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
 
 	return program
 }
 
-func createVanillaWebProject() project {
-	var projectName string
-
-	if len(utils.Arguments) < 4 {
-		projectName = "my-app"
-	} else {
-		projectName = utils.Arguments[3]
-	}
+func getWebProject() project {
+	projectName := utils.GetUserInput("Enter your project name: ", "my-app")
 
 	program := project{
-		Language:  "web",
-		Tool:      "bun",
-		Arguments: []string{"create", "vite", projectName, "--template", "vanilla-ts"},
+		Language:   "web",
+		Tool:       "bun",
+		Arguments:  []string{"create", "vite", projectName, "--template"},
 		ManualInit: false,
+	}
+
+	for _, argument := range utils.AdditionalArguments {
+		switch argument {
+		case "-v", "--vanilla":
+			program.Arguments = append(program.Arguments, "vanilla-ts")
+		case "-r", "--react":
+			program.Arguments = append(program.Arguments, "react-ts")
+		case "-s", "--svelte":
+			program.Arguments = append(program.Arguments, "svelte-ts")
+		default:
+			program.Arguments = append(program.Arguments, "vanilla-ts")
+		}
 	}
 
 	return program
 }
 
-func createReactProject() project {
-	var projectName string
+func CreateWebProject() {
+	project := getWebProject()
 
-	if len(utils.Arguments) < 4 {
-		projectName = "my-app"
-	} else {
-		projectName = utils.Arguments[3]
+	if err := project.initialize(); err != nil {
+		log.Fatal(err)
+		return
 	}
 
-	program := project{
-		Language:  "react",
-		Tool:      "bun",
-		Arguments: []string{"create", "vite", projectName, "--template", "react-ts"},
-		ManualInit: false,
-	}
-
-	return program
+	flagHandler()
+	utils.Success("web project has been created.")
 }
 
-func createSvelteProject() project {
-	var projectName string
-
-	if len(utils.Arguments) < 4 {
-		projectName = "my-app"
-	} else {
-		projectName = utils.Arguments[3]
-	}
-
-	program := project{
-		Language:  "svelte",
-		Tool:      "bun",
-		Arguments: []string{"create", "vite", projectName, "--template", "svelte-ts"},
-		ManualInit: false,
-	}
-
-	return program
-
-}
-
-func HandleInput() {
+func CreateProject() {
 	if len(utils.Arguments) < 3 {
 		return
 	}
@@ -299,9 +278,6 @@ func init() {
 		createCProject(),
 		createHTMLProject(),
 		createZigProject(),
-		createVanillaWebProject(),
-		createReactProject(),
-		createSvelteProject(),
 	}
 
 	registerProjects(projectArray...)

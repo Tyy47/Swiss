@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"log"
@@ -149,3 +150,15 @@ func DoesToolExist(tool string) bool {
 	return true
 }
 
+// Prints the prompt provided and asks the user for an input. If an input is not provided or the scanner has failed. The fallback string will be returned instead.
+func GetUserInput(prompt string, fallback string) string {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print(prompt)
+
+	if scanner.Scan() {
+		input := scanner.Text()
+		return input
+	}
+	
+	return fallback
+}
