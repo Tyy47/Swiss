@@ -42,15 +42,16 @@ func PrintInitProjectList() {
 }
 
 func (p *project) initialize() error {
+
+	for file := range p.Files {
+		utils.MakeFile(p.Files[file], false)
+	}
+
+	for folder := range p.Folders {
+		utils.MakeFolder(p.Folders[folder], false)
+	}
+
 	if p.ManualInit {
-		for file := range p.Files {
-			utils.MakeFile(p.Files[file], false)
-		}
-
-		for folder := range p.Folders {
-			utils.MakeFolder(p.Folders[folder], false)
-		}
-
 		// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
 		switch strings.ToLower(p.Language) {
 		case "c":
@@ -70,11 +71,7 @@ func (p *project) initialize() error {
 		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
 		return err
 	}
-
-	if p.Tool == "go" && len(p.Arguments) >= 3 && p.Arguments[0] == "mod" {
-		utils.MakeFile("main.go", false)
-	}
-
+	
 	return nil
 }
 
@@ -164,6 +161,7 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", args[3]},
+			Files: []string{"main.go"},
 			ManualInit: false,
 		}
 		return program
@@ -172,6 +170,7 @@ func createGoProject() project {
 			Language:  "go",
 			Tool:      "go",
 			Arguments: []string{"mod", "init", "project"},
+			Files: []string{"main.go"},
 			ManualInit: false,
 		}
 		return program
