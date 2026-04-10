@@ -86,9 +86,14 @@ func flagHandler() {
 	args := utils.AdditionalArguments
 
 	if len(args) >= 1 {
-		for arg := range args {
-			if args[arg] == "-g" || args[arg] == "--git" {
+		for _, arg := range args {
+			switch arg {
+			case "-g", "--git":
 				gitInit()
+				return
+			case "-j", "--jujutsu":
+				jjInit()
+				return
 			}
 		}
 	} else {
@@ -126,6 +131,18 @@ func gitInit() error {
 
 	utils.Success("Git has been initialized.")
 
+	return nil
+}
+
+func jjInit() error {
+	init := exec.Command("jj", "git", "init")
+
+	if err := init.Run(); err != nil {
+		utils.Error("Unable to init JJ")
+		return err
+	}
+
+	utils.Success("Jujutsu has been initialized.")
 	return nil
 }
 
