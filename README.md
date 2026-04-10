@@ -1,8 +1,13 @@
-<h1 align="center">Swiss</h1>
-<p align="center">A cli army knife of tools for developers</p>
-<hr>
+<div class="title-block" style="text-align: center;" align="center">
+
+<h1>Swiss</h1>
+<p>A cli army knife of tools for developers</p>
 
 [Documentation](./DOCS.md) 
+
+<hr>
+
+</div>
 
 ## What is Swiss?
 Swiss is a multitool in the terminal. It was built on the premise of being reliable and transportable, a tool that you can carry everywhere with no issues.
