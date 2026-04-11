@@ -2,7 +2,6 @@ package build
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -80,7 +79,7 @@ func HandleRunInput() {
 	for run := range len(runStorage.runs) {
 		if argument == runStorage.runs[run].Language {
 			if err := runStorage.runs[run].initializeRun(); err != nil {
-				log.Fatal(err)
+				utils.Crash(err)
 				return
 			} else {
 				utils.Success(runStorage.runs[run].Language + " project has been ran.")

@@ -19,3 +19,8 @@ func Success(statement string) {
 func Note(statement string) {
 	fmt.Println(ColorCyan + "note" + ColorReset + ": " + statement)
 }
+
+// Function takes in an error and displays the error message in a formatted way.
+func CrashMessage(err error) {
+	fmt.Println(ColorPurple + "crash reason" + ColorReset + ": " + err.Error())
+}

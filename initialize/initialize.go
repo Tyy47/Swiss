@@ -241,7 +241,7 @@ func CreateWebProject() {
 	project := getWebProject()
 
 	if err := project.initialize(); err != nil {
-		log.Fatal(err)
+		utils.Crash(err)
 		return
 	}
 

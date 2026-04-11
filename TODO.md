@@ -17,4 +17,3 @@ Module Ideas:
 
 Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. \
 
-Add Crash check function - State that swiss has crashed and to put in an IR. As well as leave the reason of the crash below in a new color then what is already added.

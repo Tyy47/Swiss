@@ -3,7 +3,6 @@ package network
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"strconv"
@@ -38,13 +37,13 @@ func networkCrashError(err error, data string) {
 func Connection() {
 	conn, err := net.Dial("tcp", endpoint)
 	if err != nil {
-		log.Fatal(err)
+		utils.Crash(err)
 	}
 
 	fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
 	status, err := bufio.NewReader(conn).ReadString('\n')
 	if err != nil {
-		log.Fatal(err)
+		utils.Crash(err)
 	}
 
 	defer conn.Close()
@@ -128,7 +127,7 @@ func writeNameServer() {
 
 		_, err := write.WriteString(val)
 		if err != nil {
-			log.Fatal(err)
+			utils.Crash(err)
 		}
 	}
 

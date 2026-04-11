@@ -24,12 +24,16 @@ func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
 }
 
-// Checks if an error has a value, if so, returns an empty value, an error message and the fatal log.
+// The function displays a message stating Swiss has crashed and a message stating the crash reason
+func Crash(err error) {
+	Error("Swiss has crashed! View output below to learn more. If error is related to swiss and not to a missing dependency, put in a request on GitHub.")
+	CrashMessage(err)
+	os.Exit(1)
+}
+
 func CrashCheck(err error) {
 	if err != nil {
-		Error("Swiss has crashed! View output below to learn more.")
-		log.Fatal(err)
-		return
+		Crash(err)
 	}
 }
 
@@ -96,7 +100,7 @@ func MakeFile(file string, muted bool) {
 	} else {
 		err := os.WriteFile(file, []byte(""), 0o666)
 		if err != nil {
-			log.Fatal(err)
+			Crash(err)
 			return
 		}
 	}

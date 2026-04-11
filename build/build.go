@@ -2,7 +2,6 @@ package build
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -103,7 +102,7 @@ func HandleBuildInput() {
 	for build := range len(registry.builds) {
 		if argument == registry.builds[build].Language {
 			if err := registry.builds[build].initialize(); err != nil {
-				log.Fatal(err)
+				utils.Crash(err)
 				return
 			} else {
 				utils.Success(registry.builds[build].Language + " project has been compiled.")
@@ -146,14 +145,14 @@ func UpdateSwiss() {
 
 	if err := clone.Run(); err != nil {
 		utils.Error("Unable to clone Swiss repo. Install manually or create a bug report on the repository.")
-		log.Fatal(err)
+		utils.Crash(err)
 		return
 	}
 
 	// Change directory into cloned repo
 	if err := os.Chdir("swiss_install"); err != nil {
 		utils.Error("Unable to change directory into swiss_install. Exiting.")
-		log.Fatal(err)
+		utils.Crash(err)
 		return
 	}
 
@@ -172,7 +171,7 @@ func UpdateSwiss() {
 
 			if err := install.Run(); err != nil {
 				utils.Error("Unable to install Swiss using Go Install.")
-				log.Fatal(err)
+				utils.Crash(err)
 				break
 			}
 
@@ -191,14 +190,14 @@ func UpdateSwiss() {
 	utils.Note("Cleaning up install files...")
 	if err := os.Chdir(".."); err != nil {
 		utils.Error("Unable to change directory.")
-		log.Fatal(err)
+		utils.Crash(err)
 		return
 	}
 
 
 	if err := os.RemoveAll("swiss_install"); err != nil {
 		utils.Error("Unable to remove install files.")
-		log.Fatal(err)
+		utils.Crash(err)
 		return
 	}
 	utils.Success("Install files cleaned up and Swiss is installed!")
