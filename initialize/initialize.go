@@ -16,6 +16,7 @@ Go - Go: swiss init go [module name here]
 C - Swiss: swiss init c
 HTML - Swiss: swiss init html
 Zig - Zig: swiss init zig
+Python - uv: swiss init python
 Vanilla TS Web App - Bun/Vite: swiss init web, -v or --vanilla
 Svelte Web App - Bun/Vite: swiss init web -s or --svelte
 React Web App - Bun/Vite: swiss init web -r or --svelte` 
@@ -211,6 +212,17 @@ func createZigProject() project {
 	return program
 }
 
+func createPythonProject() project {
+	program := project{
+		Language: "python",
+		Tool: "uv",
+		Arguments: []string{"init"},
+		ManualInit: false,
+	}
+
+	return program
+}
+
 func getWebProject() project {
 	projectName := utils.GetUserInput("Enter your project name: ", "my-app")
 
@@ -278,6 +290,7 @@ func init() {
 		createCProject(),
 		createHTMLProject(),
 		createZigProject(),
+		createPythonProject(),
 	}
 
 	registerProjects(projectArray...)

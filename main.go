@@ -167,6 +167,7 @@ func initCommand() Command {
 					"c":     initialize.CreateProject,
 					"html":     initialize.CreateProject,
 					"zig":     initialize.CreateProject,
+					"python":  initialize.CreateProject,
 					"web":     initialize.CreateWebProject,
 				},
 			},
