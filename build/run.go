@@ -32,8 +32,8 @@ func PrintRunProgramList() {
 	fmt.Println(buildProgramList)
 }
 
-func (r *runRegistry) addToRunRegistry(newRun run) {
-	r.runs = append(r.runs, newRun)
+func (r *runRegistry) addToRunRegistry(newRun ...run) {
+	r.runs = append(r.runs, newRun...)
 }
 
 func (r *run) initializeRun() error {
@@ -69,6 +69,16 @@ func runGoProject() run {
 	return goRun
 }
 
+func runPythonProject() run {
+	pythonRun := run{
+		Language: "python",
+		Tool: "python",
+		Arguments: []string{"main.py"},
+	}
+
+	return pythonRun
+}
+
 func HandleRunInput() {
 	if len(utils.Arguments) < 3 {
 		return
@@ -91,6 +101,11 @@ func HandleRunInput() {
 }
 
 func init() {
-	runStorage.runs = append(runStorage.runs, runRustProject())
-	runStorage.runs = append(runStorage.runs, runGoProject())
+	runArray := []run{
+		runGoProject(),
+		runRustProject(),
+		runPythonProject(),
+	}
+
+	runStorage.addToRunRegistry(runArray...)
 }

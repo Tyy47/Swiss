@@ -11,9 +11,10 @@
 ### Build, Run Init Support
 #### Add more languages to modules
 
-- Python - using uv
+Add python support to run module.
 
 Module Ideas:
 
 Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. \
+
 

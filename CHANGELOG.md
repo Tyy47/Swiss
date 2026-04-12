@@ -2,6 +2,7 @@
 
 ## Init 
 - Added support for zig
+- Added support for python using uv
 - Added jujutsu vc support for starting a project
 
 ## Build
