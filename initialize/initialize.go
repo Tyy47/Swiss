@@ -10,16 +10,18 @@ import (
 	"swiss/utils"
 )
 
-const initProjectList = `
+const initProjectList = `Languages:
 Rust - Cargo: swiss init rust
 Go - Go: swiss init go [module name here]
 C - Swiss: swiss init c
 HTML - Swiss: swiss init html
 Zig - Zig: swiss init zig
 Python - uv: swiss init python
+
+Web:
 Vanilla TS Web App - Bun/Vite: swiss init web, -v or --vanilla
 Svelte Web App - Bun/Vite: swiss init web -s or --svelte
-React Web App - Bun/Vite: swiss init web -r or --svelte` 
+React Web App - Bun/Vite: swiss init web -r or --react`
 
 type project struct {
 	Language   string
@@ -214,9 +216,9 @@ func createZigProject() project {
 
 func createPythonProject() project {
 	program := project{
-		Language: "python",
-		Tool: "uv",
-		Arguments: []string{"init"},
+		Language:   "python",
+		Tool:       "uv",
+		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
 

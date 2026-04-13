@@ -1,9 +1,10 @@
 # Swiss 1.1.0
 
-## Init 
+## Init
 - Added support for zig
 - Added support for python using uv
 - Added jujutsu vc support for starting a project
+- Reworked web init. Now able to specify the framework when building the web project.
 
 ## Build
 - Added support for zig
