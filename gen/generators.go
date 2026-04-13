@@ -49,7 +49,7 @@ func GenerateUUID() {
 	}
 	hexBytes := builder.String()
 	uuid := hexBytes[:8] + "-" + hexBytes[8:12] + "-" + hexBytes[12:16] + "-" + hexBytes[16:20] + "-" + hexBytes[20:32]
-	utils.Success("uuid generated.")
+	utils.Success("UUID generated.")
 	utils.Output(uuid)
 }
 
