@@ -19,7 +19,6 @@ var (
 	AdditionalArguments = gatherAdditionalArgs()
 )
 
-
 func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
 }
@@ -37,9 +36,20 @@ func CrashCheck(err error) {
 	}
 }
 
+// A function that takes an intial command arg and a packed string of other arguments.
+// It executes the command, if it returns an error it'll exit Swiss with a 1 exit code. If it's successful, a success message will print.
+func RunCommand(command string, arguments ...string) {
+	comm := exec.Command(command, arguments...)
+
+	err := comm.Run()
+	CrashCheck(err)
+	Success("Command ran successfully.")
+}
+
 // Gathers argument via the os library
 func gatherArgs() []string {
-	args := os.Args; return args
+	args := os.Args
+	return args
 }
 
 func gatherAdditionalArgs() []string {
@@ -64,7 +74,7 @@ func CheckFileExists(fileName string) bool {
 		return false
 	}
 
-	return err  == nil && info.Mode().IsRegular()
+	return err == nil && info.Mode().IsRegular()
 }
 
 func CheckFolderExists(folderName string) (bool, error) {
@@ -163,6 +173,6 @@ func GetUserInput(prompt string, fallback string) string {
 		input := scanner.Text()
 		return input
 	}
-	
+
 	return fallback
 }
