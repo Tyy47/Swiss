@@ -43,4 +43,11 @@ The Net module. Gather a variety of networking related information about a given
 `swiss cname <domain : string>` Prints out the cname records for the given domain. \
 `swiss txt <domain : string>` Prints out txt records for the given domain. \
 `swiss mx <domain : string>` Prints out mx records for the given domain. \
-`swiss gather <domain : string>` Compiles all information that the net module offers and outputs it to a file. 
+`swiss gather <domain : string>` Compiles all information that the net module offers and outputs it to a file.
+
+### Gen
+The Gen module. Generate codes needed for development via Swiss.
+
+`swiss gen -h` or `swiss net --help` to print out the help menu for the Gen module. \
+`swiss gen uuid` generates a 128 bit number in the UUID format
+`swiss gen secret [length : int]` generates a secret code based on the input. Will generate a code thats 16 characters long with no length input. 
