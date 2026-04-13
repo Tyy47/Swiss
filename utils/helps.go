@@ -127,4 +127,3 @@ secret [length : int]: Generates a hexadecimal string based on length provided, 
 `
 	fmt.Println(help_menu)
 }
-
