@@ -54,7 +54,7 @@ func GetPortStatus() {
 	port, err := strconv.Atoi(port)
 	if err != nil || port < 1 || port > 65535 {
 		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
-		utils.Note("Reason: Port exceeds or is under port range 0-65535")
+		utils.Reason("Port exceeds or is under port range 0-65535")
 		return
 	}
 
@@ -64,7 +64,7 @@ func GetPortStatus() {
 	conn, err := net.DialTimeout("tcp", address, timeout)
 	if err != nil {
 		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
-		utils.Note("Reason: " + err.Error())
+		utils.Reason(err.Error())
 		return
 	}
 

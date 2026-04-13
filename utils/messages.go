@@ -30,6 +30,10 @@ func Output(statement string) {
 	fmt.Println(ColorWhite + "output" + ColorReset + ": " + statement)
 }
 
+func Reason(statement string) {
+	fmt.Println(ColorWhite + "reason" + ColorReset + ": " + statement)
+}
+
 // Function takes in an error and displays the error message in a formatted way.
 func crashMessage(err error) {
 	fmt.Println(ColorPurple + "crash reason" + ColorReset + ": " + err.Error())
