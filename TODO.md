@@ -8,5 +8,5 @@ Possible Module Ideas:
 
 Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. \
 
-Add more frameworks to web
+Add more frameworks to web - Angular, Vue, Astro
 
