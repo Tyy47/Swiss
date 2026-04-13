@@ -4,22 +4,28 @@ import (
 	"fmt"
 )
 
+// Prints an error message to the terminal
 func Error(statement string) {
-	fmt.Println( ColorRed + "error" + ColorReset + ": " + statement)
+	fmt.Println(ColorRed + "error" + ColorReset + ": " + statement)
 }
 
+// Prints a warning message to the terminal
 func Warning(statement string) {
 	fmt.Println(ColorYellow + "warning" + ColorReset + ": " + statement)
 }
 
+// Prints a success message to the terminal
 func Success(statement string) {
 	fmt.Println(ColorGreen + "success" + ColorReset + ": " + statement)
 }
 
+// Prints a note message to the terminal
 func Note(statement string) {
 	fmt.Println(ColorCyan + "note" + ColorReset + ": " + statement)
 }
 
+// Prints an "output" message to the terminal.
+// This output message is used if a function produces something.
 func Output(statement string) {
 	fmt.Println(ColorWhite + "output" + ColorReset + ": " + statement)
 }
