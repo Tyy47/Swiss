@@ -17,6 +17,7 @@ build <string>: Allows you to build program via swiss.
 init <string>: Inits a project using Swiss.
 create <string>: Make a set of folders/files using Swiss.
 net: A set of networking tools.
+gen: A variety of codes that can be generated via Swiss.
 	`
 	fmt.Println(help_menu)
 }
