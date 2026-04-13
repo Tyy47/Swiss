@@ -9,5 +9,6 @@ const (
 	ColorYellow = "\033[1;93m"
 	ColorPurple = "\033[1;95m"
 	ColorCyan   = "\033[1;96m"
+	ColorWhite  = "\033[1;97m"
 	ColorReset  = "\033[0m"
 )

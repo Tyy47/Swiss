@@ -27,7 +27,7 @@ func PrintVersionNumber() {
 // The function displays a message stating Swiss has crashed and a message stating the crash reason
 func Crash(err error) {
 	Error("Swiss has crashed! View output below to learn more. If error is related to swiss and not to a missing dependency, put in a request on GitHub.")
-	CrashMessage(err)
+	crashMessage(err)
 	os.Exit(1)
 }
 

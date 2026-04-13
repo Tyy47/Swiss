@@ -6,6 +6,7 @@ import (
 	"swiss/build"
 	commanddict "swiss/command-dict"
 	"swiss/create"
+	"swiss/gen"
 	"swiss/initialize"
 	"swiss/network"
 	"swiss/utils"
@@ -220,6 +221,26 @@ func netCommand() Command {
 	return net
 }
 
+func generateCommand() Command {
+	gen := Command{
+		Name: "gen",
+		HelpMenu: utils.DisplayHelp, // Placeholder till I add a gen help menu.
+		Subcommands: []Subcommand{
+			{
+				Name: "gen",
+				Flags: map[string]func(){
+					"-h": utils.GenHelp,
+					"--help": utils.GenHelp,
+					"uuid": gen.GenerateUUID,
+					"secret": gen.GenerateSecret,
+				},
+			},
+		},
+	}
+
+	return gen
+}
+
 // Find and run command in registry
 func runCommand() {
 	if len(utils.Arguments) < 2 {
@@ -284,6 +305,7 @@ func init() {
 		initCommand(),
 		netCommand(),
 		createCommand(),
+		generateCommand(),
 	}
 
 	registerCommand(commandArray...)

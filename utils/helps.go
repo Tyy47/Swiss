@@ -110,3 +110,20 @@ gather <domain : string>: Compiles all information that the net module offers an
 `
 	fmt.Println(help_menu)
 }
+
+func GenHelp() {
+	var help_menu string = `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Gen module - Generate codes through Swiss.
+
+-h --help: Opens the help menu.
+uuid: Generates an 128 bit hexadecimal string.
+secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.
+`
+	fmt.Println(help_menu)
+}
+
