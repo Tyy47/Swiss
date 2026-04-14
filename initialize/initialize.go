@@ -133,6 +133,7 @@ func gitInit() error {
 	return nil
 }
 
+// Inits jujutsu in current directory when called.
 func jjInit() error {
 	init := exec.Command("jj", "git", "init")
 

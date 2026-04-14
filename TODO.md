@@ -4,10 +4,14 @@
 
 Want to find one more module before doing cleanup and updating new version to 1.1.0
 
+Add documentation to each function, struct, etc.
+
 Possible Module Ideas:
 
-Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. \
+Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. 
 - Look into other shortcut methods I could implement.
+
+Templates? I.E `swiss template typescript` will create a tsconfig.json file that is prefilled out with information.
 
 Add more frameworks to web - Angular, Vue, Astro \
 Extend Git & JJ init - Add license option selector \
