@@ -20,8 +20,10 @@ Python - uv: swiss init python
 
 Web:
 Vanilla TS Web App - Bun/Vite: swiss init web, -v or --vanilla
-Svelte Web App - Bun/Vite: swiss init web -s or --svelte
-React Web App - Bun/Vite: swiss init web -r or --react`
+Svelte - Bun/Vite: swiss init web -s or --svelte
+React - Bun/Vite: swiss init web -r or --react
+Angular - Bun/Vite: swiss init web -a or --angular
+Vue - Bun/Vite: swiss init web --vue`
 
 type project struct {
 	Language   string
@@ -244,6 +246,10 @@ func getWebProject() project {
 			program.Arguments = append(program.Arguments, "react-ts")
 		case "-s", "--svelte":
 			program.Arguments = append(program.Arguments, "svelte-ts")
+		case "-a", "--angular":
+			program.Arguments = append(program.Arguments, "angular-ts")
+		case "--vue":
+			program.Arguments = append(program.Arguments, "vue-ts")
 		default:
 			program.Arguments = append(program.Arguments, "vanilla-ts")
 		}
