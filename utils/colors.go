@@ -2,7 +2,7 @@ package utils
 
 // Colors const array
 const (
-	// Modifiers
+	// High intensity bold colors
 	ColorBlack  = "\033[1;90m"
 	ColorRed    = "\033[1;91m"
 	ColorGreen  = "\033[1;92m"

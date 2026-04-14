@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Prints the main help menu for Swiss
 func DisplayHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -22,6 +23,7 @@ gen: A variety of codes that can be generated via Swiss.
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Command Dictonary module
 func CommandHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -40,6 +42,7 @@ docker: Prints docker command dictionary.
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Build module
 func BuildHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -57,6 +60,7 @@ run <string>: Runs a program based on the language you input.
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Create module
 func CreateHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -72,6 +76,7 @@ create <file | folder> <names: string>: Makes folders/files via Swiss. Affix fil
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Init module
 func InitHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -90,6 +95,7 @@ init <string> [name: string]: Inits a project based on the given input.
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Networking module
 func NetHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -112,6 +118,7 @@ gather <domain : string>: Compiles all information that the net module offers an
 	fmt.Println(help_menu)
 }
 
+// Prints the help menu for the Generator module
 func GenHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
