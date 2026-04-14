@@ -39,7 +39,7 @@ func CrashCheck(err error) {
 	}
 }
 
-// A function that takes an intial command arg and a packed string of other arguments.
+// A function that takes an initial command arg and a packed string of other arguments.
 // It executes the command, if it returns an error it'll exit Swiss with a 1 exit code. If it's successful, a success message will print.
 func RunCommand(command string, arguments ...string) {
 	comm := exec.Command(command, arguments...)
@@ -83,6 +83,7 @@ func CheckFileExists(fileName string) bool {
 	return err == nil && info.Mode().IsRegular()
 }
 
+// Checks if a folder exists and returns a boolean value depending on the outcome and an error if checking fails. 
 func CheckFolderExists(folderName string) (bool, error) {
 	info, err := os.Stat(folderName)
 	if err == nil {
@@ -95,6 +96,7 @@ func CheckFolderExists(folderName string) (bool, error) {
 
 }
 
+// Gathers the users username and returns it
 func GetUsersName() string {
 	user, err := user.Current()
 	if err != nil {
@@ -104,11 +106,16 @@ func GetUsersName() string {
 	return user.Username
 }
 
+// Gathers and returns the user operating system.
 func GetOperatingSystem() string {
 	// Returns Windows, Linux, or Darwin ( Apple )
 	return runtime.GOOS
 }
 
+// Takes in a file name and runs the CheckFileExists function to check if it exists. 
+// If so, it returns a warning statement stating that the file exists. 
+// If it doesn't exist, the function will create the file.
+// If the muted argument is toggled to false, it'll print a statement saying that the file was created. 
 func MakeFile(file string, muted bool) {
 	if CheckFileExists(file) {
 		Warning(file + " file exists.")
@@ -125,6 +132,10 @@ func MakeFile(file string, muted bool) {
 	}
 }
 
+// Takes in a folder name and runs the CheckFolderExists function to check if it exists. 
+// If so, it returns a warning statement stating that the folder exists. 
+// If it doesn't exist, the function will create the folder.
+// If the muted argument is toggled to false, it'll print a statement saying that the folder was created. 
 func MakeFolder(folder string, muted bool) {
 	dirInfo, err := CheckFolderExists(folder)
 
@@ -148,6 +159,9 @@ func MakeFolder(folder string, muted bool) {
 	}
 }
 
+// Takes in two paths, an old path argument that holds the current path of the file you're trying to move.
+// The new path is the location you're moving the file to.
+// The muted argument allows you to toggle the moved message statement.
 func MoveFileToFolder(oldPath string, newPath string, muted bool) {
 	if err := os.Rename(oldPath, newPath); err != nil {
 		Error("Unable to move file: " + err.Error())
@@ -159,6 +173,9 @@ func MoveFileToFolder(oldPath string, newPath string, muted bool) {
 	}
 }
 
+// Takes in a tool string and runs the version command on that tool.
+// If it executes with no errors the function returns true.
+// If the tool is not installed or path'd correctly, it will print out an error statement and return false.
 func DoesToolExist(tool string) bool {
 	command := exec.Command(tool, "-v")
 
