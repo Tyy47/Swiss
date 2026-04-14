@@ -11,6 +11,7 @@ import (
 	"runtime"
 )
 
+// Swiss version number
 const VERSION_NUMBER string = "1.1.0"
 
 // Global Arguments
@@ -19,6 +20,7 @@ var (
 	AdditionalArguments = gatherAdditionalArgs()
 )
 
+// Prints the Swiss version number to the console
 func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
 }
@@ -30,6 +32,7 @@ func Crash(err error) {
 	os.Exit(1)
 }
 
+// Checks if err has a value other then nil, if it does, it runs the Crash function to safely exit Swiss.
 func CrashCheck(err error) {
 	if err != nil {
 		Crash(err)
@@ -52,6 +55,7 @@ func gatherArgs() []string {
 	return args
 }
 
+// Gathers arguments past the 3rd index, for example swiss init rust -g. Only -g is caught by this function as it is the third index.
 func gatherAdditionalArgs() []string {
 	if len(Arguments) < 3 {
 		return []string{}
@@ -60,6 +64,7 @@ func gatherAdditionalArgs() []string {
 	return Arguments[3:]
 }
 
+// Checks if arguments are a certain length, if so, it grabs the requested index and returns the value of args[index].
 func CheckArguments(args []string, length int, index int) string {
 	if len(args) <= length {
 		return ""
@@ -68,6 +73,7 @@ func CheckArguments(args []string, length int, index int) string {
 	}
 }
 
+// Checks if a file exists, if it does it returns true, if not, returns false.
 func CheckFileExists(fileName string) bool {
 	info, err := os.Stat(fileName)
 	if errors.Is(err, os.ErrNotExist) {

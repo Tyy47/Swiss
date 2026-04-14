@@ -30,6 +30,7 @@ func Output(statement string) {
 	fmt.Println(ColorWhite + "output" + ColorReset + ": " + statement)
 }
 
+// Prints a reason message. This function is mainly used in the Crash function to provide a crash reason to the user.
 func Reason(statement string) {
 	fmt.Println(ColorWhite + "reason" + ColorReset + ": " + statement)
 }
