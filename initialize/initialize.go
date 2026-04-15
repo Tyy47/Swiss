@@ -102,6 +102,19 @@ func flagHandler() {
 	}
 }
 
+func writeLicense() {
+	licenseCreationPrompt := utils.GetUserInput("Would you like to create a license?: ", "no")
+
+	switch strings.ToLower(licenseCreationPrompt) {
+	case "yes", "ye", "y":
+		// Creation logic here
+	case "no", "n":
+		return
+	default:
+		return
+	}
+}
+
 // Inits git in current directory when called.
 func gitInit() error {
 	init := exec.Command("git", "init")
@@ -132,6 +145,8 @@ func gitInit() error {
 
 	utils.Success("Git has been initialized.")
 
+	writeLicense()
+
 	return nil
 }
 
@@ -145,6 +160,9 @@ func jjInit() error {
 	}
 
 	utils.Success("Jujutsu has been initialized.")
+
+	writeLicense()
+
 	return nil
 }
 
