@@ -12,8 +12,10 @@ Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files 
 - Look into other shortcut methods I could implement.
 
 Templates? I.E `swiss template typescript` will create a tsconfig.json file that is prefilled out with information.
+- Typescript
+- Prettier
+- CSS stylesheet? with spacing variables and other globals.
 
-Add more frameworks to web - Angular, Vue, Astro \
 Extend Git & JJ init - Add license option selector \
 Rebuild Build & Run to run based on a scan of the current directory and file types. If it detects a certain file type it'll run it if no specific build or run argument is provided.
 
