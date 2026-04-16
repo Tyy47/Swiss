@@ -19,11 +19,11 @@ Zig - Zig: swiss init zig
 Python - uv: swiss init python
 
 Web:
-Vanilla TS Web App - Bun/Vite: swiss init web, -v or --vanilla
-Svelte - Bun/Vite: swiss init web -s or --svelte
-React - Bun/Vite: swiss init web -r or --react
-Angular - Bun/Vite: swiss init web -a or --angular
-Vue - Bun/Vite: swiss init web --vue`
+Vanilla TS Web App - Bun/Vite: swiss init web
+Svelte - Bun/Vite: swiss init web sv or svelte
+React - Bun/Vite: swiss init web react
+Angular - Bun/Vite: swiss init web angular
+Vue - Bun/Vite: swiss init web vue`
 
 type project struct {
 	Language   string
@@ -241,15 +241,13 @@ func getWebProject() project {
 
 	for _, argument := range utils.AdditionalArguments {
 		switch argument {
-		case "-v", "--vanilla":
-			program.Arguments = append(program.Arguments, "vanilla-ts")
-		case "-r", "--react":
+		case "react":
 			program.Arguments = append(program.Arguments, "react-ts")
-		case "-s", "--svelte":
+		case "sv", "svelte":
 			program.Arguments = append(program.Arguments, "svelte-ts")
-		case "-a", "--angular":
+		case "angular":
 			program.Arguments = append(program.Arguments, "angular-ts")
-		case "--vue":
+		case "vue":
 			program.Arguments = append(program.Arguments, "vue-ts")
 		default:
 			program.Arguments = append(program.Arguments, "vanilla-ts")
