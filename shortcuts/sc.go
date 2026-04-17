@@ -11,8 +11,8 @@ func GitCommitSC() {
 		commitMessage = utils.AdditionalArguments[0]
 	}
 
-	utils.RunCommand("git", "add", ".")
-	utils.RunCommand("git", "commit", "-m", commitMessage)
+	utils.RunCommand(true, "git", "add", ".")
+	utils.RunCommand(true, "git", "commit", "-m", commitMessage)
 	
 	utils.Success("Commit created.")
 }
@@ -24,9 +24,9 @@ func GitPushSC() {
 		return
 	}
 
-	utils.RunCommand("git", "add", ".")
-	utils.RunCommand("git", "commit", "-m", commitMessage)
-	utils.RunCommand("git", "push")
+	utils.RunCommand(true, "git", "add", ".")
+	utils.RunCommand(true, "git", "commit", "-m", commitMessage)
+	utils.RunCommand(true, "git", "push")
 
 	utils.Success("Commit pushed to repository.")
 }

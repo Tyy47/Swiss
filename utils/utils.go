@@ -41,12 +41,14 @@ func CrashCheck(err error) {
 
 // A function that takes an initial command arg and a packed string of other arguments.
 // It executes the command, if it returns an error it'll exit Swiss with a 1 exit code. If it's successful, a success message will print.
-func RunCommand(command string, arguments ...string) {
+func RunCommand(muted bool, command string, arguments ...string) {
 	comm := exec.Command(command, arguments...)
 
 	err := comm.Run()
 	CrashCheck(err)
-	Success("Command ran successfully.")
+	if !muted {
+		Success("Command ran successfully.")
+	}
 }
 
 // Gathers argument via the os library
