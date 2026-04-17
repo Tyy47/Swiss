@@ -9,6 +9,7 @@ import (
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/network"
+	"swiss/shortcuts"
 	"swiss/utils"
 )
 
@@ -241,6 +242,25 @@ func generateCommand() Command {
 	return gen
 }
 
+func shortcutCommand() Command {
+	shortcut := Command{
+		Name: "sc",
+		HelpMenu: utils.ShortcutHelp,
+		Subcommands: []Subcommand{
+			{
+				Name: "sc",
+				Flags: map[string]func(){
+					"-h": utils.ShortcutHelp,
+					"commit": shortcuts.GitCommitSC,
+					"push": shortcuts.GitPushSC,
+				},
+			},
+		},
+	}
+
+	return shortcut
+}
+
 // Find and run command in registry
 func runCommand() {
 	if len(utils.Arguments) < 2 {
@@ -306,6 +326,7 @@ func init() {
 		netCommand(),
 		createCommand(),
 		generateCommand(),
+		shortcutCommand(),
 	}
 
 	registerCommand(commandArray...)

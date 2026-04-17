@@ -19,11 +19,12 @@ init <string>: Inits a project using Swiss.
 create <string>: Make a set of folders/files using Swiss.
 net: A set of networking tools.
 gen: A variety of codes that can be generated via Swiss.
+sc: Shortcuts that are multiple commands in one.
 	`
 	fmt.Println(help_menu)
 }
 
-// Prints the help menu for the Command Dictonary module
+// Prints the help menu for the Command Dictionary module
 func CommandHelp() {
 	var help_menu string = `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -131,6 +132,23 @@ Gen module - Generate codes through Swiss.
 -h --help: Opens the help menu.
 uuid: Generates an 128 bit hexadecimal string.
 secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.
+`
+	fmt.Println(help_menu)
+}
+
+// Prints the help menu for the Shortcut module
+func ShortcutHelp() {
+	var help_menu string = `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Shortcut module - Commands that are multiple commands into one.
+
+-h --help: Opens the help menu.
+commit <message : string>: Adds all changed files to commit with a message.
+push <message : string>: Adds all files, commits changes with a message, then pushes to your repository.
 `
 	fmt.Println(help_menu)
 }
