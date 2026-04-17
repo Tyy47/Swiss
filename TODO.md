@@ -8,9 +8,6 @@ Add documentation to each function, struct, etc.
 
 Possible Module Ideas:
 
-Shortcuts? I.E `swiss sc git push "update: message"` will add all changed files to commit, add a message to the commit, then push. 
-- Look into other shortcut methods I could implement.
-
 Templates? I.E `swiss template typescript` will create a tsconfig.json file that is prefilled out with information.
 - Typescript
 - Prettier
