@@ -2,6 +2,7 @@ package shortcuts
 
 import "swiss/utils"
 
+// Adds all files to a commit using git with a required message
 func GitCommitSC() {
 	// Gathers a commit message
 	var commitMessage string
@@ -11,22 +12,23 @@ func GitCommitSC() {
 	} else {
 		commitMessage = utils.AdditionalArguments[0]
 	}
-	
+
 	// Adds all files to the commit with a message.
 	utils.RunCommand("git", "add", ".")
 	utils.RunCommand("git", "commit", "-m", commitMessage)
-	
+
 	// Message stating that the commit was created.
 	utils.Success("Commit created.")
 }
 
 func GitPushSC() {
-	// Adds all changed files to commit
-	utils.RunCommand("git", "add", ".")
-
 	// Gathers a commit message if one is available.
 	var commitMessage string
 	if len(utils.AdditionalArguments) > 0 {
+		// Adds all changed files to commit
+		utils.RunCommand("git", "add", ".")
+		
+		// Assigns message to commitMessage then commits
 		commitMessage = utils.AdditionalArguments[0]
 		utils.RunCommand("git", "commit", "-m", commitMessage)
 	}
