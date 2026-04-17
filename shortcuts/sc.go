@@ -19,7 +19,7 @@ func GitCommitSC() {
 
 func GitPushSC() {
 	var commitMessage string
-	if len(utils.Arguments) <= 0 {
+	if len(utils.AdditionalArguments) <= 0 {
 		utils.Warning("Commit message is blank, fill in commit message to continue.")
 		return
 	} else {
