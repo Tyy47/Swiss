@@ -9,8 +9,7 @@ import (
 	"swiss/utils"
 )
 
-const buildProgramList = `
-Rust: Cargo
+const buildProgramList = `Rust: Cargo
 C: Clang
 Go: Go
 Zig: Zig`
