@@ -2,6 +2,11 @@ package shortcuts
 
 import "swiss/utils"
 
+// Specific crash function for the GitPushSC function. Swiss crashes if the user inputs a commit message when there is no changes to the git tree.
+func gitCrash() {
+	
+}
+
 // Adds all files to a commit using git with a required message
 func GitCommitSC() {
 	// Gathers a commit message
@@ -13,9 +18,17 @@ func GitCommitSC() {
 		commitMessage = utils.AdditionalArguments[0]
 	}
 
-	// Adds all files to the commit with a message.
-	utils.RunCommand("git", "add", ".")
-	utils.RunCommand("git", "commit", "-m", commitMessage)
+	// Checks if adding files to commit will cause an error
+	if err := utils.RunCommand("git", "add", "."); err != nil {
+		utils.Error("Unable to add files to commit, make sure there is changes to add.")
+		return
+	}
+	
+	// Checks if message can be added to commit
+	if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
+		utils.Error("Unable to add files to commit, make sure there is changes to add.")
+		return
+	}
 
 	// Message stating that the commit was created.
 	utils.Success("Commit created.")
@@ -26,15 +39,24 @@ func GitPushSC() {
 	var commitMessage string
 	if len(utils.AdditionalArguments) > 0 {
 		// Adds all changed files to commit
-		utils.RunCommand("git", "add", ".")
+		if err := utils.RunCommand("git", "add", "."); err != nil {
+			utils.Error("Unable to add files to commit, make sure there is changes to add.")
+			return
+		}
 		
 		// Assigns message to commitMessage then commits
 		commitMessage = utils.AdditionalArguments[0]
-		utils.RunCommand("git", "commit", "-m", commitMessage)
+		if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
+			utils.Error("Unable to add files to commit, make sure there is changes to add.")
+			return
+		}
 	}
 
 	// Pushes changes to repository
-	utils.RunCommand("git", "push")
+	if err := utils.RunCommand("git", "push"); err != nil {
+		utils.Error("Unable to push changes to repository")
+		return
+	}
 
 	// Message stating that changes were pushed
 	utils.Success("Commit pushed to repository.")
