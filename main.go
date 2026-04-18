@@ -226,7 +226,7 @@ func netCommand() Command {
 func generateCommand() Command {
 	gen := Command{
 		Name: "gen",
-		HelpMenu: utils.DisplayHelp, // Placeholder till I add a gen help menu.
+		HelpMenu: utils.GenHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "gen",
