@@ -122,6 +122,7 @@ func runRunCommand() Command {
 					"go":     build.HandleRunInput,
 					"rust":   build.HandleRunInput,
 					"c":      build.HandleRunInput,
+					"python": build.HandleRunInput,
 				},
 			},
 		},
