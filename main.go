@@ -291,8 +291,8 @@ func runSubcommand(command Command) {
 	for _, arg := range utils.Arguments[1:] {
 		for _, sub := range command.Subcommands {
 			if arg == sub.Name {
-				for _, arg := range utils.Arguments {
-					if handler, ok := sub.Flags[arg]; ok {
+				for _, argument := range utils.Arguments {
+					if handler, ok := sub.Flags[argument]; ok {
 						handler()
 					}
 				}
