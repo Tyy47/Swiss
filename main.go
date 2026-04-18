@@ -166,12 +166,12 @@ func initCommand() Command {
 					"-l":     initialize.PrintInitProjectList,
 					"--list": initialize.PrintInitProjectList,
 					"go":     initialize.CreateProject,
-					"rust":     initialize.CreateProject,
-					"c":     initialize.CreateProject,
-					"html":     initialize.CreateProject,
-					"zig":     initialize.CreateProject,
-					"python":  initialize.CreateProject,
-					"web":     initialize.CreateWebProject,
+					"rust":   initialize.CreateProject,
+					"c":      initialize.CreateProject,
+					"html":   initialize.CreateProject,
+					"zig":    initialize.CreateProject,
+					"python": initialize.CreateProject,
+					"web":    initialize.CreateWebProject,
 				},
 			},
 		},
@@ -225,15 +225,15 @@ func netCommand() Command {
 
 func generateCommand() Command {
 	gen := Command{
-		Name: "gen",
+		Name:     "gen",
 		HelpMenu: utils.GenHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "gen",
 				Flags: map[string]func(){
-					"-h": utils.GenHelp,
+					"-h":     utils.GenHelp,
 					"--help": utils.GenHelp,
-					"uuid": gen.GenerateUUID,
+					"uuid":   gen.GenerateUUID,
 					"secret": gen.GenerateSecret,
 				},
 			},
@@ -245,15 +245,15 @@ func generateCommand() Command {
 
 func shortcutCommand() Command {
 	shortcut := Command{
-		Name: "sc",
+		Name:     "sc",
 		HelpMenu: utils.ShortcutHelp,
 		Subcommands: []Subcommand{
 			{
 				Name: "sc",
 				Flags: map[string]func(){
-					"-h": utils.ShortcutHelp,
+					"-h":     utils.ShortcutHelp,
 					"commit": shortcuts.GitCommitSC,
-					"push": shortcuts.GitPushSC,
+					"push":   shortcuts.GitPushSC,
 				},
 			},
 		},
