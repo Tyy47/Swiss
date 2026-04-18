@@ -43,6 +43,7 @@ var registry = projectRegistry{
 }
 
 func PrintInitProjectList() {
+	utils.Note("Languages are listed along side their build tools and the commands to init them via Swiss.\n")
 	fmt.Println(initProjectList)
 }
 
