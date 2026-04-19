@@ -254,6 +254,7 @@ func shortcutCommand() Command {
 					"-h":     utils.ShortcutHelp,
 					"commit": shortcuts.GitCommitSC,
 					"push":   shortcuts.GitPushSC,
+					"sync": shortcuts.GitSyncSC,
 				},
 			},
 		},

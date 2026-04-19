@@ -49,11 +49,12 @@ The Net module. Gather a variety of networking related information about a given
 The Gen module. Generate codes needed for development via Swiss.
 
 `swiss gen -h` or `swiss net --help` to print out the help menu for the Gen module. \
-`swiss gen uuid` generates a 128 bit number in the UUID format
+`swiss gen uuid` generates a 128 bit number in the UUID format \
 `swiss gen secret [length : int]` generates a secret code based on the input. Will generate a code thats 16 characters long with no length input. 
 
 ### Shortcut
 The Shortcut module. A list of command shortcuts that combine most used commands into one to provide a faster developing experience.
 
-`swiss sc commit <message : string>` to add all changes files to your commit and provide a message for your commit. Combined commands: git add . & git commit -m "your message here."
-`swiss sc push [message : string]` to add all your changed files to your commit and provide an optional message to your commit, then pushes all commits to your repository.
+`swiss sc commit <message : string>` to add all changes files to your commit and provide a message for your commit. Combined commands: git add . & git commit -m "your message here." \
+`swiss sc push [message : string]` to add all your changed files to your commit and provide an optional message to your commit, then pushes all commits to your repository. \
+`swiss sc sync` fetch's the repository and grabs any changes, then prints out the git status to see repo changes.
