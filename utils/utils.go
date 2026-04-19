@@ -42,8 +42,14 @@ func CrashCheck(err error) {
 // A function that takes an initial command arg and a packed string of other arguments.
 // It executes the command and returns the result for manual error handling depending on the circumstance.
 func RunCommand(command string, arguments ...string) error {
+	// Runs the command based on the arguments and command given
 	comm := exec.Command(command, arguments...)
-
+	
+	// Prints output to the terminal.
+	comm.Stdin = os.Stdin
+	comm.Stdout = os.Stdout
+	
+	// Runs the command and returns the result
 	err := comm.Run()
 	return err
 }
