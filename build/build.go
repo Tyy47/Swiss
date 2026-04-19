@@ -18,7 +18,6 @@ type build struct {
 	Language  string
 	Tool      string
 	Arguments []string
-	BuildFile string
 }
 
 type buildRegistry struct {
@@ -51,41 +50,11 @@ func (b *build) initialize() error {
 	return nil
 }
 
-func scanProjectFiles() (bool, build) {
-	files, err := os.ReadDir(".")
-	if err != nil {
-		utils.Error("Unable to read current directory.")
-		return false, build{}
-	}
-
-	for _, file := range files {
-		for num, register := range registry.builds {
-			if register.BuildFile == file.Name() {
-				return true, registry.builds[num]
-			}
-		}
-	}
-
-	return false, build{}
-}
-
-func buildWithoutInput() {
-	result, buildName := scanProjectFiles()
-
-	if result && len(utils.Arguments) <= 2  {
-		buildName.initialize()
-		utils.Success(buildName.Language + " project has been compiled.")
-	} else {
-		return
-	}
-}
-
 func buildRustProject() build {
 	rustBuild := build{
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"build", "--release"},
-		BuildFile: "Cargo.toml",
 	}
 
 	return rustBuild
@@ -96,7 +65,6 @@ func buildGoProject() build {
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"build"},
-		BuildFile: "main.go",
 	}
 
 	return goBuild
@@ -107,7 +75,6 @@ func buildCProject() build {
 		Language:  "c",
 		Tool:      "clang",
 		Arguments: []string{"main.c", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-g", "-o", "main"},
-		BuildFile: "main.c",
 	}
 
 	return cBuild
@@ -118,7 +85,6 @@ func buildZigProject() build {
 		Language: "zig",
 		Tool: "zig",
 		Arguments: []string{"build"},
-		BuildFile: "main.zig",
 	}
 
 	return zigBuild
@@ -126,10 +92,8 @@ func buildZigProject() build {
 
 func HandleBuildInput() {
 	if len(utils.Arguments) < 3 {
-		buildWithoutInput()
 		return
 	}
-	
 
 	argument := utils.Arguments[2]
 	argument = strings.ToLower(argument)

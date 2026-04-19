@@ -84,10 +84,9 @@ func swissUpdateCommand() Command {
 }
 
 func buildCommand() Command {
-	b := Command{
+	build := Command{
 		Name:     "build",
 		HelpMenu: utils.BuildHelp,
-		Handler:  build.HandleBuildInput,
 		Subcommands: []Subcommand{
 			{
 				Name: "build",
@@ -105,7 +104,7 @@ func buildCommand() Command {
 		},
 	}
 
-	return b
+	return build
 }
 
 func runRunCommand() Command {
@@ -182,7 +181,7 @@ func initCommand() Command {
 }
 
 func createCommand() Command {
-	c := Command{
+	create := Command{
 		Name:     "create",
 		HelpMenu: utils.CreateHelp,
 		Subcommands: []Subcommand{
@@ -196,11 +195,11 @@ func createCommand() Command {
 			},
 		},
 	}
-	return c
+	return create
 }
 
 func netCommand() Command {
-	networking := Command{
+	net := Command{
 		Name:     "net",
 		HelpMenu: utils.NetHelp,
 		Subcommands: []Subcommand{
@@ -221,11 +220,11 @@ func netCommand() Command {
 			},
 		},
 	}
-	return networking
+	return net
 }
 
 func generateCommand() Command {
-	generator := Command{
+	gen := Command{
 		Name:     "gen",
 		HelpMenu: utils.GenHelp,
 		Subcommands: []Subcommand{
@@ -241,7 +240,7 @@ func generateCommand() Command {
 		},
 	}
 
-	return generator
+	return gen
 }
 
 func shortcutCommand() Command {
@@ -255,7 +254,6 @@ func shortcutCommand() Command {
 					"-h":     utils.ShortcutHelp,
 					"commit": shortcuts.GitCommitSC,
 					"push":   shortcuts.GitPushSC,
-					"sync": shortcuts.GitSyncSC,
 				},
 			},
 		},
@@ -273,16 +271,11 @@ func runCommand() {
 
 	for _, command := range GlobalCommandRegistry.Registry {
 		if utils.Arguments[1] == command.Name || slices.Contains(command.Flags, utils.Arguments[1]) {
-
-			if command.Handler != nil {
-				command.Handler()
-				return
-			} else if len(command.Subcommands) > 0 {
+			if len(command.Subcommands) > 0 {
 				runSubcommand(command)
 				return
 			}
-			
-			utils.DisplayHelp()
+			command.Handler()
 			return
 		}
 	}
@@ -290,7 +283,7 @@ func runCommand() {
 }
 
 func runSubcommand(command Command) {
-	if len(utils.Arguments) <= 2 {
+	if len(utils.Arguments) < 2 {
 		command.HelpMenu()
 		return
 	}
@@ -303,11 +296,14 @@ func runSubcommand(command Command) {
 						handler()
 					}
 				}
+			} else {
+				return
 			}
 		}
 	}
 	if len(utils.Arguments) > 2 {
 		utils.Warning(utils.Arguments[2] + " is not a valid subcommand.")
+	} else {
 		command.HelpMenu()
 	}
 }
