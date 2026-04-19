@@ -84,9 +84,10 @@ func swissUpdateCommand() Command {
 }
 
 func buildCommand() Command {
-	build := Command{
+	b := Command{
 		Name:     "build",
 		HelpMenu: utils.BuildHelp,
+		Handler:  build.HandleBuildInput,
 		Subcommands: []Subcommand{
 			{
 				Name: "build",
@@ -104,7 +105,7 @@ func buildCommand() Command {
 		},
 	}
 
-	return build
+	return b
 }
 
 func runRunCommand() Command {
@@ -181,7 +182,7 @@ func initCommand() Command {
 }
 
 func createCommand() Command {
-	create := Command{
+	c := Command{
 		Name:     "create",
 		HelpMenu: utils.CreateHelp,
 		Subcommands: []Subcommand{
@@ -195,11 +196,11 @@ func createCommand() Command {
 			},
 		},
 	}
-	return create
+	return c
 }
 
 func netCommand() Command {
-	net := Command{
+	networking := Command{
 		Name:     "net",
 		HelpMenu: utils.NetHelp,
 		Subcommands: []Subcommand{
@@ -220,11 +221,11 @@ func netCommand() Command {
 			},
 		},
 	}
-	return net
+	return networking
 }
 
 func generateCommand() Command {
-	gen := Command{
+	generator := Command{
 		Name:     "gen",
 		HelpMenu: utils.GenHelp,
 		Subcommands: []Subcommand{
@@ -240,7 +241,7 @@ func generateCommand() Command {
 		},
 	}
 
-	return gen
+	return generator
 }
 
 func shortcutCommand() Command {
@@ -272,11 +273,16 @@ func runCommand() {
 
 	for _, command := range GlobalCommandRegistry.Registry {
 		if utils.Arguments[1] == command.Name || slices.Contains(command.Flags, utils.Arguments[1]) {
-			if len(command.Subcommands) > 0 {
+
+			if command.Handler != nil {
+				command.Handler()
+				return
+			} else if len(command.Subcommands) > 0 {
 				runSubcommand(command)
 				return
 			}
-			command.Handler()
+			
+			utils.DisplayHelp()
 			return
 		}
 	}
@@ -284,7 +290,7 @@ func runCommand() {
 }
 
 func runSubcommand(command Command) {
-	if len(utils.Arguments) < 2 {
+	if len(utils.Arguments) <= 2 {
 		command.HelpMenu()
 		return
 	}
@@ -297,14 +303,11 @@ func runSubcommand(command Command) {
 						handler()
 					}
 				}
-			} else {
-				return
 			}
 		}
 	}
 	if len(utils.Arguments) > 2 {
 		utils.Warning(utils.Arguments[2] + " is not a valid subcommand.")
-	} else {
 		command.HelpMenu()
 	}
 }

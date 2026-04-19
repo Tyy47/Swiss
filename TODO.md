@@ -13,3 +13,6 @@ Templates? I.E `swiss template typescript` will create a tsconfig.json file that
 - Prettier
 - CSS stylesheet? with spacing variables and other globals.
 
+<<<<<<< HEAD
+=======
+>>>>>>> 4ec93f2fd4fa3731bc21917630b520545763a365
