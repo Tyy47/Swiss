@@ -77,7 +77,6 @@ func GitSyncSC() {
 		return
 	}
 
-
 	// Success message stating repository has been updated.
 	utils.Success("Local repository updated.")
 }
