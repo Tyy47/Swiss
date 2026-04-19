@@ -6,6 +6,7 @@
 #### The new shortcut module for Swiss provides a set of commands that combine multiple commands into one to save typing time.
 - Commit - The commit shortcut combines git add . & git commit -m "commit message here".
 - Push - The push shortcut combines git add . & git commit -m "" & pushes your commits to the added repository.
+- Sync - The sync shortcut combines git fetch & git status to refresh your local files with the repository.
 
 ### Net:
 #### The net module provides of set of networking tools to gather information from domains and IP addresses.

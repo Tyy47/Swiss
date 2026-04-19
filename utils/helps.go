@@ -149,6 +149,7 @@ Shortcut module - Commands that are multiple commands into one.
 -h --help: Opens the help menu.
 commit <message : string>: Adds all changed files to commit with a message.
 push [message : string]: Adds all files, commits changes with a message, then pushes to your repository.
+sync: Fetch's all changes to the repository and prints a status message with changes to the repository.
 `
 	fmt.Println(help_menu)
 }

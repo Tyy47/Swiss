@@ -55,5 +55,6 @@ The Gen module. Generate codes needed for development via Swiss.
 ### Shortcut
 The Shortcut module. A list of command shortcuts that combine most used commands into one to provide a faster developing experience.
 
-`swiss sc commit <message : string>` to add all changes files to your commit and provide a message for your commit. Combined commands: git add . & git commit -m "your message here."
-`swiss sc push [message : string]` to add all your changed files to your commit and provide an optional message to your commit, then pushes all commits to your repository.
+`swiss sc commit <message : string>` to add all changes files to your commit and provide a message for your commit. Combined commands: git add . & git commit -m "your message here." \
+`swiss sc push [message : string]` to add all your changed files to your commit and provide an optional message to your commit, then pushes all commits to your repository. \
+`swiss sc sync` fetch's the repository and grabs any changes, then prints out the git status to see repo changes.

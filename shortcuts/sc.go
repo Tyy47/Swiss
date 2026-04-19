@@ -56,3 +56,22 @@ func GitPushSC() {
 	// Message stating that changes were pushed
 	utils.Success("Commit pushed to repository.")
 }
+
+func GitSyncSC() {
+	utils.Note("Updating local repository...")
+	
+	// Grabs any changes from repository and updates local repo
+	if err := utils.RunCommand("git", "fetch"); err != nil {
+		utils.Error("Unable to fetch git repository.")
+		return
+	}
+	
+	// Prints a status message of changes to the repository.
+	if err := utils.RunCommand("git", "status"); err != nil {
+		utils.Error("Unable to display git status.")
+		return
+	}
+
+	// Success message stating repository has been updated.
+	utils.Success("Local repository updated.")
+}
