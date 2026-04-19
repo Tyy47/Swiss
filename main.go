@@ -283,7 +283,7 @@ func runCommand() {
 }
 
 func runSubcommand(command Command) {
-	if len(utils.Arguments) < 2 {
+	if len(utils.Arguments) <= 2 {
 		command.HelpMenu()
 		return
 	}
@@ -296,15 +296,8 @@ func runSubcommand(command Command) {
 						handler()
 					}
 				}
-			} else {
-				return
 			}
 		}
-	}
-	if len(utils.Arguments) > 2 {
-		utils.Warning(utils.Arguments[2] + " is not a valid subcommand.")
-	} else {
-		command.HelpMenu()
 	}
 }
 
