@@ -11,6 +11,7 @@ import (
 const runProgramList = `
 Rust: Cargo
 Go: Go
+Python: Python
 `
 
 type run struct {

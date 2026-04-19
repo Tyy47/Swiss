@@ -2,11 +2,6 @@ package shortcuts
 
 import "swiss/utils"
 
-// Specific crash function for the GitPushSC function. Swiss crashes if the user inputs a commit message when there is no changes to the git tree.
-func gitCrash() {
-	
-}
-
 // Adds all files to a commit using git with a required message
 func GitCommitSC() {
 	// Gathers a commit message

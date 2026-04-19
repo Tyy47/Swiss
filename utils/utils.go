@@ -44,6 +44,9 @@ func CrashCheck(err error) {
 func RunCommand(command string, arguments ...string) error {
 	comm := exec.Command(command, arguments...)
 
+	comm.Stdin = os.Stdin
+	comm.Stdout = os.Stdout
+
 	err := comm.Run()
 	return err
 }
