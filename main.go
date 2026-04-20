@@ -29,62 +29,54 @@ type Subcommand struct {
 }
 
 // Command storage struct
-type CommandRegistry struct {
+type CommandDB struct {
 	Registry []Command
 }
 
 // Command storage
-var GlobalCommandRegistry = CommandRegistry{}
+var GlobalCommandDatabase = CommandDB{}
 
 // Add command to command storage
-func registerCommand(command ...Command) {
-	GlobalCommandRegistry.Registry = append(GlobalCommandRegistry.Registry, command...)
+func (c *CommandDB) registerCommand(command ...Command) {
+	c.Registry = append(c.Registry, command...)
 }
 
 // Registering commands //
 
 func helpCommand() Command {
-	help := Command{
+	return Command{
 		Name:    "help",
 		Flags:   []string{"-h"},
 		Handler: utils.DisplayHelp,
 	}
-
-	return help
 }
 
 func versionCommand() Command {
-	version := Command{
+	return Command{
 		Name:    "version",
 		Flags:   []string{"-v"},
 		Handler: utils.PrintVersionNumber,
 	}
-
-	return version
 }
 
 func swissInstallCommand() Command {
-	install := Command{
+	return Command{
 		Name:    "install",
 		Flags:   []string{"-i"},
 		Handler: build.SwissInstall,
 	}
-
-	return install
 }
 
 func swissUpdateCommand() Command {
-	update := Command{
+	return Command{
 		Name:    "update",
 		Flags:   []string{"-u"},
 		Handler: build.UpdateSwiss,
 	}
-
-	return update
 }
 
 func buildCommand() Command {
-	build := Command{
+	return Command{
 		Name:     "build",
 		HelpMenu: utils.BuildHelp,
 		Subcommands: []Subcommand{
@@ -103,12 +95,10 @@ func buildCommand() Command {
 			},
 		},
 	}
-
-	return build
 }
 
 func runRunCommand() Command {
-	run := Command{
+	return Command{
 		Name:     "run",
 		HelpMenu: utils.BuildHelp,
 		Subcommands: []Subcommand{
@@ -127,12 +117,10 @@ func runRunCommand() Command {
 			},
 		},
 	}
-
-	return run
 }
 
 func dictionaryCommand() Command {
-	dict := Command{
+	return Command{
 		Name:     "dict",
 		HelpMenu: utils.CommandHelp,
 		Subcommands: []Subcommand{
@@ -149,12 +137,10 @@ func dictionaryCommand() Command {
 			},
 		},
 	}
-
-	return dict
 }
 
 func initCommand() Command {
-	init := Command{
+	return Command{
 		Name:     "init",
 		HelpMenu: utils.InitHelp,
 		Subcommands: []Subcommand{
@@ -176,12 +162,10 @@ func initCommand() Command {
 			},
 		},
 	}
-
-	return init
 }
 
 func createCommand() Command {
-	create := Command{
+	return Command{
 		Name:     "create",
 		HelpMenu: utils.CreateHelp,
 		Subcommands: []Subcommand{
@@ -195,11 +179,10 @@ func createCommand() Command {
 			},
 		},
 	}
-	return create
 }
 
 func netCommand() Command {
-	net := Command{
+	return Command{
 		Name:     "net",
 		HelpMenu: utils.NetHelp,
 		Subcommands: []Subcommand{
@@ -220,11 +203,10 @@ func netCommand() Command {
 			},
 		},
 	}
-	return net
 }
 
 func generateCommand() Command {
-	gen := Command{
+	return Command{
 		Name:     "gen",
 		HelpMenu: utils.GenHelp,
 		Subcommands: []Subcommand{
@@ -239,8 +221,6 @@ func generateCommand() Command {
 			},
 		},
 	}
-
-	return gen
 }
 
 func shortcutCommand() Command {
@@ -269,7 +249,7 @@ func runCommand() {
 		return
 	}
 
-	for _, command := range GlobalCommandRegistry.Registry {
+	for _, command := range GlobalCommandDatabase.Registry {
 		if utils.Arguments[1] == command.Name || slices.Contains(command.Flags, utils.Arguments[1]) {
 			if len(command.Subcommands) > 0 {
 				runSubcommand(command)
@@ -323,5 +303,5 @@ func init() {
 		shortcutCommand(),
 	}
 
-	registerCommand(commandArray...)
+	GlobalCommandDatabase.registerCommand(commandArray...)
 }
