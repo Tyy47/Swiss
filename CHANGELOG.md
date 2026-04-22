@@ -20,7 +20,7 @@
 
 ### Gen:
 #### The gen module provides functions to generate codes.
-- UUID: Generates an 128 bit number in a UUID format
+- UUID: Generates a 128-bit hexidecimal number.
 - Secret: Generates a randomized string based on a given length input, if no input is provided, the default length will be 16 characters.
 
 
