@@ -18,6 +18,8 @@ type Command struct {
 	Subcommands map[string]func(args *[]string)
 	Handler     func()
 	HelpMenu    func()
+	SingleRun   bool // Boolean statement to check if the program can run with no arguments like "swiss build"
+	ShortHandFunc func(args *[]string) // Short hand function that runs if single run function is ran like "swiss build"
 }
 
 // Command storage struct
@@ -34,15 +36,15 @@ func (c *CommandDB) registerCommand(command ...Command) {
 }
 
 func commandLookup() map[string]*Command {
-    lookup := make(map[string]*Command)
-    for i := range GlobalCommandDatabase.Registry {
-        cmd := &GlobalCommandDatabase.Registry[i]
-        lookup[cmd.Name] = cmd
-        for _, flag := range cmd.Flags {
-            lookup[flag] = cmd
-        }
-    }
-    return lookup
+	lookup := make(map[string]*Command)
+	for i := range GlobalCommandDatabase.Registry {
+		cmd := &GlobalCommandDatabase.Registry[i]
+		lookup[cmd.Name] = cmd
+		for _, flag := range cmd.Flags {
+			lookup[flag] = cmd
+		}
+	}
+	return lookup
 }
 
 // Registering commands //
@@ -91,6 +93,7 @@ func buildCommand() Command {
 			"c":      func(args *[]string) { build.HandleBuildInput() },
 			"zig":    func(args *[]string) { build.HandleBuildInput() },
 		},
+		SingleRun: true,
 	}
 }
 
@@ -206,28 +209,33 @@ func shortcutCommand() Command {
 
 // Find and run command in registry
 func runCommand() {
-    if len(utils.Arguments) < 2 {
-        utils.DisplayHelp()
-        return
-    }
+	if len(utils.Arguments) < 2 {
+		utils.DisplayHelp()
+		return
+	}
 
-    args := utils.Arguments[1:]
-    lookup := commandLookup()
+	args := utils.Arguments[1:]
+	lookup := commandLookup()
 
-    for i, arg := range args {
-        if cmd, ok := lookup[arg]; ok {
-            if cmd.Handler != nil {
-                cmd.Handler()
-            }
-            for _, subArg := range args[i+1:] {
-                if subFunc, ok := cmd.Subcommands[subArg]; ok {
-                    subFunc(&utils.Arguments)
-                }
-            }
-            return
-        }
-    }
-    utils.Warning(utils.Arguments[1] + " is not an available command.")
+	for i, arg := range args {
+		if cmd, ok := lookup[arg]; ok {
+			if cmd.Handler != nil {
+				cmd.Handler()
+			}
+
+			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
+				cmd.ShortHandFunc(&utils.Arguments)
+			}
+
+			for _, subArg := range args[i+1:] {
+				if subFunc, ok := cmd.Subcommands[subArg]; ok {
+					subFunc(&utils.Arguments)
+				}
+			}
+			return
+		}
+	}
+	utils.Warning(utils.Arguments[1] + " is not an available command.")
 }
 
 func main() {
