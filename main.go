@@ -94,6 +94,7 @@ func buildCommand() Command {
 			"zig":    func(args *[]string) { build.HandleBuildInput() },
 		},
 		SingleRun: true,
+		ShortHandFunc: func(args *[]string) { build.BuildProject() },
 	}
 }
 
@@ -156,7 +157,12 @@ func createCommand() Command {
 		Subcommands: map[string]func(args *[]string){
 			"-h":     func(args *[]string) { utils.CreateHelp() },
 			"--help": func(args *[]string) { utils.CreateHelp() },
-			"create": func(args *[]string) { create.CreateItems() },
+			"file": func(args *[]string) { create.CreateItems() },
+			"files": func(args *[]string) { create.CreateItems() },
+			"fi": func(args *[]string) { create.CreateItems() },
+			"folder": func(args *[]string) { create.CreateItems() },
+			"folders": func(args *[]string) { create.CreateItems() },
+			"fo": func(args *[]string) { create.CreateItems() },
 		},
 	}
 }
@@ -222,7 +228,7 @@ func runCommand() {
 			if cmd.Handler != nil {
 				cmd.Handler()
 			}
-
+			
 			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
 				cmd.ShortHandFunc(&utils.Arguments)
 			}

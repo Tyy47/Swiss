@@ -18,6 +18,7 @@ type build struct {
 	Language  string
 	Tool      string
 	Arguments []string
+	BuildFile string // File thats associated with a certain language I.E main.go, Cargo.toml, etc.
 }
 
 type buildRegistry struct {
@@ -55,6 +56,7 @@ func buildRustProject() build {
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"build", "--release"},
+		BuildFile: "Cargo.toml",
 	}
 
 	return rustBuild
@@ -65,6 +67,7 @@ func buildGoProject() build {
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"build"},
+		BuildFile: "main.go",
 	}
 
 	return goBuild
@@ -75,6 +78,7 @@ func buildCProject() build {
 		Language:  "c",
 		Tool:      "clang",
 		Arguments: []string{"main.c", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-g", "-o", "main"},
+		BuildFile: "main.c",
 	}
 
 	return cBuild
@@ -82,12 +86,45 @@ func buildCProject() build {
 
 func buildZigProject() build {
 	zigBuild := build{
-		Language: "zig",
-		Tool: "zig",
+		Language:  "zig",
+		Tool:      "zig",
 		Arguments: []string{"build"},
+		BuildFile: "main.zig",
 	}
 
 	return zigBuild
+}
+
+func scanForFiles() (bool, build) {
+	// Scan directory for all files.
+	files, err := os.ReadDir(".")
+	if err != nil {
+		utils.Error("Unable to read files in current directory.")
+		return false, build{}
+	}
+
+	for _, project := range registry.builds {
+		for _, file := range files {
+			if file.Name() == project.BuildFile {
+				return true, project
+			}
+		}
+	}
+
+	utils.Warning("Unable to find inputted language, check language list for buildable languages via Swiss.")
+	return false, build{}
+}
+
+func BuildProject() {
+	// Grabs the bool and build struct from scanForFiles()
+	result, project := scanForFiles()
+
+	if !result {
+		utils.Error("Unable to build project, check inputted language to see if it's in Swiss build list.")
+	}
+
+	project.initialize()
+	utils.Success(project.Language + " project has been compiled.")
 }
 
 func HandleBuildInput() {
@@ -138,7 +175,7 @@ func SwissInstall() {
 func UpdateSwiss() {
 	// Make directory to clone into
 	utils.MakeFolder("swiss_install", true)
-	
+
 	// Clone the repository
 	clone := exec.Command("git", "clone", "https://github.com/Tyy47/Swiss.git", "swiss_install/")
 
@@ -192,7 +229,6 @@ func UpdateSwiss() {
 		utils.Crash(err)
 		return
 	}
-
 
 	if err := os.RemoveAll("swiss_install"); err != nil {
 		utils.Error("Unable to remove install files.")
