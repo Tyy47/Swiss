@@ -191,7 +191,7 @@ func generateCommand() Command {
 }
 
 func shortcutCommand() Command {
-	shortcut := Command{
+	return Command{
 		Name:     "sc",
 		HelpMenu: utils.ShortcutHelp,
 		Subcommands: map[string]func(args *[]string){
@@ -202,8 +202,6 @@ func shortcutCommand() Command {
 			"sync":   func(args *[]string) { shortcuts.GitSyncSC() },
 		},
 	}
-
-	return shortcut
 }
 
 // Find and run command in registry
