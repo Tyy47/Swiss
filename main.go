@@ -231,6 +231,8 @@ func runCommand() {
 			
 			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
 				cmd.ShortHandFunc(&utils.Arguments)
+			} else if len(utils.Arguments) <= 2 && cmd.HelpMenu != nil {
+				cmd.HelpMenu()
 			}
 
 			for _, subArg := range args[i+1:] {
