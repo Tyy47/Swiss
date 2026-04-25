@@ -34,42 +34,56 @@ func networkCrashError(err error, data string) {
 	}
 }
 
+// Connects to an IP Address or domain via TCP and returns an HTTP status code that states the result of the connection
 func Connection() {
+	// Connects to the domain or IP address
 	conn, err := net.Dial("tcp", endpoint)
 	if err != nil {
 		utils.Crash(err)
 	}
-
+	
+	// Prints the status code neatly
 	fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
 	status, err := bufio.NewReader(conn).ReadString('\n')
 	if err != nil {
 		utils.Crash(err)
 	}
-
+	
+	// Closes the connection when everything is complete
 	defer conn.Close()
+	// Prints the result of the http status code.
 	fmt.Println(status)
 }
 
+// Connects to an IP Address or Domain through a port, prints a statement regarding the status of the port.
 func GetPortStatus() {
+	// Grabs the port from the package arguments and checks if it is valid.
 	port, err := strconv.Atoi(port)
 	if err != nil || port < 1 || port > 65535 {
 		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
 		utils.Reason("Port exceeds or is under port range 0-65535")
 		return
 	}
-
+	
+	// Concats the address into a full string with the port
 	address := endpoint + ":" + strconv.Itoa(port)
+	// Timeout configured for the port.
 	timeout := 3 * time.Second
-
+	
+	// Connects to the address with the newly given port
 	conn, err := net.DialTimeout("tcp", address, timeout)
+
+	// Handles an error if the connection fails
 	if err != nil {
 		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
 		utils.Reason(err.Error())
 		return
 	}
+	
+	// Closes the connection when the connection attempt is completed
+	defer conn.Close()
 
-	conn.Close()
-
+	// Success message if the port is open on the address.
 	utils.Success("Port " + strconv.Itoa(port) + " is OPEN on " + endpoint + ".")
 }
 
