@@ -18,12 +18,6 @@ The Build module. Build/Compile or Run programs based on the language provided a
 `swiss build <language : string>` will build/compile the program based on the language provided and that is available via Swiss. \
 `swiss run <language : string>` will run the program based on the language provided and that is available via Swiss. 
 
-### Create
-The Create module. Create files and or folders through Swiss on mass.
-
-`swiss create -h` or `--help` will print out the help menu for the Create module \
-`swiss create <file | folder> <names: string>` Creates folders or files based on the 3rd argument. Names for files must be provided in order to create them. Supports file extensions and creation of multiple files/folders at once
-
 ### Init
 The Init module. Init a project using Swiss with the available project templates available.
 
