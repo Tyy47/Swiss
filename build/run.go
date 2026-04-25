@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
 	"swiss/utils"
 )
 
@@ -18,6 +19,7 @@ type run struct {
 	Language  string
 	Tool      string
 	Arguments []string
+	RunFile   string
 }
 
 type runRegistry struct {
@@ -55,6 +57,7 @@ func runRustProject() run {
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"run"},
+		RunFile: "Cargo.toml",
 	}
 
 	return runRust
@@ -65,6 +68,7 @@ func runGoProject() run {
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"run", "main.go"},
+		RunFile: "main.go",
 	}
 
 	return goRun
@@ -72,12 +76,45 @@ func runGoProject() run {
 
 func runPythonProject() run {
 	pythonRun := run{
-		Language: "python",
-		Tool: "python",
+		Language:  "python",
+		Tool:      "python",
 		Arguments: []string{"main.py"},
+		RunFile: "main.py",
 	}
 
 	return pythonRun
+}
+
+func scanForRunFiles() (bool, run) {
+	// Scan directory for all files.
+	files, err := os.ReadDir(".")
+	if err != nil {
+		utils.Error("Unable to read files in current directory.")
+		return false, run{}
+	}
+
+	for _, project := range runStorage.runs {
+		for _, file := range files {
+			if file.Name() == project.RunFile {
+				return true, project
+			}
+		}
+	}
+
+	utils.Warning("Unable to find inputted language, check language list for buildable languages via Swiss.")
+	return false, run{}
+}
+
+func RunProject() {
+	// Grabs the bool and build struct from scanForRunFiles()
+	result, project := scanForRunFiles()
+
+	if !result {
+		utils.Error("Unable to run project, check inputted language to see if it's in Swiss run list.")
+	}
+
+	project.initializeRun()
+	utils.Success(project.Language + " project has been ran.")
 }
 
 func HandleRunInput() {

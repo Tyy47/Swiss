@@ -95,7 +95,7 @@ func buildZigProject() build {
 	return zigBuild
 }
 
-func scanForFiles() (bool, build) {
+func scanForBuildFiles() (bool, build) {
 	// Scan directory for all files.
 	files, err := os.ReadDir(".")
 	if err != nil {
@@ -117,7 +117,7 @@ func scanForFiles() (bool, build) {
 
 func BuildProject() {
 	// Grabs the bool and build struct from scanForFiles()
-	result, project := scanForFiles()
+	result, project := scanForBuildFiles()
 
 	if !result {
 		utils.Error("Unable to build project, check inputted language to see if it's in Swiss build list.")

@@ -112,6 +112,8 @@ func runRunCommand() Command {
 			"c":      func(args *[]string) { build.HandleRunInput() },
 			"python": func(args *[]string) { build.HandleRunInput() },
 		},
+		ShortHandFunc: func(args *[]string) { build.RunProject() },
+		SingleRun: true,
 	}
 }
 

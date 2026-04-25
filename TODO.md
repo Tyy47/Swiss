@@ -13,4 +13,4 @@
 
 ## Bugs
 
-- Create module doesn't work - Need to figure out why. Got it to work but its duplicating it's output twice when running a command.
+- Create module doesn't work - Need to figure out why. Got it to work but its duplicating it's output twice when running a command. - Might remove create module as system commands could cover this better.
