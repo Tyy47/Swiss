@@ -16,7 +16,6 @@ help: Opens the help menu.
 dict <string>: Shows system commands based on the shell argument provided.
 build <string>: Allows you to build program via swiss.
 init <string>: Inits a project using Swiss.
-create <string>: Make a set of folders/files using Swiss.
 net: A set of networking tools.
 gen: A variety of codes that can be generated via Swiss.
 sc: Shortcuts that are multiple commands in one.
@@ -57,22 +56,6 @@ Build module - Builds or Runs a program based on the language inputted.
 -l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
 build <string>: Builds a program based on the language you input.
 run <string>: Runs a program based on the language you input.
-`
-	fmt.Println(help_menu)
-}
-
-// Prints the help menu for the Create module
-func CreateHelp() {
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-Create module - Creates folder or files based on your inputs.
-
--h --help: Opens the help menu.
-create <file | folder> <names: string>: Makes folders/files via Swiss. Affix file or folder to specify what to create.
 `
 	fmt.Println(help_menu)
 }

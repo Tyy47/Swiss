@@ -45,3 +45,4 @@
 - Shortcut module documentation added to DOCS.md
 - Added jujutsu startup to DOCS.md
 - Made Readme look nicer
+- Removed create module - The Create module is not a needed module. Touch & mkdir are better at creating files and folders then the module did.

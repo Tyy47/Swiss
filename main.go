@@ -3,7 +3,6 @@ package main
 import (
 	"swiss/build"
 	commanddict "swiss/command-dict"
-	"swiss/create"
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/network"
@@ -13,12 +12,12 @@ import (
 
 // Command struct to store information about modules commands
 type Command struct {
-	Name        string
-	Flags       []string
-	Subcommands map[string]func(args *[]string)
-	Handler     func()
-	HelpMenu    func()
-	SingleRun   bool // Boolean statement to check if the program can run with no arguments like "swiss build"
+	Name          string
+	Flags         []string
+	Subcommands   map[string]func(args *[]string)
+	Handler       func()
+	HelpMenu      func()
+	SingleRun     bool                 // Boolean statement to check if the program can run with no arguments like "swiss build"
 	ShortHandFunc func(args *[]string) // Short hand function that runs if single run function is ran like "swiss build"
 }
 
@@ -93,7 +92,7 @@ func buildCommand() Command {
 			"c":      func(args *[]string) { build.HandleBuildInput() },
 			"zig":    func(args *[]string) { build.HandleBuildInput() },
 		},
-		SingleRun: true,
+		SingleRun:     true,
 		ShortHandFunc: func(args *[]string) { build.BuildProject() },
 	}
 }
@@ -113,7 +112,7 @@ func runRunCommand() Command {
 			"python": func(args *[]string) { build.HandleRunInput() },
 		},
 		ShortHandFunc: func(args *[]string) { build.RunProject() },
-		SingleRun: true,
+		SingleRun:     true,
 	}
 }
 
@@ -148,23 +147,6 @@ func initCommand() Command {
 			"zig":    func(args *[]string) { initialize.CreateProject() },
 			"python": func(args *[]string) { initialize.CreateProject() },
 			"web":    func(args *[]string) { initialize.CreateWebProject() },
-		},
-	}
-}
-
-func createCommand() Command {
-	return Command{
-		Name:     "create",
-		HelpMenu: utils.CreateHelp,
-		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.CreateHelp() },
-			"--help": func(args *[]string) { utils.CreateHelp() },
-			"file": func(args *[]string) { create.CreateItems() },
-			"files": func(args *[]string) { create.CreateItems() },
-			"fi": func(args *[]string) { create.CreateItems() },
-			"folder": func(args *[]string) { create.CreateItems() },
-			"folders": func(args *[]string) { create.CreateItems() },
-			"fo": func(args *[]string) { create.CreateItems() },
 		},
 	}
 }
@@ -230,7 +212,7 @@ func runCommand() {
 			if cmd.Handler != nil {
 				cmd.Handler()
 			}
-			
+
 			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
 				cmd.ShortHandFunc(&utils.Arguments)
 			} else if len(utils.Arguments) <= 2 && cmd.HelpMenu != nil {
@@ -265,7 +247,6 @@ func init() {
 		dictionaryCommand(),
 		initCommand(),
 		netCommand(),
-		createCommand(),
 		generateCommand(),
 		shortcutCommand(),
 	}
