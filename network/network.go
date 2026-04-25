@@ -89,9 +89,12 @@ func GetPortStatus() {
 
 // Takes an endpoint as a string and prints the IPv4 and v6 address of the domain.
 func GetAddresses() {
+	// Connects to the domain via a given address
 	conn, err := net.LookupIP(endpoint)
-	networkCrashError(err, "IP addresses")
-
+	// Crashes the program if there is a network connection related error.
+	networkCrashError(err, "IP addresses") 
+	
+	// Prints all IP addresses that are tied to that address to the console.
 	for rows := range conn {
 		fmt.Println(conn[rows])
 	}
