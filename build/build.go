@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"swiss/utils"
 )
@@ -176,9 +178,21 @@ func UpdateSwiss() {
 	// Make directory to clone into
 	utils.MakeFolder("swiss_install", true)
 
+	// Cleans up swiss_install directory if the update process is interupted.
+	signalChannel := make(chan os.Signal, 1)
+	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
+	go func ()  {
+		<-signalChannel
+		utils.Reason("\nSwiss install interupted, cancelling and cleaning up install files.")
+		os.Chdir("..")
+		os.RemoveAll("swiss_install")
+		os.Exit(1)
+	}()
+
 	// Clone the repository
 	clone := exec.Command("git", "clone", "https://github.com/Tyy47/Swiss.git", "swiss_install/")
-
+	
+	// If there is an error in cloning the repository, it will crash and return an error statement.
 	if err := clone.Run(); err != nil {
 		utils.Error("Unable to clone Swiss repo. Install manually or create a bug report on the repository.")
 		utils.Crash(err)
