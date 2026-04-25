@@ -182,7 +182,7 @@ func UpdateSwiss() {
 	signalChannel := make(chan os.Signal, 1)
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 	go func ()  {
-		<-signalChannel
+		<-signalChannel 
 		utils.Reason("\nSwiss install interupted, cancelling and cleaning up install files.")
 		os.Chdir("..")
 		os.RemoveAll("swiss_install")
