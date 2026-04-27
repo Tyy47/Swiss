@@ -26,6 +26,7 @@ Angular - Bun/Vite: swiss init web angular
 Vue - Bun/Vite: swiss init web vue`
 
 type project struct {
+	Name       string // Captures the project name for use in other functions
 	Language   string
 	Tool       string
 	Arguments  []string
@@ -84,14 +85,12 @@ func registerProjects(project ...project) {
 	registry.projects = append(registry.projects, project...)
 }
 
-func flagHandler() {
-	args := utils.AdditionalArguments
-
-	if len(args) >= 1 {
-		for _, arg := range args {
+func flagHandler(additonalArgs *[]string, proj project) {
+	if len(*additonalArgs) >= 1 {
+		for _, arg := range *additonalArgs {
 			switch arg {
 			case "-g", "--git":
-				gitInit()
+				gitInit(proj)
 				return
 			case "-j", "--jujutsu":
 				jjInit()
@@ -104,18 +103,23 @@ func flagHandler() {
 }
 
 // Inits git in current directory when called.
-func gitInit() error {
+func gitInit(proj project) error {
+	if proj.Name != "" {
+		os.Chdir("./" + proj.Name)
+		defer os.Chdir("..")
+	} else {
+		// Make gitignore before adding files to repo so it can get added.
+		utils.MakeFile(".gitignore", false)
+		utils.MakeFile("TODO.md", false)
+		utils.MakeFile("README.md", false)
+	}
+
 	init := exec.Command("git", "init")
 
 	if err := init.Run(); err != nil {
 		utils.Error("Unable to init git")
 		return err
 	}
-
-	// Make gitignore before adding files to repo so it can get added.
-	utils.MakeFile(".gitignore", false)
-	utils.MakeFile("TODO.md", false)
-	utils.MakeFile("README.md", false)
 
 	add := exec.Command("git", "add", ".")
 
@@ -231,12 +235,13 @@ func createPythonProject() project {
 }
 
 func getWebProject() project {
-	projectName := utils.GetUserInput("Enter your project name: ", "my-app")
+	programName := utils.GetUserInput("Enter your project name: ", "my-app")
 
 	program := project{
+		Name: programName,
 		Language:   "web",
 		Tool:       "bun",
-		Arguments:  []string{"create", "vite", projectName, "--template"},
+		Arguments:  []string{"create", "vite", programName, "--template"},
 		ManualInit: false,
 	}
 
@@ -266,7 +271,7 @@ func CreateWebProject() {
 		return
 	}
 
-	flagHandler()
+	flagHandler(&utils.AdditionalArguments, project)
 	utils.Success("web project has been created.")
 }
 
@@ -282,7 +287,7 @@ func CreateProject() {
 				log.Fatal(err)
 				return
 			} else {
-				flagHandler()
+				flagHandler(&utils.AdditionalArguments, registry.projects[project])
 				utils.Success(registry.projects[project].Language + " project has been created.")
 				return
 
