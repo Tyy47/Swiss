@@ -34,6 +34,7 @@ func (c *CommandDB) registerCommand(command ...Command) {
 	c.Registry = append(c.Registry, command...)
 }
 
+// Looks through a map of the project registry and returns the lookup
 func commandLookup() map[string]*Command {
 	lookup := make(map[string]*Command)
 	for i := range GlobalCommandDatabase.Registry {
@@ -46,8 +47,7 @@ func commandLookup() map[string]*Command {
 	return lookup
 }
 
-// Registering commands //
-
+// Creates the "help" command and returns it
 func helpCommand() Command {
 	return Command{
 		Name:    "help",
@@ -56,6 +56,7 @@ func helpCommand() Command {
 	}
 }
 
+// Creates the "version" command and returns it
 func versionCommand() Command {
 	return Command{
 		Name:    "version",
@@ -64,6 +65,7 @@ func versionCommand() Command {
 	}
 }
 
+// Creates the "install" command and returns it
 func swissInstallCommand() Command {
 	return Command{
 		Name:    "install",
@@ -72,6 +74,7 @@ func swissInstallCommand() Command {
 	}
 }
 
+// Creates the "update" command and returns it
 func swissUpdateCommand() Command {
 	return Command{
 		Name:    "update",
@@ -80,6 +83,7 @@ func swissUpdateCommand() Command {
 	}
 }
 
+// Creates the "build" command and returns it
 func buildCommand() Command {
 	return Command{
 		Name:     "build",
@@ -97,6 +101,7 @@ func buildCommand() Command {
 	}
 }
 
+// Creates the "run" command and returns it
 func runRunCommand() Command {
 	return Command{
 		Name:     "run",
@@ -116,6 +121,7 @@ func runRunCommand() Command {
 	}
 }
 
+// Creates the "dictionary" command and returns it
 func dictionaryCommand() Command {
 	return Command{
 		Name:     "dict",
@@ -131,6 +137,7 @@ func dictionaryCommand() Command {
 	}
 }
 
+// Creates the "init" command and returns it
 func initCommand() Command {
 	return Command{
 		Name:     "init",
@@ -151,6 +158,7 @@ func initCommand() Command {
 	}
 }
 
+// Creates the "net" command and returns it
 func netCommand() Command {
 	return Command{
 		Name:     "net",
@@ -170,6 +178,7 @@ func netCommand() Command {
 	}
 }
 
+// Creates the "generate" command and returns it
 func generateCommand() Command {
 	return Command{
 		Name:     "gen",
@@ -183,6 +192,7 @@ func generateCommand() Command {
 	}
 }
 
+// Creates the "shortcut" command and returns it
 func shortcutCommand() Command {
 	return Command{
 		Name:     "sc",
@@ -199,32 +209,42 @@ func shortcutCommand() Command {
 
 // Find and run command in registry
 func runCommand() {
+	// Checks if the length of the users given arguments are less then two, if so, displays the main swiss help menu.
 	if len(utils.Arguments) < 2 {
 		utils.DisplayHelp()
 		return
 	}
-
+	
+	// Grabs arguments past swiss
 	args := utils.Arguments[1:]
+	// Creates the lookup map from the commandLookup function
 	lookup := commandLookup()
-
+	
+	// Loops through the arguments with an integer place for each argument
 	for i, arg := range args {
+		// Loops through the lookup map for commands to see if the exist
 		if cmd, ok := lookup[arg]; ok {
+			// If there is a function made in Handler, it will run it.
 			if cmd.Handler != nil {
 				cmd.Handler()
 			}
-
+			
+			// Statement to check if a command has SingleRun functionality. If it does, it runs the shorthand function.
+			// Else, if the length of the arguments is less then or equal to two and it has a help menu, it will display a help menu.
 			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
 				cmd.ShortHandFunc(&utils.Arguments)
 			} else if len(utils.Arguments) <= 2 && cmd.HelpMenu != nil {
 				cmd.HelpMenu()
 			}
-
+			
+			// Loops through all the valid subcommands
 			for _, subArg := range args[i+1:] {
+				// If the subcommand exists, it will execute the subcommand function
 				if subFunc, ok := cmd.Subcommands[subArg]; ok {
 					subFunc(&utils.Arguments)
 				}
 			}
-			return
+			//return Arg parser attempt change
 		}
 	}
 	utils.Warning(utils.Arguments[1] + " is not an available command.")
