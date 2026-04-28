@@ -11,22 +11,26 @@ import (
 	"swiss/utils"
 )
 
+// File return object to store the name, os file type, and error of an output file.
 type FileReturn struct {
 	name string
 	file *os.File
 	err  string
 }
 
+// Creation of the output file object
 var outputFile = FileReturn{
 	name: "swiss_net_output",
 	err:  "File already exists",
 }
 
+// Package variables to grab endpoint and port
 var (
 	endpoint = utils.CheckArguments(utils.Arguments, 3, 3)
 	port     = utils.CheckArguments(utils.Arguments, 4, 4)
 )
 
+// Specific crash message for networking related functions
 func networkCrashError(err error, data string) {
 	if err != nil {
 		utils.Error("Unable to gather " + data + " from " + endpoint + ".")
