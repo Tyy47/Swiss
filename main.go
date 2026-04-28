@@ -244,7 +244,7 @@ func runCommand() {
 					subFunc(&utils.Arguments)
 				}
 			}
-			//return Arg parser attempt change
+			return
 		}
 	}
 	utils.Warning(utils.Arguments[1] + " is not an available command.")
