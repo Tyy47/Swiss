@@ -174,7 +174,17 @@ func SwissInstall() {
 	}
 }
 
-func UpdateSwiss() {
+func UpdateSwiss(args *[]string) {
+	// Unstable check
+	installSwissUnstable := false
+
+	for _, toggle := range *args {
+		switch toggle {
+		case "-u", "--update":
+			installSwissUnstable = true
+		}
+	}
+
 	// Make directory to clone into
 	utils.MakeFolder("swiss_install", true)
 
@@ -204,6 +214,14 @@ func UpdateSwiss() {
 		utils.Error("Unable to change directory into swiss_install. Exiting.")
 		utils.Crash(err)
 		return
+	}
+	
+	// If the unstable toggle is true, it will switch to the unstable branch and install the unstable version of Swiss.
+	if installSwissUnstable {
+		if err := utils.RunCommand("git", "switch", "unstable"); err != nil {
+			utils.CrashCheck(err)
+		}
+
 	}
 
 	// Prompt the user to either go install or move to local/bin

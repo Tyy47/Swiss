@@ -79,7 +79,7 @@ func swissUpdateCommand() Command {
 	return Command{
 		Name:    "update",
 		Flags:   []string{"-u"},
-		Handler: build.UpdateSwiss,
+		Handler: func() { build.UpdateSwiss(&utils.Arguments)},
 	}
 }
 
