@@ -180,7 +180,9 @@ func UpdateSwiss(args *[]string) {
 
 	for _, toggle := range *args {
 		switch toggle {
-		case "-u", "--update":
+		case "-u":
+			installSwissUnstable = true
+		case "--unstable":
 			installSwissUnstable = true
 		}
 	}
@@ -188,12 +190,12 @@ func UpdateSwiss(args *[]string) {
 	// Make directory to clone into
 	utils.MakeFolder("swiss_install", true)
 
-	// Cleans up swiss_install directory if the update process is interupted.
+	// Cleans up swiss_install directory if the update process is interrupted.
 	signalChannel := make(chan os.Signal, 1)
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 	go func ()  {
 		<-signalChannel 
-		utils.Reason("\nSwiss install interupted, cancelling and cleaning up install files.")
+		utils.Reason("\nSwiss install interrupted, cancelling and cleaning up install files.")
 		os.Chdir("..")
 		os.RemoveAll("swiss_install")
 		os.Exit(1)
@@ -222,6 +224,7 @@ func UpdateSwiss(args *[]string) {
 			utils.CrashCheck(err)
 		}
 
+		utils.Note("Installing Swiss unstable.")
 	}
 
 	// Prompt the user to either go install or move to local/bin

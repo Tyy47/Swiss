@@ -78,7 +78,7 @@ func swissInstallCommand() Command {
 func swissUpdateCommand() Command {
 	return Command{
 		Name:    "update",
-		Flags:   []string{"-u"},
+		Flags:   []string{"update"},
 		Handler: func() { build.UpdateSwiss(&utils.Arguments)},
 	}
 }
