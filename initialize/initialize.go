@@ -25,6 +25,7 @@ React - Bun/Vite: swiss init web react
 Angular - Bun/Vite: swiss init web angular
 Vue - Bun/Vite: swiss init web vue`
 
+// Project structure for creation
 type project struct {
 	Name       string // Captures the project name for use in other functions
 	Language   string
@@ -35,28 +36,35 @@ type project struct {
 	ManualInit bool
 }
 
+// Projects storage type
 type projectRegistry struct {
 	projects []project
 }
 
+// Storage for containing valid initable projects
 var registry = projectRegistry{
 	projects: []project{},
 }
 
+// Prints a list of projects that can be init'd via Swiss commands
 func PrintInitProjectList() {
 	utils.Note("Languages are listed along side their build tools and the commands to init them via Swiss.\n")
 	fmt.Println(initProjectList)
 }
 
+// Project method that starts the creation of a project
 func (p *project) initialize() error {
+	// Loops over files in projects structure and creates them if there is any
 	for file := range p.Files {
 		utils.MakeFile(p.Files[file], false)
 	}
 
+	// Loops over folders in projects structure and creates them if there is any
 	for folder := range p.Folders {
 		utils.MakeFolder(p.Folders[folder], false)
 	}
-
+	
+	// Checks if a project has to be "manually" init'd. This means that the language of the project thats being initialized has a special setup.
 	if p.ManualInit {
 		// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
 		switch strings.ToLower(p.Language) {
@@ -67,24 +75,29 @@ func (p *project) initialize() error {
 		}
 		return nil
 	}
-
+	
+	// Executes a command using arguments from the Project structure
 	command := exec.Command(p.Tool, p.Arguments...)
-
+	
+	// Sets the commands standard out and error to the the terminal so it's viewable when something occurs
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
-
+	
+	// If the command cannot execute, it'll print a failed to init statement and return the error
 	if err := command.Run(); err != nil {
 		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
 		return err
 	}
-
+	
 	return nil
 }
 
+// Adds projects to the project registry by unpacking a project array
 func registerProjects(project ...project) {
 	registry.projects = append(registry.projects, project...)
 }
 
+// Handles additional flags that might be tossed into the init command when ran to execute additional functions.
 func flagHandler(additonalArgs *[]string, proj project) {
 	if len(*additonalArgs) >= 1 {
 		for _, arg := range *additonalArgs {
