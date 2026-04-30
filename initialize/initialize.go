@@ -16,6 +16,7 @@ C - Swiss: swiss init c
 HTML - Swiss: swiss init html
 Zig - Zig: swiss init zig
 Python - uv: swiss init python
+Typescript - bun: swiss init ts
 
 Web:
 Vanilla TS Web App - Bun/Vite: swiss init web
@@ -261,6 +262,15 @@ func createPythonProject() project {
 	return program
 }
 
+func createTSProject() project {
+	return project{
+		Language: "ts",
+		Tool: "bun",
+		Arguments: []string{"init", "--yes"},
+		ManualInit: false,
+	}
+}
+
 // Creates a web based project. Can be modified by users arguments for differing frameworks
 func getWebProject() (project, string) {
 	programName := utils.GetUserInput("Enter your project name: ", "my-app")
@@ -354,6 +364,7 @@ func init() {
 		createHTMLProject(),
 		createZigProject(),
 		createPythonProject(),
+		createTSProject(),
 	}
 
 	registerProjects(projectArray...)

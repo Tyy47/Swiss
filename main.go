@@ -153,6 +153,7 @@ func initCommand() Command {
 			"html":   func(args *[]string) { initialize.CreateProject() },
 			"zig":    func(args *[]string) { initialize.CreateProject() },
 			"python": func(args *[]string) { initialize.CreateProject() },
+			"ts": func(args *[]string) { initialize.CreateProject() },
 			"web":    func(args *[]string) { initialize.CreateWebProject() },
 		},
 	}
