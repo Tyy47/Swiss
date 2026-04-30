@@ -183,83 +183,71 @@ func jjInit() error {
 }
 
 func createRustProject() project {
-	program := project{
+	return project{
 		Language:   "rust",
 		Tool:       "cargo",
 		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
-
-	return program
 }
 
 func createGoProject() project {
 	args := utils.Arguments
 	if len(args) >= 4 {
-		program := project{
+		return project{
 			Language:   "go",
 			Tool:       "go",
 			Arguments:  []string{"mod", "init", args[3]},
 			Files:      []string{"main.go"},
 			ManualInit: false,
 		}
-		return program
 	} else {
-		program := project{
+		return project{
 			Language:   "go",
 			Tool:       "go",
 			Arguments:  []string{"mod", "init", "project"},
 			Files:      []string{"main.go"},
 			ManualInit: false,
 		}
-		return program
 	}
 }
 
 func createCProject() project {
-	program := project{
+	return project{
 		Language:   "c",
 		Tool:       "clang",
 		Folders:    []string{"src"},
 		Files:      []string{"main.c"},
 		ManualInit: true,
 	}
-
-	return program
 }
 
 func createHTMLProject() project {
-	program := project{
+	return project{
 		Language:   "html",
 		Tool:       "html",
 		Folders:    []string{},
 		Files:      []string{"TODO.md", "index.html", "styles.css", "main.js"},
 		ManualInit: true,
 	}
-
-	return program
 }
 
 func createZigProject() project {
-	program := project{
+	return project{
 		Language:   "zig",
 		Tool:       "zig",
 		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
-
-	return program
 }
 
 func createPythonProject() project {
-	program := project{
+	return project{
 		Language:   "python",
 		Tool:       "uv",
 		Arguments:  []string{"init"},
 		ManualInit: false,
 	}
-
-	return program
 }
 
 func createTSProject() project {
