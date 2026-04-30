@@ -45,14 +45,14 @@ func Connection() {
 	if err != nil {
 		utils.Crash(err)
 	}
-	
+
 	// Prints the status code neatly
 	fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
 	status, err := bufio.NewReader(conn).ReadString('\n')
 	if err != nil {
 		utils.Crash(err)
 	}
-	
+
 	// Closes the connection when everything is complete
 	defer conn.Close()
 	// Prints the result of the http status code.
@@ -68,22 +68,21 @@ func GetPortStatus() {
 		utils.Reason("Port exceeds or is under port range 0-65535")
 		return
 	}
-	
+
 	// Concats the address into a full string with the port
 	address := endpoint + ":" + strconv.Itoa(port)
 	// Timeout configured for the port.
 	timeout := 3 * time.Second
-	
+
 	// Connects to the address with the newly given port
 	conn, err := net.DialTimeout("tcp", address, timeout)
-
 	// Handles an error if the connection fails
 	if err != nil {
 		utils.Error("Port " + strconv.Itoa(port) + " is CLOSED on " + endpoint + ".")
 		utils.Reason(err.Error())
 		return
 	}
-	
+
 	// Closes the connection when the connection attempt is completed
 	defer conn.Close()
 
@@ -96,8 +95,8 @@ func GetAddresses() {
 	// Connects to the domain via a given address
 	conn, err := net.LookupIP(endpoint)
 	// Crashes the program if there is a network connection related error.
-	networkCrashError(err, "IP addresses") 
-	
+	networkCrashError(err, "IP addresses")
+
 	// Prints all IP addresses that are tied to that address to the console.
 	for rows := range conn {
 		fmt.Println(conn[rows])
@@ -112,22 +111,22 @@ func writeAddresses() {
 	networkCrashError(err, "IP Addresses")
 	// Open a new writer to write address output.
 	write := bufio.NewWriter(outputFile.file)
-	
+
 	// Writes IP Addresses title in output file and crashes if unable to write
 	if _, err := write.WriteString("\nIP Addresses: \n"); err != nil {
 		utils.CrashCheck(err)
 	}
-	
+
 	// Collects all available IP addresses and converts them to strings.
 	for rows := range conn {
 		val := conn[rows].String()
-	
+
 		// Writes all available addresses to output file and crashes if unable to write.
 		if _, err := write.WriteString(val + "\n"); err != nil {
 			utils.CrashCheck(err)
 		}
 	}
-	
+
 	// Closes the writer once the function is complete
 	write.Flush()
 }
@@ -138,7 +137,7 @@ func GetNameServer() {
 	conn, err := net.LookupNS(endpoint)
 	// Crashes the program if unable to connect
 	networkCrashError(err, "Name servers")
-	
+
 	// Prints all available nameservers to the console.
 	utils.Success("\nNameservers for " + endpoint + ".")
 	for rows := range conn {
@@ -168,7 +167,7 @@ func writeNameServer() {
 			utils.Crash(err)
 		}
 	}
-	
+
 	// Closes the writer once the function is complete
 	write.Flush()
 }
@@ -179,7 +178,7 @@ func GetCNameRecords() {
 	conn, err := net.LookupCNAME(endpoint)
 	// Crashes if unable to retrieve records
 	networkCrashError(err, "CNAME records")
-	
+
 	// Prints the known CNAME records to the console.
 	utils.Success("CNAME Records for " + endpoint + ".")
 	fmt.Println(conn)
@@ -191,20 +190,20 @@ func writeCNameRecords() {
 	conn, err := net.LookupCNAME(endpoint)
 	// Crashes the program if unable to connect
 	networkCrashError(err, "CNAME records")
-	
+
 	// Opens up a writer to write in the file
 	write := bufio.NewWriter(outputFile.file)
 	// Writes the CNAME records title in file.
 	if _, err := write.WriteString("\nCNAME Records: \n"); err != nil {
 		utils.CrashCheck(err)
 	}
-	
+
 	// Writes CNAME records into network output file.
 	_, errr := write.WriteString(conn)
 	if errr != nil {
 		utils.CrashCheck(err)
 	}
-	
+
 	// Closes the file once function is complete
 	write.Flush()
 }
@@ -215,7 +214,7 @@ func GetTXTRecords() {
 	conn, err := net.LookupTXT(endpoint)
 	// Crashes the program if unable to connect
 	networkCrashError(err, "TXT records")
-	
+
 	// Prints all known TXT records to the console.
 	utils.Success("TXT Records for " + endpoint + ".")
 	for rows := range conn {
@@ -229,20 +228,20 @@ func writeTXTRecords() {
 	conn, err := net.LookupTXT(endpoint)
 	// Crashes if unable to connect
 	networkCrashError(err, "TXT records")
-	
+
 	// Opens a new writer to write output file
 	write := bufio.NewWriter(outputFile.file)
 	// Writes TXT records title in output file
 	if _, err := write.WriteString("\n\nTXT Records: \n"); err != nil {
 		utils.CrashCheck(err)
 	}
-	
+
 	// Writes all TXT records to network output file
 	for rows := range conn {
 		_, err := write.WriteString(conn[rows] + "\n")
 		utils.CrashCheck(err)
 	}
-	
+
 	// Closes the writer when the function is complete
 	write.Flush()
 }
@@ -253,10 +252,10 @@ func GetMXRecords() {
 	conn, err := net.LookupMX(endpoint)
 	// Crashes the program if unable to connect.
 	networkCrashError(err, "MX records")
-	
+
 	// Success message for printing to the console
 	utils.Success("MX Records for " + endpoint + ".")
-	
+
 	// Prints all known MX Records to the console.
 	for rows := range conn {
 		fmt.Println("Host: " + conn[rows].Host + "\n")
@@ -269,14 +268,14 @@ func writeMXRecords() {
 	conn, err := net.LookupMX(endpoint)
 	// Crashes the program if unable to connect.
 	networkCrashError(err, "MX records")
-	
+
 	// Opens a new writer to write records to output file
 	write := bufio.NewWriter(outputFile.file)
 	// Writes MX records title in output file
 	if _, err := write.WriteString("\nMX Records: \n"); err != nil {
 		utils.CrashCheck(err)
 	}
-	
+
 	// Writes each MX records into output file.
 	for rows := range conn {
 		_, err := write.WriteString("Host: " + conn[rows].Host + "\n")

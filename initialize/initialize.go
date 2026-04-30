@@ -27,13 +27,13 @@ Vue - Bun/Vite: swiss init web vue`
 
 // Project structure for creation
 type project struct {
-	Name       string // Captures the project name for use in other functions
-	Language   string // Stores the language for the project
-	Tool       string // Build tool
-	Arguments  []string // Arguments needed to init project 
+	Name       string   // Captures the project name for use in other functions
+	Language   string   // Stores the language for the project
+	Tool       string   // Build tool
+	Arguments  []string // Arguments needed to init project
 	Folders    []string // Additional folders needed for project
 	Files      []string // Additional files needed for project
-	ManualInit bool // Toggle if a project needs a manual init like C as C doesn't have a traditional init tool like typescript/bun.
+	ManualInit bool     // Toggle if a project needs a manual init like C as C doesn't have a traditional init tool like typescript/bun.
 }
 
 // Projects storage type
@@ -63,7 +63,7 @@ func (p *project) initialize() error {
 	for folder := range p.Folders {
 		utils.MakeFolder(p.Folders[folder], false)
 	}
-	
+
 	// Checks if a project has to be "manually" init'd. This means that the language of the project thats being initialized has a special setup.
 	if p.ManualInit {
 		// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
@@ -75,20 +75,20 @@ func (p *project) initialize() error {
 		}
 		return nil
 	}
-	
+
 	// Executes a command using arguments from the Project structure
 	command := exec.Command(p.Tool, p.Arguments...)
-	
+
 	// Sets the commands standard out and error to the the terminal so it's viewable when something occurs
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
-	
+
 	// If the command cannot execute, it'll print a failed to init statement and return the error
 	if err := command.Run(); err != nil {
 		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -127,40 +127,40 @@ func gitInit(proj project) error {
 		utils.MakeFile("TODO.md", false)
 		utils.MakeFile("README.md", false)
 	}
-	
+
 	// Initing git command
 	init := exec.Command("git", "init")
-	
-	// Runs git init and returns an error if unable to 
+
+	// Runs git init and returns an error if unable to
 	if err := init.Run(); err != nil {
 		utils.Error("Unable to init git")
 		utils.Reason(err.Error())
 		return err
 	}
-	
+
 	// Command to add all files to the repository
 	add := exec.Command("git", "add", ".")
-	
+
 	// Runs the add command and returns the error if unsuccessful
 	if err := add.Run(); err != nil {
 		utils.Error("Unable to add files to git project")
 		utils.Reason(err.Error())
 		return err
 	}
-	
+
 	// Renames the master branch to "main" command
 	mainBranch := exec.Command("git", "branch", "-M", "main")
-	
+
 	// Runs the rename command and returns the err if unsuccessful
 	if err := mainBranch.Run(); err != nil {
 		utils.Error("Unable to change main branch to 'main'.")
 		utils.Reason(err.Error())
 		return err
 	}
-	
+
 	// Success message when finished
 	utils.Success("Git has been initialized.")
-	
+
 	return nil
 }
 
@@ -168,14 +168,14 @@ func gitInit(proj project) error {
 func jjInit() error {
 	// Init jujutsu command
 	init := exec.Command("jj", "git", "init")
-	
+
 	// Runs the init command and returns the error if unsuccessful
 	if err := init.Run(); err != nil {
 		utils.Error("Unable to init JJ")
 		utils.Reason(err.Error())
 		return err
 	}
-	
+
 	// Success message if jj has been init'd
 	utils.Success("Jujutsu has been initialized.")
 
@@ -252,9 +252,9 @@ func createPythonProject() project {
 
 func createTSProject() project {
 	return project{
-		Language: "ts",
-		Tool: "bun",
-		Arguments: []string{"init", "--yes"},
+		Language:   "ts",
+		Tool:       "bun",
+		Arguments:  []string{"init", "--yes"},
 		ManualInit: false,
 	}
 }
@@ -265,7 +265,7 @@ func getWebProject() (project, string) {
 	var framework string // Allows to be more specific in success messages.
 
 	program := project{
-		Name: programName,
+		Name:       programName,
 		Language:   "web",
 		Tool:       "bun",
 		Arguments:  []string{"create", "vite", programName, "--template"},
@@ -296,13 +296,13 @@ func getWebProject() (project, string) {
 func CreateWebProject() {
 	// Grabs the project that is the result of the getWebProject function
 	project, framework := getWebProject()
-	
+
 	// Attempts to initialize the web project, if it fails, it will crash.
 	if err := project.initialize(); err != nil {
 		utils.CrashCheck(err)
 		return
 	}
-	
+
 	// Executes the flag handler for any additional arguments that are providied
 	flagHandler(&utils.AdditionalArguments, project)
 
@@ -311,7 +311,7 @@ func CreateWebProject() {
 		utils.Success(framework + " project has been created.")
 		return
 	}
-	
+
 	utils.Success("web project has been created.")
 }
 
@@ -320,7 +320,7 @@ func CreateProject() {
 	if len(utils.Arguments) < 3 {
 		return
 	}
-	
+
 	// Grabs the name of the project the user init's
 	argument := strings.ToLower(utils.Arguments[2])
 	// Loops through projects in the registry

@@ -79,7 +79,7 @@ func swissUpdateCommand() Command {
 	return Command{
 		Name:    "update",
 		Flags:   []string{"update"},
-		Handler: func() { build.UpdateSwiss(&utils.Arguments)},
+		Handler: func() { build.UpdateSwiss(&utils.Arguments) },
 	}
 }
 
@@ -153,7 +153,7 @@ func initCommand() Command {
 			"html":   func(args *[]string) { initialize.CreateProject() },
 			"zig":    func(args *[]string) { initialize.CreateProject() },
 			"python": func(args *[]string) { initialize.CreateProject() },
-			"ts": func(args *[]string) { initialize.CreateProject() },
+			"ts":     func(args *[]string) { initialize.CreateProject() },
 			"web":    func(args *[]string) { initialize.CreateWebProject() },
 		},
 	}
@@ -215,12 +215,12 @@ func runCommand() {
 		utils.DisplayHelp()
 		return
 	}
-	
+
 	// Grabs arguments past swiss
 	args := utils.Arguments[1:]
 	// Creates the lookup map from the commandLookup function
 	lookup := commandLookup()
-	
+
 	// Loops through the arguments with an integer place for each argument
 	for i, arg := range args {
 		// Loops through the lookup map for commands to see if the exist
@@ -229,7 +229,7 @@ func runCommand() {
 			if cmd.Handler != nil {
 				cmd.Handler()
 			}
-			
+
 			// Statement to check if a command has SingleRun functionality. If it does, it runs the shorthand function.
 			// Else, if the length of the arguments is less then or equal to two and it has a help menu, it will display a help menu.
 			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
@@ -237,7 +237,7 @@ func runCommand() {
 			} else if len(utils.Arguments) <= 2 && cmd.HelpMenu != nil {
 				cmd.HelpMenu()
 			}
-			
+
 			// Loops through all the valid subcommands
 			for _, subArg := range args[i+1:] {
 				// If the subcommand exists, it will execute the subcommand function

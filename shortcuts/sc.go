@@ -18,7 +18,7 @@ func GitCommitSC() {
 		utils.Error("Unable to add files to commit, make sure there is changes to add.")
 		return
 	}
-	
+
 	// Checks if message can be added to commit
 	if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
 		utils.Error("Unable to add files to commit, make sure there is changes to add.")
@@ -38,7 +38,7 @@ func GitPushSC() {
 			utils.Error("Unable to add files to commit, make sure there is changes to add.")
 			return
 		}
-		
+
 		// Assigns message to commitMessage then commits
 		commitMessage = utils.AdditionalArguments[0]
 		if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
@@ -59,13 +59,13 @@ func GitPushSC() {
 
 func GitSyncSC() {
 	utils.Note("Updating local repository...")
-	
+
 	// Grabs any changes from repository and updates local repo
 	if err := utils.RunCommand("git", "fetch"); err != nil {
 		utils.Error("Unable to fetch git repository.")
 		return
 	}
-	
+
 	// Prints a status message of changes to the repository.
 	if err := utils.RunCommand("git", "status"); err != nil {
 		utils.Error("Unable to display git status.")
