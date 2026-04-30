@@ -262,8 +262,9 @@ func createPythonProject() project {
 }
 
 // Creates a web based project. Can be modified by users arguments for differing frameworks
-func getWebProject() project {
+func getWebProject() (project, string) {
 	programName := utils.GetUserInput("Enter your project name: ", "my-app")
+	var framework string // Allows to be more specific in success messages.
 
 	program := project{
 		Name: programName,
@@ -273,33 +274,46 @@ func getWebProject() project {
 		ManualInit: false,
 	}
 
-	for _, argument := range utils.AdditionalArguments {
-		switch argument {
-		case "react":
-			program.Arguments = append(program.Arguments, "react-ts")
-		case "sv", "svelte":
-			program.Arguments = append(program.Arguments, "svelte-ts")
-		case "angular":
-			program.Arguments = append(program.Arguments, "angular-ts")
-		case "vue":
-			program.Arguments = append(program.Arguments, "vue-ts")
-		default:
-			program.Arguments = append(program.Arguments, "vanilla-ts")
-		}
+	switch utils.AdditionalArguments[0] {
+	case "react":
+		program.Arguments = append(program.Arguments, "react-ts")
+		framework = "react"
+	case "sv", "svelte":
+		program.Arguments = append(program.Arguments, "svelte-ts")
+		framework = "svelte"
+	case "angular":
+		program.Arguments = append(program.Arguments, "angular-ts")
+		framework = "angular"
+	case "vue":
+		program.Arguments = append(program.Arguments, "vue-ts")
+		framework = "vue"
+	default:
+		program.Arguments = append(program.Arguments, "vanilla-ts")
+		framework = "web"
 	}
 
-	return program
+	return program, framework
 }
 
 func CreateWebProject() {
-	project := getWebProject()
-
+	// Grabs the project that is the result of the getWebProject function
+	project, framework := getWebProject()
+	
+	// Attempts to initialize the web project, if it fails, it will crash.
 	if err := project.initialize(); err != nil {
-		utils.Crash(err)
+		utils.CrashCheck(err)
 		return
 	}
-
+	
+	// Executes the flag handler for any additional arguments that are providied
 	flagHandler(&utils.AdditionalArguments, project)
+
+	// Checks if the framework contains anything other then web, then changes the success message.
+	if framework != "web" {
+		utils.Success(framework + " project has been created.")
+		return
+	}
+	
 	utils.Success("web project has been created.")
 }
 
