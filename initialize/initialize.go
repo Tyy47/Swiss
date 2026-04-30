@@ -28,12 +28,12 @@ Vue - Bun/Vite: swiss init web vue`
 // Project structure for creation
 type project struct {
 	Name       string // Captures the project name for use in other functions
-	Language   string
-	Tool       string
-	Arguments  []string
-	Folders    []string
-	Files      []string
-	ManualInit bool
+	Language   string // Stores the language for the project
+	Tool       string // Build tool
+	Arguments  []string // Arguments needed to init project 
+	Folders    []string // Additional folders needed for project
+	Files      []string // Additional files needed for project
+	ManualInit bool // Toggle if a project needs a manual init like C as C doesn't have a traditional init tool like typescript/bun.
 }
 
 // Projects storage type
