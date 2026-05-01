@@ -22,7 +22,7 @@ var (
 
 // Prints the Swiss version number to the console
 func PrintVersionNumber() {
-	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
+	fmt.Println("Swiss version number: " + Colors.Green(VERSION_NUMBER))
 }
 
 // The function displays a message stating Swiss has crashed and a message stating the crash reason

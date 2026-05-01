@@ -123,6 +123,7 @@ func BuildProject() {
 
 	if !result {
 		utils.Error("Unable to build project, check inputted language to see if it's in Swiss build list.")
+		return
 	}
 
 	project.initialize()
