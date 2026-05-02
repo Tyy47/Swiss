@@ -12,7 +12,7 @@ import (
 )
 
 // Swiss version number
-const VERSION_NUMBER string = "1.1.0"
+const VERSION_NUMBER string = "1.1.1"
 
 // Global Arguments
 var (
