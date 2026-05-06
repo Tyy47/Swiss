@@ -148,12 +148,38 @@ func gitInit(proj project) error {
 		return err
 	}
 
+	// Command to create an initial commit message.
+	commit := exec.Command("git", "commit", "-m", `"initial"`)
+
+	if err := commit.Run(); err != nil {
+		utils.Error("Unable to create an initial commit message")
+		utils.Reason(err.Error())
+		return err
+	}
+
 	// Renames the master branch to "main" command
 	mainBranch := exec.Command("git", "branch", "-M", "main")
 
 	// Runs the rename command and returns the err if unsuccessful
 	if err := mainBranch.Run(); err != nil {
 		utils.Error("Unable to change main branch to 'main'.")
+		utils.Reason(err.Error())
+		return err
+	}
+
+	// Adds the remote repository link and runs the git command
+	remoteAdd := exec.Command("git", "remote", "add", "origin", utils.GetUserInput("Enter remote repository url: ", ""))
+	if err := remoteAdd.Run(); err != nil {
+		utils.Error("Unable to add the remote repository url.")
+		utils.Reason(err.Error())
+		return err
+	}
+
+	// Pushes the initial commit to the remote repository
+	utils.Success("Pushing to remote repository...")
+	push := exec.Command("git", "push", "-u", "origin", "main")
+	if err := push.Run(); err != nil {
+		utils.Error("Unable to push initial commit to remote repository.")
 		utils.Reason(err.Error())
 		return err
 	}
