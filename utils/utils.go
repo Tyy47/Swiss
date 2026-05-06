@@ -12,7 +12,7 @@ import (
 )
 
 // Swiss version number
-const VERSION_NUMBER string = "1.1.0"
+const VERSION_NUMBER string = "1.1.1"
 
 // Global Arguments
 var (
@@ -22,7 +22,7 @@ var (
 
 // Prints the Swiss version number to the console
 func PrintVersionNumber() {
-	fmt.Println("Swiss version number: " + ColorGreen + VERSION_NUMBER + ColorReset)
+	fmt.Println("Swiss version number: " + Colors.Green(VERSION_NUMBER))
 }
 
 // The function displays a message stating Swiss has crashed and a message stating the crash reason

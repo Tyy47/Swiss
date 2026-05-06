@@ -111,6 +111,7 @@ func RunProject() {
 
 	if !result {
 		utils.Error("Unable to run project, check inputted language to see if it's in Swiss run list.")
+		return
 	}
 
 	project.initializeRun()
