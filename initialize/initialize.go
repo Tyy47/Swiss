@@ -98,9 +98,9 @@ func registerProjects(project ...project) {
 }
 
 // Handles additional flags that might be tossed into the init command when ran to execute additional functions.
-func flagHandler(additonalArgs *[]string, proj project) {
-	if len(*additonalArgs) >= 1 {
-		for _, arg := range *additonalArgs {
+func flagHandler(additionalArgs *[]string, proj project) {
+	if len(*additionalArgs) >= 1 {
+		for _, arg := range *additionalArgs {
 			switch arg {
 			case "-g", "--git":
 				gitInit(proj)
@@ -122,7 +122,7 @@ func gitInit(proj project) error {
 		os.Chdir("./" + proj.Name)
 		defer os.Chdir("..") // Changes back to original directory when function finishes
 	} else {
-		// Creates all the files that are ususally in a repository
+		// Creates all the files that are usually in a repository
 		utils.MakeFile(".gitignore", false)
 		utils.MakeFile("TODO.md", false)
 		utils.MakeFile("README.md", false)
@@ -327,7 +327,7 @@ func CreateProject() {
 	for project := range len(registry.projects) {
 		// Checks if an argument is in the products registry
 		if argument == registry.projects[project].Language {
-			// Runs the initalize method of the project if the project has been found, if it's an error, it checks if it's a crash.
+			// Runs the initialize method of the project if the project has been found, if it's an error, it checks if it's a crash.
 			if err := registry.projects[project].initialize(); err != nil {
 				utils.CrashCheck(err)
 				return
