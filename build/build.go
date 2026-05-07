@@ -36,8 +36,8 @@ func PrintBuildProgramList() {
 	fmt.Println(buildProgramList)
 }
 
-func (b *buildRegistry) addToBuildRegistry(newBuild build) {
-	b.builds = append(b.builds, newBuild)
+func (b *buildRegistry) addToBuildRegistry(newBuild ...build) {
+	b.builds = append(b.builds, newBuild...)
 }
 
 func (b *build) initialize() error {
@@ -95,6 +95,15 @@ func buildZigProject() build {
 	}
 
 	return zigBuild
+}
+
+func buildWebProject() build {
+	return build{
+		Language: "web",
+		Tool: "bun",
+		Arguments: []string{"run", "build"},
+		BuildFile: "package.json",
+	}
 }
 
 func scanForBuildFiles() (bool, build) {
@@ -275,8 +284,13 @@ func UpdateSwiss(args *[]string) {
 }
 
 func init() {
-	registry.builds = append(registry.builds, buildGoProject())
-	registry.builds = append(registry.builds, buildRustProject())
-	registry.builds = append(registry.builds, buildCProject())
-	registry.builds = append(registry.builds, buildZigProject())
+	buildList := []build{
+		buildGoProject(),
+		buildRustProject(),
+		buildCProject(),
+		buildZigProject(),
+		buildWebProject(),
+	}
+
+	registry.addToBuildRegistry(buildList...)
 }
