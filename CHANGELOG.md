@@ -1,5 +1,7 @@
 # Swiss 1.1.1
 
+## Build:
+- Added web support to build module by using bun & vite.
 
 
 ## Misc:
