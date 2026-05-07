@@ -14,7 +14,8 @@ import (
 const buildProgramList = `Rust: Cargo
 C: Clang
 Go: Go
-Zig: Zig`
+Zig: Zig
+Web: Bun/Vite`
 
 type build struct {
 	Language  string
@@ -36,8 +37,8 @@ func PrintBuildProgramList() {
 	fmt.Println(buildProgramList)
 }
 
-func (b *buildRegistry) addToBuildRegistry(newBuild build) {
-	b.builds = append(b.builds, newBuild)
+func (b *buildRegistry) addToBuildRegistry(newBuild ...build) {
+	b.builds = append(b.builds, newBuild...)
 }
 
 func (b *build) initialize() error {
@@ -54,47 +55,48 @@ func (b *build) initialize() error {
 }
 
 func buildRustProject() build {
-	rustBuild := build{
+	return build{
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"build", "--release"},
 		BuildFile: "Cargo.toml",
 	}
-
-	return rustBuild
 }
 
 func buildGoProject() build {
-	goBuild := build{
+	return build{
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"build"},
 		BuildFile: "main.go",
 	}
-
-	return goBuild
 }
 
 func buildCProject() build {
-	cBuild := build{
+	return build{
 		Language:  "c",
 		Tool:      "clang",
 		Arguments: []string{"main.c", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-g", "-o", "main"},
 		BuildFile: "main.c",
 	}
-
-	return cBuild
 }
 
 func buildZigProject() build {
-	zigBuild := build{
+	return build{
 		Language:  "zig",
 		Tool:      "zig",
 		Arguments: []string{"build"},
 		BuildFile: "main.zig",
 	}
+}
 
-	return zigBuild
+func buildWebProject() build {
+	return build{
+		Language: "web",
+		Tool: "bun",
+		Arguments: []string{"run", "build"},
+		BuildFile: "package.json",
+	}
 }
 
 func scanForBuildFiles() (bool, build) {
@@ -275,8 +277,13 @@ func UpdateSwiss(args *[]string) {
 }
 
 func init() {
-	registry.builds = append(registry.builds, buildGoProject())
-	registry.builds = append(registry.builds, buildRustProject())
-	registry.builds = append(registry.builds, buildCProject())
-	registry.builds = append(registry.builds, buildZigProject())
+	buildList := []build{
+		buildGoProject(),
+		buildRustProject(),
+		buildCProject(),
+		buildZigProject(),
+		buildWebProject(),
+	}
+
+	registry.addToBuildRegistry(buildList...)
 }
