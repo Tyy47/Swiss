@@ -14,7 +14,8 @@ import (
 const buildProgramList = `Rust: Cargo
 C: Clang
 Go: Go
-Zig: Zig`
+Zig: Zig
+Web: Bun/Vite`
 
 type build struct {
 	Language  string
