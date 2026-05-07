@@ -54,47 +54,39 @@ func (b *build) initialize() error {
 }
 
 func buildRustProject() build {
-	rustBuild := build{
+	return build{
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"build", "--release"},
 		BuildFile: "Cargo.toml",
 	}
-
-	return rustBuild
 }
 
 func buildGoProject() build {
-	goBuild := build{
+	return build{
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"build"},
 		BuildFile: "main.go",
 	}
-
-	return goBuild
 }
 
 func buildCProject() build {
-	cBuild := build{
+	return build{
 		Language:  "c",
 		Tool:      "clang",
 		Arguments: []string{"main.c", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-g", "-o", "main"},
 		BuildFile: "main.c",
 	}
-
-	return cBuild
 }
 
 func buildZigProject() build {
-	zigBuild := build{
+	return build{
 		Language:  "zig",
 		Tool:      "zig",
 		Arguments: []string{"build"},
 		BuildFile: "main.zig",
 	}
-
-	return zigBuild
 }
 
 func buildWebProject() build {
