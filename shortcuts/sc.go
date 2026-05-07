@@ -71,7 +71,26 @@ func GitSyncSC() {
 		utils.Error("Unable to display git status.")
 		return
 	}
+	
+	// Loops over all arguments and searches for -p or --pull
+	// If detected, it will pull all available changes from the repo into your local folder.
+	toggle := false
+	for _, arg := range utils.Arguments {
+		switch arg {
+		case "-p", "--pull":
+			if err := utils.RunCommand("git", "pull"); err != nil {
+				utils.Error("Unable to pull changes from repository.")
+			} else {
+				toggle = true
+			}
+		}
+	}
 
 	// Success message stating repository has been updated.
 	utils.Success("Local repository updated.")
+	
+	// If toggle is ticked to true, it will print a success message stating the changes we're pulled as well.
+	if toggle {
+		utils.Success("Changes from remote repository has been pulled.")
+	}
 }
