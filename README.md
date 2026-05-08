@@ -4,6 +4,7 @@
 <p>A cli army knife of tools for developers</p>
 
 [Documentation](./DOCS.md) 
+[Dependcenies](./DEPENDENCIES.md)
 
 <hr>
 
