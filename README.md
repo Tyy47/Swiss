@@ -3,8 +3,9 @@
 <h1>Swiss</h1>
 <p>A cli army knife of tools for developers</p>
 
-[Documentation](./DOCS.md) 
-[Dependcenies](./DEPENDENCIES.md)
+[Documentation](./DOCS.md) \
+[Dependencies](./DEPENDENCIES.md)  
+
 
 <hr>
 
