@@ -119,7 +119,10 @@ func flagHandler(additionalArgs *[]string, proj project) {
 func gitInit(proj project) error {
 	// Changes directory into init'd project folder
 	if proj.Name != "" {
-		os.Chdir("./" + proj.Name)
+		if err := os.Chdir("./" + proj.Name); err != nil {
+			utils.Error("Unable to change to project directory: " + err.Error())
+			return err
+		}
 		defer os.Chdir("..") // Changes back to original directory when function finishes
 	} else {
 		// Creates all the files that are usually in a repository
@@ -149,7 +152,7 @@ func gitInit(proj project) error {
 	}
 
 	// Command to create an initial commit message.
-	commit := exec.Command("git", "commit", "-m", `"initial"`)
+	commit := exec.Command("git", "commit", "-m", "initial")
 
 	if err := commit.Run(); err != nil {
 		utils.Error("Unable to create an initial commit message")
@@ -298,7 +301,11 @@ func getWebProject() (project, string) {
 		ManualInit: false,
 	}
 
-	switch utils.AdditionalArguments[0] {
+	var webFramework string
+	if len(utils.AdditionalArguments) > 0 {
+		webFramework = utils.AdditionalArguments[0]
+	}
+	switch webFramework {
 	case "react":
 		program.Arguments = append(program.Arguments, "react-ts")
 		framework = "react"

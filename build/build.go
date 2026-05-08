@@ -128,7 +128,11 @@ func BuildProject() {
 		return
 	}
 
-	project.initialize()
+	if err := project.initialize(); err != nil {
+		utils.Error("Unable to compile project.")
+		utils.Crash(err)
+		return
+	}
 	utils.Success(project.Language + " project has been compiled.")
 }
 
@@ -158,7 +162,15 @@ func SwissInstall() {
 	system := utils.GetOperatingSystem()
 	if system == "linux" {
 		// Builds Go program
-		registry.builds[0].initialize()
+		if len(registry.builds) == 0 {
+			utils.Error("No build configurations available.")
+			return
+		}
+		if err := registry.builds[0].initialize(); err != nil {
+			utils.Error("Unable to build Swiss for install.")
+			utils.Crash(err)
+			return
+		}
 
 		command := exec.Command("mv", "swiss", "/home/"+utils.GetUsersName()+"/.local/bin/")
 

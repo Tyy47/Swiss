@@ -80,15 +80,15 @@ func GitSyncSC() {
 		case "-p", "--pull":
 			if err := utils.RunCommand("git", "pull"); err != nil {
 				utils.Error("Unable to pull changes from repository.")
-			} else {
-				toggle = true
+				return
 			}
+			toggle = true
 		}
 	}
 
 	// Success message stating repository has been updated.
 	utils.Success("Local repository updated.")
-	
+
 	// If toggle is ticked to true, it will print a success message stating the changes we're pulled as well.
 	if toggle {
 		utils.Success("Changes from remote repository has been pulled.")

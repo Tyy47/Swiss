@@ -201,7 +201,7 @@ func writeCNameRecords() {
 	// Writes CNAME records into network output file.
 	_, errr := write.WriteString(conn)
 	if errr != nil {
-		utils.CrashCheck(err)
+		utils.CrashCheck(errr)
 	}
 
 	// Closes the file once function is complete
@@ -306,6 +306,7 @@ func initFileCreation() {
 // Culminates all of the data in the above functions, then outputs all the data into a file for viewing.
 func GatherData() {
 	initFileCreation()
+	defer outputFile.file.Close()
 	writeAddresses()
 	writeNameServer()
 	writeCNameRecords()

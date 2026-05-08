@@ -32,7 +32,7 @@ var runStorage = runRegistry{
 
 func PrintRunProgramList() {
 	utils.Note("Languages are listed with their build tools.")
-	fmt.Println(buildProgramList)
+	fmt.Println(runProgramList)
 }
 
 func (r *runRegistry) addToRunRegistry(newRun ...run) {
@@ -114,7 +114,11 @@ func RunProject() {
 		return
 	}
 
-	project.initializeRun()
+	if err := project.initializeRun(); err != nil {
+		utils.Error("Unable to run project.")
+		utils.Crash(err)
+		return
+	}
 	utils.Success(project.Language + " project has been ran.")
 }
 
