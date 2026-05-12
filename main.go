@@ -257,7 +257,7 @@ func main() {
 
 // Registers command into registry on program startup
 func init() {
-	// Register Commands
+	// Register Commands into an array
 	commandArray := []Command{
 		helpCommand(),
 		versionCommand(),
@@ -271,6 +271,7 @@ func init() {
 		generateCommand(),
 		shortcutCommand(),
 	}
-
+	
+	// Registers commands one by one by unpacking command array
 	GlobalCommandDatabase.registerCommand(commandArray...)
 }
