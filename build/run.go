@@ -54,36 +54,30 @@ func (r *run) initializeRun() error {
 }
 
 func runRustProject() run {
-	runRust := run{
+	return run{
 		Language:  "rust",
 		Tool:      "cargo",
 		Arguments: []string{"run"},
 		RunFile: "Cargo.toml",
 	}
-
-	return runRust
 }
 
 func runGoProject() run {
-	goRun := run{
+	return run{
 		Language:  "go",
 		Tool:      "go",
 		Arguments: []string{"run", "main.go"},
 		RunFile: "main.go",
 	}
-
-	return goRun
 }
 
 func runPythonProject() run {
-	pythonRun := run{
+	return run{
 		Language:  "python",
 		Tool:      "python",
 		Arguments: []string{"main.py"},
 		RunFile: "main.py",
 	}
-
-	return pythonRun
 }
 
 func runTypescriptProject() run {
