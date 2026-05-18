@@ -6,6 +6,9 @@
 ## Build:
 - Added web support to build module by using bun & vite.
 
+## Run:
+- Added run support to Typescript CLI apps (Main file must be named main.ts)
+
 ## Shortcuts
 - Added optional argument to the sync shortcut to also pull changes using -p or --pull.
 

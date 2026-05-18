@@ -13,6 +13,7 @@ const runProgramList = `
 Rust: Cargo
 Go: Go
 Python: Python
+Typescript: Bun
 `
 
 type run struct {
@@ -85,6 +86,15 @@ func runPythonProject() run {
 	return pythonRun
 }
 
+func runTypescriptProject() run {
+	return run{
+		Language: "typescript",
+		Tool: "bun",
+		Arguments: []string{"main.ts"},
+		RunFile: "main.ts",
+	}
+}
+
 func scanForRunFiles() (bool, run) {
 	// Scan directory for all files.
 	files, err := os.ReadDir(".")
@@ -148,6 +158,7 @@ func init() {
 		runGoProject(),
 		runRustProject(),
 		runPythonProject(),
+		runTypescriptProject(),
 	}
 
 	runStorage.addToRunRegistry(runArray...)
