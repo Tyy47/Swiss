@@ -99,19 +99,13 @@ func registerProjects(project ...project) {
 
 // Handles additional flags that might be tossed into the init command when ran to execute additional functions.
 func flagHandler(additionalArgs *[]string, proj project) {
-	if len(*additionalArgs) >= 1 {
-		for _, arg := range *additionalArgs {
-			switch arg {
-			case "-g", "--git":
-				gitInit(proj)
-				return
-			case "-j", "--jujutsu":
-				jjInit()
-				return
-			}
+	for _, arg := range *additionalArgs {
+		switch arg {
+		case "-g", "--git":
+			gitInit(proj)
+		case "-j", "--jujutsu":
+			jjInit()
 		}
-	} else {
-		return
 	}
 }
 
@@ -170,8 +164,15 @@ func gitInit(proj project) error {
 		return err
 	}
 
-	// Adds the remote repository link and runs the git command
-	remoteAdd := exec.Command("git", "remote", "add", "origin", utils.GetUserInput("Enter remote repository url: ", ""))
+	// Adds the remote repository link if the user provides one.
+	remoteURL := utils.GetUserInput("Enter remote repository url (leave blank to skip): ", "")
+	if remoteURL == "" {
+		utils.Note("No remote URL provided, skipping remote add and push.")
+		utils.Success("Git has been initialized.")
+		return nil
+	}
+
+	remoteAdd := exec.Command("git", "remote", "add", "origin", remoteURL)
 	if err := remoteAdd.Run(); err != nil {
 		utils.Error("Unable to add the remote repository url.")
 		utils.Reason(err.Error())

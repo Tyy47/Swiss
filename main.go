@@ -239,10 +239,20 @@ func runCommand() {
 			}
 
 			// Loops through all the valid subcommands
-			for _, subArg := range args[i+1:] {
+			subArgs := args[i+1:]
+			matched := false
+			for _, subArg := range subArgs {
 				// If the subcommand exists, it will execute the subcommand function
 				if subFunc, ok := cmd.Subcommands[subArg]; ok {
 					subFunc(&utils.Arguments)
+					matched = true
+				}
+			}
+			// If a subcommand was provided but none matched, give the user feedback.
+			if len(subArgs) > 0 && !matched && len(cmd.Subcommands) > 0 {
+				utils.Warning(subArgs[0] + " is not a valid subcommand for " + cmd.Name + ".")
+				if cmd.HelpMenu != nil {
+					cmd.HelpMenu()
 				}
 			}
 			return

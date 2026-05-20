@@ -63,7 +63,14 @@ func GenerateSecret() {
 	}
 
 	intLength, err := strconv.Atoi(secretLength)
-	utils.CrashCheck(err)
+	if err != nil {
+		utils.Error("Length must be a positive integer.")
+		return
+	}
+	if intLength < 1 {
+		utils.Error("Length must be a positive integer.")
+		return
+	}
 
 	secretCode := stringGenerator(intLength)
 	utils.Success("Secret code generated.")
