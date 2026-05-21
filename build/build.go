@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -130,7 +131,7 @@ func BuildProject() {
 
 	if err := project.initialize(); err != nil {
 		utils.Error("Unable to compile project.")
-		utils.Crash(err)
+		utils.Reason(err.Error())
 		return
 	}
 	utils.Success(project.Language + " project has been compiled.")
@@ -147,7 +148,8 @@ func HandleBuildInput() {
 	for build := range len(registry.builds) {
 		if argument == registry.builds[build].Language {
 			if err := registry.builds[build].initialize(); err != nil {
-				utils.Crash(err)
+				utils.Error("Unable to compile project.")
+				utils.Reason(err.Error())
 				return
 			} else {
 				utils.Success(registry.builds[build].Language + " project has been compiled.")
@@ -161,12 +163,19 @@ func HandleBuildInput() {
 func SwissInstall() {
 	system := utils.GetOperatingSystem()
 	if system == "linux" {
-		// Builds Go program
-		if len(registry.builds) == 0 {
-			utils.Error("No build configurations available.")
+		// Find the Go build configuration explicitly rather than relying on registry order.
+		var goBuild *build
+		for i := range registry.builds {
+			if registry.builds[i].Language == "go" {
+				goBuild = &registry.builds[i]
+				break
+			}
+		}
+		if goBuild == nil {
+			utils.Error("Go build configuration not found in registry.")
 			return
 		}
-		if err := registry.builds[0].initialize(); err != nil {
+		if err := goBuild.initialize(); err != nil {
 			utils.Error("Unable to build Swiss for install.")
 			utils.Crash(err)
 			return
@@ -205,14 +214,23 @@ func UpdateSwiss(args *[]string) {
 	// Make directory to clone into
 	utils.MakeFolder("swiss_install", true)
 
+	// Resolve an absolute path so cleanup is unaffected by later os.Chdir calls.
+	installPath, err := filepath.Abs("swiss_install")
+	if err != nil {
+		utils.Error("Unable to resolve install path.")
+		utils.Crash(err)
+		return
+	}
+
 	// Cleans up swiss_install directory if the update process is interrupted.
 	signalChannel := make(chan os.Signal, 1)
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
-	go func ()  {
-		<-signalChannel 
+	go func() {
+		<-signalChannel
 		utils.Reason("\nSwiss install interrupted, cancelling and cleaning up install files.")
-		os.Chdir("..")
-		os.RemoveAll("swiss_install")
+		if err := os.RemoveAll(installPath); err != nil {
+			utils.Error("Unable to clean up install files: " + err.Error())
+		}
 		os.Exit(1)
 	}()
 

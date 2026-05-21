@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"os/user"
@@ -46,6 +45,7 @@ func RunCommand(command string, arguments ...string) error {
 
 	comm.Stdin = os.Stdin
 	comm.Stdout = os.Stdout
+	comm.Stderr = os.Stderr
 
 	err := comm.Run()
 	return err
@@ -102,7 +102,8 @@ func CheckFolderExists(folderName string) (bool, error) {
 func GetUsersName() string {
 	user, err := user.Current()
 	if err != nil {
-		log.Fatalf("Unable to get current user: %s", err)
+		Error("Unable to get current user.")
+		Crash(err)
 	}
 
 	return user.Username
@@ -120,7 +121,9 @@ func GetOperatingSystem() string {
 // If the muted argument is toggled to false, it'll print a statement saying that the file was created. 
 func MakeFile(file string, muted bool) {
 	if CheckFileExists(file) {
-		Warning(file + " file exists.")
+		if !muted {
+			Warning(file + " file exists.")
+		}
 		return
 	} else {
 		err := os.WriteFile(file, []byte(""), 0o666)
@@ -147,7 +150,9 @@ func MakeFolder(folder string, muted bool) {
 	}
 
 	if dirInfo {
-		Warning(folder + " folder exists.")
+		if !muted {
+			Warning(folder + " folder exists.")
+		}
 		return
 	} else {
 		err := os.Mkdir(folder, 0755)

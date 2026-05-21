@@ -120,7 +120,7 @@ func RunProject() {
 
 	if err := project.initializeRun(); err != nil {
 		utils.Error("Unable to run project.")
-		utils.Crash(err)
+		utils.Reason(err.Error())
 		return
 	}
 	utils.Success(project.Language + " project has been ran.")
@@ -136,7 +136,8 @@ func HandleRunInput() {
 	for run := range len(runStorage.runs) {
 		if argument == runStorage.runs[run].Language {
 			if err := runStorage.runs[run].initializeRun(); err != nil {
-				utils.Crash(err)
+				utils.Error("Unable to run project.")
+				utils.Reason(err.Error())
 				return
 			} else {
 				utils.Success(runStorage.runs[run].Language + " project has been ran.")
