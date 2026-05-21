@@ -1,4 +1,7 @@
-# Swiss 1.1.1
+# Swiss 1.1a
+
+## Version Number Change:
+Changed version numbering to two numbers and letters. The numerarical increases will signify a large patch for Swiss while lettering will indicate smaller patches related to bug fixes or smaller feature changes.
 
 ## Initialize
 - Extended gits init process to now add a remote repository link.
