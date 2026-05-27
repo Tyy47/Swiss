@@ -21,6 +21,8 @@ type run struct {
 	Tool      string
 	Arguments []string
 	RunFile   string
+	BuildRequired bool // boolean statement to check if the program needs to built before running
+	BuildFunction func() run // Function to be ran if BuildRequired is toggled to true
 }
 
 type runRegistry struct {
@@ -41,6 +43,10 @@ func (r *runRegistry) addToRunRegistry(newRun ...run) {
 }
 
 func (r *run) initializeRun() error {
+	if r.BuildRequired == true {
+		r.BuildFunction()
+	}
+
 	command := exec.Command(r.Tool, r.Arguments...)
 
 	command.Stdout = os.Stdout
@@ -89,6 +95,24 @@ func runTypescriptProject() run {
 	}
 }
 
+func runCProject() run {
+	return run{
+		Language: "c",
+		Tool: "./main",
+		RunFile: "main.c",
+		BuildRequired: true,
+		BuildFunction: func() run {
+			project := buildCProject()
+
+			if err := project.Initialize(); err != nil {
+				utils.Error("Unable to build c program.")
+			}
+
+			return run{}
+		},
+	}
+}
+
 func scanForRunFiles() (bool, run) {
 	// Scan directory for all files.
 	files, err := os.ReadDir(".")
@@ -105,7 +129,7 @@ func scanForRunFiles() (bool, run) {
 		}
 	}
 
-	utils.Warning("Unable to find inputted language, check language list for buildable languages via Swiss.")
+	utils.Warning("Unable to find inputted language, check language list for runnable languages via Swiss.")
 	return false, run{}
 }
 
@@ -154,6 +178,7 @@ func init() {
 		runRustProject(),
 		runPythonProject(),
 		runTypescriptProject(),
+		runCProject(),
 	}
 
 	runStorage.addToRunRegistry(runArray...)

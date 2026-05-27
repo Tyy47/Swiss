@@ -42,7 +42,7 @@ func (b *buildRegistry) addToBuildRegistry(newBuild ...build) {
 	b.builds = append(b.builds, newBuild...)
 }
 
-func (b *build) initialize() error {
+func (b *build) Initialize() error {
 	command := exec.Command(b.Tool, b.Arguments...)
 
 	command.Stdout = os.Stdout
@@ -129,7 +129,7 @@ func BuildProject() {
 		return
 	}
 
-	if err := project.initialize(); err != nil {
+	if err := project.Initialize(); err != nil {
 		utils.Error("Unable to compile project.")
 		utils.Reason(err.Error())
 		return
@@ -147,7 +147,7 @@ func HandleBuildInput() {
 
 	for build := range len(registry.builds) {
 		if argument == registry.builds[build].Language {
-			if err := registry.builds[build].initialize(); err != nil {
+			if err := registry.builds[build].Initialize(); err != nil {
 				utils.Error("Unable to compile project.")
 				utils.Reason(err.Error())
 				return
@@ -175,7 +175,7 @@ func SwissInstall() {
 			utils.Error("Go build configuration not found in registry.")
 			return
 		}
-		if err := goBuild.initialize(); err != nil {
+		if err := goBuild.Initialize(); err != nil {
 			utils.Error("Unable to build Swiss for install.")
 			utils.Crash(err)
 			return
