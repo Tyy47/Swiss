@@ -2,13 +2,43 @@ package help
 
 import (
 	"fmt"
+	"strings"
+	"swiss/utils"
 )
 
-type Blocks struct {}
+type Blocks struct {
+	Line string // Provides the line character
+	TopLeftCorner string // Provides corner 1 for box drawings
+	TopRightCorner string // Provides corner 2 for box drawings
+	BottomLeftCorner string // Provides corner 3 for box drawings
+	BottomRightCorner string // Provides corner 4 for box drawings
+	SwissTitle string // Stores the Swiss title string for box drawings
+	SwissSlogan string // Stores the army knife saying in the box drawing
+}
+
+var BuildingBlock = Blocks{
+	Line: "─",
+	TopLeftCorner: "╭",
+	TopRightCorner: "╮",
+	BottomLeftCorner: "╰",
+	BottomRightCorner: "╯",
+	SwissTitle: "  Swiss  ",
+	SwissSlogan: "       The army knife of CLI applications       ",
+}
+
+// Prints a long line to the terminal.
+// characterSize determines the length of the line printed. The color argument is the color of the line that is printed
+func (b *Blocks) PrintLine(characterAmount int, colorOption string) {
+	if err := utils.Colors.PrintColor(strings.Repeat(b.Line, characterAmount), colorOption); err != nil {
+		utils.CrashCheck(err)
+	}
+}
 
 // Prints the main help menu for Swiss
 func DisplayHelp() {
+	BuildingBlock.PrintLine(32, "red")
 	var help_menu string = `
+
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │

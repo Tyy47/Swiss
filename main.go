@@ -164,7 +164,7 @@ func initCommand() Command {
 func netCommand() Command {
 	return Command{
 		Name:     "net",
-		HelpMenu: utils.NetHelp,
+		HelpMenu: help.NetHelp,
 		Subcommands: map[string]func(args *[]string){
 			"-h":      func(args *[]string) { help.NetHelp() },
 			"--help":  func(args *[]string) { help.NetHelp() },

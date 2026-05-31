@@ -11,3 +11,8 @@
 - Make helps menus its own module and import it into main instead of having all the helps live in utils.
 - Create structs to assign modules (sc, net, etc) and the Command (sync, addr, etc)
 - Turn help into a more structured command rather then a help menu for all commands. Instead swiss help sc will print the help menu for sc and swiss help sc sync will pull up all the parameters and additional details of the provided command.
+
+
+### Dict 
+
+1. Make command dictionaries look better when printed
