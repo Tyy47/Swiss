@@ -4,6 +4,7 @@ import (
 	"swiss/build"
 	commanddict "swiss/command-dict"
 	"swiss/gen"
+	"swiss/help"
 	"swiss/initialize"
 	"swiss/network"
 	"swiss/shortcuts"
@@ -52,7 +53,7 @@ func helpCommand() Command {
 	return Command{
 		Name:    "help",
 		Flags:   []string{"-h"},
-		Handler: utils.DisplayHelp,
+		Handler: help.DisplayHelp,
 	}
 }
 
@@ -87,10 +88,10 @@ func swissUpdateCommand() Command {
 func buildCommand() Command {
 	return Command{
 		Name:     "build",
-		HelpMenu: utils.BuildHelp,
+		HelpMenu: help.BuildHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.BuildHelp() },
-			"--help": func(args *[]string) { utils.BuildHelp() },
+			"-h":     func(args *[]string) { help.BuildHelp() },
+			"--help": func(args *[]string) { help.BuildHelp() },
 			"go":     func(args *[]string) { build.HandleBuildInput() },
 			"rust":   func(args *[]string) { build.HandleBuildInput() },
 			"c":      func(args *[]string) { build.HandleBuildInput() },
@@ -105,10 +106,10 @@ func buildCommand() Command {
 func runRunCommand() Command {
 	return Command{
 		Name:     "run",
-		HelpMenu: utils.BuildHelp,
+		HelpMenu: help.BuildHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.BuildHelp() },
-			"--help": func(args *[]string) { utils.BuildHelp() },
+			"-h":     func(args *[]string) { help.BuildHelp() },
+			"--help": func(args *[]string) { help.BuildHelp() },
 			"-l":     func(args *[]string) { build.PrintRunProgramList() },
 			"--list": func(args *[]string) { build.PrintRunProgramList() },
 			"go":     func(args *[]string) { build.HandleRunInput() },
@@ -125,10 +126,10 @@ func runRunCommand() Command {
 func dictionaryCommand() Command {
 	return Command{
 		Name:     "dict",
-		HelpMenu: utils.CommandHelp,
+		HelpMenu: help.CommandHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.CommandHelp() },
-			"--help": func(args *[]string) { utils.CommandHelp() },
+			"-h":     func(args *[]string) { help.CommandHelp() },
+			"--help": func(args *[]string) { help.CommandHelp() },
 			"ps":     func(args *[]string) { commanddict.PrintPowershellCommands() },
 			"bash":   func(args *[]string) { commanddict.PrintBashCommands() },
 			"git":    func(args *[]string) { commanddict.PrintGitCommands() },
@@ -141,10 +142,10 @@ func dictionaryCommand() Command {
 func initCommand() Command {
 	return Command{
 		Name:     "init",
-		HelpMenu: utils.InitHelp,
+		HelpMenu: help.InitHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.InitHelp() },
-			"--help": func(args *[]string) { utils.InitHelp() },
+			"-h":     func(args *[]string) { help.InitHelp() },
+			"--help": func(args *[]string) { help.InitHelp() },
 			"-l":     func(args *[]string) { initialize.PrintInitProjectList() },
 			"--list": func(args *[]string) { initialize.PrintInitProjectList() },
 			"go":     func(args *[]string) { initialize.CreateProject() },
@@ -165,8 +166,8 @@ func netCommand() Command {
 		Name:     "net",
 		HelpMenu: utils.NetHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":      func(args *[]string) { utils.NetHelp() },
-			"--help":  func(args *[]string) { utils.NetHelp() },
+			"-h":      func(args *[]string) { help.NetHelp() },
+			"--help":  func(args *[]string) { help.NetHelp() },
 			"connect": func(args *[]string) { network.Connection() },
 			"port":    func(args *[]string) { network.GetPortStatus() },
 			"addr":    func(args *[]string) { network.GetAddresses() },
@@ -183,10 +184,10 @@ func netCommand() Command {
 func generateCommand() Command {
 	return Command{
 		Name:     "gen",
-		HelpMenu: utils.GenHelp,
+		HelpMenu: help.GenHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.GenHelp() },
-			"--help": func(args *[]string) { utils.GenHelp() },
+			"-h":     func(args *[]string) { help.GenHelp() },
+			"--help": func(args *[]string) { help.GenHelp() },
 			"uuid":   func(args *[]string) { gen.GenerateUUID() },
 			"secret": func(args *[]string) { gen.GenerateSecret() },
 		},
@@ -197,10 +198,10 @@ func generateCommand() Command {
 func shortcutCommand() Command {
 	return Command{
 		Name:     "sc",
-		HelpMenu: utils.ShortcutHelp,
+		HelpMenu: help.ShortcutHelp,
 		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.ShortcutHelp() },
-			"--help": func(args *[]string) { utils.ShortcutHelp() },
+			"-h":     func(args *[]string) { help.ShortcutHelp() },
+			"--help": func(args *[]string) { help.ShortcutHelp() },
 			"commit": func(args *[]string) { shortcuts.GitCommitSC() },
 			"push":   func(args *[]string) { shortcuts.GitPushSC() },
 			"sync":   func(args *[]string) { shortcuts.GitSyncSC() },
@@ -212,7 +213,7 @@ func shortcutCommand() Command {
 func runCommand() {
 	// Checks if the length of the users given arguments are less then two, if so, displays the main swiss help menu.
 	if len(utils.Arguments) < 2 {
-		utils.DisplayHelp()
+		help.DisplayHelp()
 		return
 	}
 

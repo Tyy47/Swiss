@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+type Blocks struct {}
+
 // Prints the main help menu for Swiss
 func DisplayHelp() {
 	var help_menu string = `
