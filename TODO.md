@@ -8,9 +8,7 @@
 1. Each modules gets a better description of what each module achieves
 2. Each command gets specific builtin documentation
 
-- Make helps menus its own module and import it into main instead of having all the helps live in utils.
-- Create structs to assign modules (sc, net, etc) and the Command (sync, addr, etc)
-- Turn help into a more structured command rather then a help menu for all commands. Instead swiss help sc will print the help menu for sc and swiss help sc sync will pull up all the parameters and additional details of the provided command.
+- Create new help menus out of building block pieces that are built together to form a complete picture of the documentation
 
 
 ### Dict 
