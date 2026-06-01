@@ -7,7 +7,8 @@ import (
 )
 
 type Blocks struct {
-	Line string // Provides the line character
+	TopLine string // Provides the straight line character
+	BottomLine string // Provides the horizontal line character
 	TopLeftCorner string // Provides corner 1 for box drawings
 	TopRightCorner string // Provides corner 2 for box drawings
 	BottomLeftCorner string // Provides corner 3 for box drawings
@@ -17,7 +18,8 @@ type Blocks struct {
 }
 
 var BuildingBlock = Blocks{
-	Line: "─",
+	BottomLine: "─",
+	TopLine: "│",
 	TopLeftCorner: "╭",
 	TopRightCorner: "╮",
 	BottomLeftCorner: "╰",
@@ -29,16 +31,13 @@ var BuildingBlock = Blocks{
 // Prints a long line to the terminal.
 // characterSize determines the length of the line printed. The color argument is the color of the line that is printed
 func (b *Blocks) PrintLine(characterAmount int, colorOption string) {
-	if err := utils.Colors.PrintColor(strings.Repeat(b.Line, characterAmount), colorOption); err != nil {
-		utils.CrashCheck(err)
-	}
+	utils.Colors.PrintColor(strings.Repeat(b.BottomLine, characterAmount), colorOption)
 }
 
 // Prints the main help menu for Swiss
 func DisplayHelp() {
 	BuildingBlock.PrintLine(32, "red")
 	var help_menu string = `
-
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │

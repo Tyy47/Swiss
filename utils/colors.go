@@ -3,6 +3,7 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -20,10 +21,24 @@ const (
 )
 
 // Create the color type and create the struct for use in other packages.
-type color struct{}
+type color struct{
+	ValidColors []string // Stores all valid colors that can be used
+	InvalidColorFound bool // Tracks if an invalid color was called
+}
 
 // Colors object to convert strings into colored text
-var Colors = color{}
+var Colors = color{
+	ValidColors: []string{
+		"black",
+		"red",
+		"green",
+		"yellow",
+		"purple",
+		"cyan",
+		"white",
+	},
+	InvalidColorFound: false,
+}
 
 // Takes an input of a string to check if its a valid color that can be printed.
 // If a valid color is found, it will return true, otherwise it will return false.
@@ -42,15 +57,21 @@ func (c *color) checkColor(ColorSelection string) error {
 
 // Prints the given text in the color provided.
 // Valid Colors are: "black", "red", "green", "yellow", "purple", "cyan", "white" 
-func (c *color) PrintColor(text string, colorSelection string) error {
+func (c *color) PrintColor(text string, colorSelection string) {
 	// Lowercases the string to make input unified
 	loweredString := strings.ToLower(colorSelection)
 
-	// Checks if the color is valid using the lowercased string, Crashes the program if an invalid color is inputted.
-	if err := c.checkColor(loweredString); err != nil {
-		CrashCheck(err)
-		return err
+	// Loops over all the colors and check if the input is valid
+	for counter, color := range c.ValidColors {
+		if loweredString == color {
+			break
+		}
+
+		if counter == len(c.ValidColors) {
+			log.Fatalf("INVALID COLOR USED")
+		}
 	}
+
 	
 	// Prints the colored text based on the selections
 	switch colorSelection {
@@ -71,8 +92,44 @@ func (c *color) PrintColor(text string, colorSelection string) error {
 	default:
 		fmt.Println("MISSING COLOR")
 	}
+}
 
-	return nil
+// Takes in a text string input and converts it to a colored string and returns the string
+func (c *color) ReturnColoredString(text string, colorSelection string) string {
+	// Lowercases the string to make input unified
+	loweredString := strings.ToLower(colorSelection)
+	
+	// Loops over all the colors and check if the input is valid
+	for counter, color := range c.ValidColors {
+		if loweredString == color {
+			break
+		}
+
+		if counter == len(c.ValidColors) {
+			log.Fatalf("INVALID COLOR USED")
+		}
+	}
+	
+	// Prints the colored text based on the selections
+	switch colorSelection {
+	case "red":
+		return c.Red(text)
+	case "green":
+		return c.Green(text)
+	case "yellow":
+		return c.Yellow(text)
+	case "purple":
+		return c.Purple(text)
+	case "cyan":
+		return c.Cyan(text)
+	case "white":
+		return c.White(text)
+	case "black":
+		return c.Black(text)
+	default:
+		log.Fatalf("INVALID COLOR USED")
+		return text
+	}
 }
 
 // Changes the color of the given string to red
