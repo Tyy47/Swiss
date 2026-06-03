@@ -2,55 +2,42 @@ package help
 
 import (
 	"fmt"
-	"strings"
-	"swiss/utils"
 )
-
-type Blocks struct {
-	TopLine string // Provides the straight line character
-	BottomLine string // Provides the horizontal line character
-	TopLeftCorner string // Provides corner 1 for box drawings
-	TopRightCorner string // Provides corner 2 for box drawings
-	BottomLeftCorner string // Provides corner 3 for box drawings
-	BottomRightCorner string // Provides corner 4 for box drawings
-	SwissTitle string // Stores the Swiss title string for box drawings
-	SwissSlogan string // Stores the army knife saying in the box drawing
-}
-
-var BuildingBlock = Blocks{
-	BottomLine: "─",
-	TopLine: "│",
-	TopLeftCorner: "╭",
-	TopRightCorner: "╮",
-	BottomLeftCorner: "╰",
-	BottomRightCorner: "╯",
-	SwissTitle: "  Swiss  ",
-	SwissSlogan: "       The army knife of CLI applications       ",
-}
-
-// Prints a long line to the terminal.
-// characterSize determines the length of the line printed. The color argument is the color of the line that is printed
-func (b *Blocks) PrintLine(characterAmount int, colorOption string) {
-	utils.Colors.PrintColor(strings.Repeat(b.BottomLine, characterAmount), colorOption)
-}
 
 // Prints the main help menu for Swiss
 func DisplayHelp() {
-	BuildingBlock.PrintLine(32, "red")
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
+	var help_menu string = `╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │
 │                                                │
 ╰────────────────────────────────────────────────╯
-help: Opens the help menu.
-dict <string>: Shows system commands based on the shell argument provided.
-build <string>: Allows you to build program via swiss.
-init <string>: Inits a project using Swiss.
-net: A set of networking tools.
-gen: A variety of codes that can be generated via Swiss.
-sc: Shortcuts that are multiple commands in one.
-	`
+usage: swiss [module_name] [additional_arguments]
+	
+Swiss Commands:
+
+Swiss utility commands:
+	help - Displays the main help menu for Swiss. Running swiss with a module name will display that modules help menu.
+	install - Installs the newest version of Swiss available on GitHub.
+
+Build Module:
+	build - Builds a program that uses swiss made shortcuts.
+	run - Runs a program that uses swiss made shortcuts.
+
+Initialize Module:
+	init - Initializes a programming based project in current folder.
+
+Dictionary Module:
+	dict: Shows system and utility commands for other programs and scripting languages.
+
+Network Module:
+	net - Provides a set of networking tools to check connections.
+
+Generator Module: 
+	gen - Generates different codes that are most commonly used in development
+
+Shortcut Module:
+	sc - Command shortcuts for various CLI utilities to make development faster
+`
 	fmt.Println(help_menu)
 }
 

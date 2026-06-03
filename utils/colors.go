@@ -2,9 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
-	"log"
-	"strings"
 )
 
 // Colors const array
@@ -52,83 +49,6 @@ func (c *color) checkColor(ColorSelection string) error {
 			return nil
 		default:
 			return err
-	}
-}
-
-// Prints the given text in the color provided.
-// Valid Colors are: "black", "red", "green", "yellow", "purple", "cyan", "white" 
-func (c *color) PrintColor(text string, colorSelection string) {
-	// Lowercases the string to make input unified
-	loweredString := strings.ToLower(colorSelection)
-
-	// Loops over all the colors and check if the input is valid
-	for counter, color := range c.ValidColors {
-		if loweredString == color {
-			break
-		}
-
-		if counter == len(c.ValidColors) {
-			log.Fatalf("INVALID COLOR USED")
-		}
-	}
-
-	
-	// Prints the colored text based on the selections
-	switch colorSelection {
-	case "red":
-		fmt.Println(c.Red(text))
-	case "green":
-		fmt.Println(c.Green(text))
-	case "yellow":
-		fmt.Println(c.Yellow(text))
-	case "purple":
-		fmt.Println(c.Purple(text))
-	case "cyan":
-		fmt.Println(c.Cyan(text))
-	case "white":
-		fmt.Println(c.White(text))
-	case "black":
-		fmt.Println(c.Black(text))
-	default:
-		fmt.Println("MISSING COLOR")
-	}
-}
-
-// Takes in a text string input and converts it to a colored string and returns the string
-func (c *color) ReturnColoredString(text string, colorSelection string) string {
-	// Lowercases the string to make input unified
-	loweredString := strings.ToLower(colorSelection)
-	
-	// Loops over all the colors and check if the input is valid
-	for counter, color := range c.ValidColors {
-		if loweredString == color {
-			break
-		}
-
-		if counter == len(c.ValidColors) {
-			log.Fatalf("INVALID COLOR USED")
-		}
-	}
-	
-	// Prints the colored text based on the selections
-	switch colorSelection {
-	case "red":
-		return c.Red(text)
-	case "green":
-		return c.Green(text)
-	case "yellow":
-		return c.Yellow(text)
-	case "purple":
-		return c.Purple(text)
-	case "cyan":
-		return c.Cyan(text)
-	case "white":
-		return c.White(text)
-	case "black":
-		return c.Black(text)
-	default:
-		log.Fatalf("INVALID COLOR USED")
-		return text
 	}
 }
 
