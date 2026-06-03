@@ -4,13 +4,22 @@ import (
 	"fmt"
 )
 
-// Prints the main help menu for Swiss
-func DisplayHelp() {
-	var help_menu string = `╭───────────────────  Swiss  ────────────────────╮
+// Prints out the title section of Swiss.
+func TitleCard() {
+	title := `╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │
 │                                                │
 ╰────────────────────────────────────────────────╯
+	`
+	// Having Print instead of Println makes it log to the terminal without a newline which works better for the extended strings
+	fmt.Print(title)
+}
+
+// Prints the main help menu for Swiss
+func DisplayHelp() {
+	TitleCard()
+	var help_menu string = `
 usage: swiss [module_name] [additional_arguments]
 	
 Swiss Commands:
@@ -43,31 +52,30 @@ Shortcut Module:
 
 // Prints the help menu for the Command Dictionary module
 func CommandHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-Command Dictionary Module - Contains a variety of sub commands that show the most used commands depending on the input.
+usage: swiss dict <arguments>
 
--h --help: Opens the help menu
-ps: Prints Powershell command dictionary.
-bash: Prints Bash command dictionary.
-git: Prints git command dictionary.
-docker: Prints docker command dictionary.
+Dictionary Commands - Each command prints out commonly used commands for each scripting language or cli utility:
+
+Scripting Languages: 
+	ps: Prints out a list PowerShell commands.
+	bash: Prints out a list Bash commands.
+
+Tools:
+	git: Prints out a list Git commands.
+	docker: Prints out a list Docker commands.
+
+Flags:
+	-h | --help: Prints out the dictionary help menu.
 `
 	fmt.Println(help_menu)
 }
 
 // Prints the help menu for the Build module
 func BuildHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
 Build module - Builds or Runs a program based on the language inputted.
 
 -h --help: Opens the help menu.
@@ -80,12 +88,8 @@ run <string>: Runs a program based on the language you input.
 
 // Prints the help menu for the Init module
 func InitHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
 Init module - Initialize a project using Swiss.
 
 -h --help: Opens the help menu.
@@ -100,12 +104,8 @@ init web: Inits a web based project using Bun & Vite with a selected framework.
 
 // Prints the help menu for the Networking module
 func NetHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
 Net module - A variety of networking tools.
 
 -h --help: Opens the help menu.
@@ -123,12 +123,8 @@ gather <domain : string>: Compiles all information that the net module offers an
 
 // Prints the help menu for the Generator module
 func GenHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
 Gen module - Generate codes through Swiss.
 
 -h --help: Opens the help menu.
@@ -140,12 +136,8 @@ secret [length : int]: Generates a hexadecimal string based on length provided, 
 
 // Prints the help menu for the Shortcut module
 func ShortcutHelp() {
+	TitleCard()
 	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
 Shortcut module - Commands that are multiple commands into one.
 
 -h --help: Opens the help menu.
