@@ -5,7 +5,7 @@ import (
 )
 
 // Prints out the title section of Swiss.
-func TitleCard() {
+func titleCard() {
 	title := `╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │
@@ -18,7 +18,7 @@ func TitleCard() {
 
 // Prints the main help menu for Swiss
 func DisplayHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
 usage: swiss [module_name] [additional_arguments]
 	
@@ -26,7 +26,11 @@ Swiss Commands:
 
 Swiss utility commands:
 	help - Displays the main help menu for Swiss. Running swiss with a module name will display that modules help menu.
-	install - Installs the newest version of Swiss available on GitHub.
+	install - Installs swiss when ran inside of a cloned version of the Swiss repository.
+	update - Updates swiss by cloning the repository, you'll have two methods of install when prompted.
+
+Swiss Flags:
+	-u, --unstable: Clones the unstable branch of the Swiss repo and installs it.
 
 Build Module:
 	build - Builds a program that uses swiss made shortcuts.
@@ -52,9 +56,9 @@ Shortcut Module:
 
 // Prints the help menu for the Command Dictionary module
 func CommandHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
-usage: swiss dict <arguments>
+usage: swiss dict <arguments> [flags]
 
 Dictionary Commands - Each command prints out commonly used commands for each scripting language or cli utility:
 
@@ -74,37 +78,47 @@ Flags:
 
 // Prints the help menu for the Build module
 func BuildHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
-Build module - Builds or Runs a program based on the language inputted.
+usage: swiss build <argument> [flags] | swiss run <argument> [flags]
 
--h --help: Opens the help menu.
--l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
-build <string>: Builds a program based on the language you input.
-run <string>: Runs a program based on the language you input.
+Build Commands - Builds or Runs a program using it's main tool. Check the list of languages to see the tools required.
+
+Commands:
+	build: Compiles a program based on the language argument provided
+	run: Runs a program based on the language argument provided
+
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
 `
 	fmt.Println(help_menu)
 }
 
 // Prints the help menu for the Init module
 func InitHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
-Init module - Initialize a project using Swiss.
+usage: swiss init <argument> [flags]
 
--h --help: Opens the help menu.
--l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
--g --git: Inits git alongside your project.
--j --jujutsu: Inits jj alongside your project.
-init <string> [name: string]: Inits a project based on the given input. 
-init web: Inits a web based project using Bun & Vite with a selected framework. 
+Init Commands - Initialize a project using Swiss.
+
+Commands:
+	init: Inits a project based on the given input. 
+	init web: Inits a web based project using Bun & Vite with a selected framework. 
+
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
+	-g --git: Inits git alongside your project.
+	-j --jujutsu: Inits jj alongside your project.
 `
 	fmt.Println(help_menu)
 }
 
 // Prints the help menu for the Networking module
 func NetHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
 Net module - A variety of networking tools.
 
@@ -123,7 +137,7 @@ gather <domain : string>: Compiles all information that the net module offers an
 
 // Prints the help menu for the Generator module
 func GenHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
 Gen module - Generate codes through Swiss.
 
@@ -136,7 +150,7 @@ secret [length : int]: Generates a hexadecimal string based on length provided, 
 
 // Prints the help menu for the Shortcut module
 func ShortcutHelp() {
-	TitleCard()
+	titleCard()
 	var help_menu string = `
 Shortcut module - Commands that are multiple commands into one.
 
