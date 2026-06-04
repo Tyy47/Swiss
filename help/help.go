@@ -120,17 +120,23 @@ Flags:
 func NetHelp() {
 	titleCard()
 	var help_menu string = `
-Net module - A variety of networking tools.
+usage: swiss net <arguments> [flags]
 
--h --help: Opens the help menu.
-connect <domain : string>: Prints out an http response code when connecting to the domain and port.
-port <domain : string> <port : string> Attempts to connect to the domain and check if the port is opened or closed.
-addr <domain : string>: Prints out the IPv4 and v6 addresses of the given domain.
-ns <domain : string>: Prints out the name servers of the current domain.
-cname <domain : string>: Prints out the cname records for the given domain.
-txt <domain : string>: Prints out txt records for the given domain.
-mx <domain : string>: Prints out mx records for the given domain.
-gather <domain : string>: Compiles all information that the net module offers and outputs it to a file.
+Net Commands - A variety of networking tools.
+
+Commands:
+
+	connect: Prints out an http response code when connecting to the domain and port.
+	port: Attempts to connect to the domain and check if the port is opened or closed.
+	addr: Prints out the IPv4 and v6 addresses of the given domain.
+	ns: Prints out the name servers of the current domain.
+	cname: Prints out the cname records for the given domain.
+	txt: Prints out txt records for the given domain.
+	mx: Prints out mx records for the given domain.
+	gather: Compiles all information that the net module offers and outputs it to a file.
+
+Flags:
+	-h --help: Opens the help menu.
 `
 	fmt.Println(help_menu)
 }
