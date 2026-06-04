@@ -125,7 +125,6 @@ usage: swiss net <arguments> [flags]
 Net Commands - A variety of networking tools.
 
 Commands:
-
 	connect: Prints out an http response code when connecting to the domain and port.
 	port: Attempts to connect to the domain and check if the port is opened or closed.
 	addr: Prints out the IPv4 and v6 addresses of the given domain.
@@ -145,11 +144,16 @@ Flags:
 func GenHelp() {
 	titleCard()
 	var help_menu string = `
+usage: swiss gen <arguments> [flags]
+
 Gen module - Generate codes through Swiss.
 
--h --help: Opens the help menu.
-uuid: Generates an 128 bit hexadecimal string.
-secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.
+Commands:
+	uuid: Generates an 128 bit hexadecimal string.
+	secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.
+
+Flags:
+	-h --help: Opens the help menu.
 `
 	fmt.Println(help_menu)
 }
@@ -158,12 +162,17 @@ secret [length : int]: Generates a hexadecimal string based on length provided, 
 func ShortcutHelp() {
 	titleCard()
 	var help_menu string = `
+usage: swiss sc <arguments> [flags]
+
 Shortcut module - Commands that are multiple commands into one.
 
--h --help: Opens the help menu.
-commit <message : string>: Adds all changed files to commit with a message.
-push [message : string]: Adds all files, commits changes with a message, then pushes to your repository.
-sync: Fetch's all changes to the repository and prints a status message with changes to the repository.
+Commands:
+	commit <message : string>: Adds all changed files to commit with a message.
+	push [message : string]: Adds all files, commits changes with a message, then pushes to your repository.
+	sync: Fetch's all changes to the repository and prints a status message with changes to the repository.
+
+Flags:
+	-h --help: Opens the help menu.
 `
 	fmt.Println(help_menu)
 }
