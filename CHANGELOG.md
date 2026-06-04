@@ -17,6 +17,7 @@ Changed version numbering to two numbers and letters. The numerarical increases 
 
 ## Misc:
 - Changed text color implementation to easily change colors of text in code.
+- Rewrote help menus to be more informative of each command and module.
 
 ## Bug Fixes:
 - Running `swiss run` with no language listed would show the wrong list of supported languages.
