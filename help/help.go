@@ -36,7 +36,7 @@ Build Module:
 	build - Builds a program that uses swiss made shortcuts.
 	run - Runs a program that uses swiss made shortcuts.
 
-Initialize Module:
+Initialize Modulet:
 	init - Initializes a programming based project in current folder.
 
 Dictionary Module:

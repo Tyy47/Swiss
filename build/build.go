@@ -203,11 +203,9 @@ func UpdateSwiss(args *[]string) {
 	installSwissUnstable := false
 
 	for _, toggle := range *args {
-		switch toggle {
-		case "-u":
+		if toggle == "-u" || toggle == "--update" {
 			installSwissUnstable = true
-		case "--unstable":
-			installSwissUnstable = true
+			break
 		}
 	}
 
