@@ -10,8 +10,8 @@
 - Zig: Zig
 - Vite: Web
 - Bun: JS/TS
-- Git: VC
-- Jujutsu: VC
+- Git: Version Control
+- Jujutsu: Version Control
 
 ### Initialize frameworks for web init's
 - Svelte
@@ -24,11 +24,6 @@
 - Go: Go
 - Zig: Zig
 - Bun & Vite: Web
-
-## Run
-- Rust
-- Go
-- Python
 
 ## Shortcuts
 - Git
