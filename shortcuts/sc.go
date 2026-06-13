@@ -2,6 +2,29 @@ package shortcuts
 
 import "swiss/utils"
 
+var ShortcutCommand = &utils.Command{
+	Name:        "sc",
+	Description: "Shortcuts for commonly used commands.",
+	Subcommands: map[string]*utils.Command{
+		"commit": {
+			Name:        "commit",
+			Description: "Adds all files to a commit using git with a required message.",
+			Subcommands: nil,
+		},
+		"push": {
+			Name:        "git-push",
+			Description: "Pushes changes to repository, if a message is provided, it will add all files to a commit with the message and push it.",
+			Subcommands: nil,
+		},
+		"sync": {
+			Name:        "git-sync",
+			Description: "Updates local repository, if -p or --pull is added as an argument, it will pull changes from the remote repository as well.",
+			Subcommands: nil,
+			Flags:       []utils.Flag{},
+		},
+	},
+}
+
 // Adds all files to a commit using git with a required message
 func GitCommitSC() {
 	// Gathers a commit message
@@ -71,7 +94,7 @@ func GitSyncSC() {
 		utils.Error("Unable to display git status.")
 		return
 	}
-	
+
 	// Loops over all arguments and searches for -p or --pull
 	// If detected, it will pull all available changes from the repo into your local folder.
 	toggle := false

@@ -19,6 +19,18 @@ var (
 	AdditionalArguments = gatherAdditionalArgs()
 )
 
+type Command struct {
+	Name        string
+	Description string
+	Subcommands map[string]*Command
+	Flags       []Flag
+}
+
+type Flag struct {
+	Name     string
+	Required bool
+}
+
 // Prints the Swiss version number to the console
 func PrintVersionNumber() {
 	fmt.Println("Swiss version number: " + Colors.Green(VERSION_NUMBER))
@@ -85,7 +97,7 @@ func CheckFileExists(fileName string) bool {
 	return err == nil && info.Mode().IsRegular()
 }
 
-// Checks if a folder exists and returns a boolean value depending on the outcome and an error if checking fails. 
+// Checks if a folder exists and returns a boolean value depending on the outcome and an error if checking fails.
 func CheckFolderExists(folderName string) (bool, error) {
 	info, err := os.Stat(folderName)
 	if err == nil {
@@ -115,10 +127,10 @@ func GetOperatingSystem() string {
 	return runtime.GOOS
 }
 
-// Takes in a file name and runs the CheckFileExists function to check if it exists. 
-// If so, it returns a warning statement stating that the file exists. 
+// Takes in a file name and runs the CheckFileExists function to check if it exists.
+// If so, it returns a warning statement stating that the file exists.
 // If it doesn't exist, the function will create the file.
-// If the muted argument is toggled to false, it'll print a statement saying that the file was created. 
+// If the muted argument is toggled to false, it'll print a statement saying that the file was created.
 func MakeFile(file string, muted bool) {
 	if CheckFileExists(file) {
 		if !muted {
@@ -137,10 +149,10 @@ func MakeFile(file string, muted bool) {
 	}
 }
 
-// Takes in a folder name and runs the CheckFolderExists function to check if it exists. 
-// If so, it returns a warning statement stating that the folder exists. 
+// Takes in a folder name and runs the CheckFolderExists function to check if it exists.
+// If so, it returns a warning statement stating that the folder exists.
 // If it doesn't exist, the function will create the folder.
-// If the muted argument is toggled to false, it'll print a statement saying that the folder was created. 
+// If the muted argument is toggled to false, it'll print a statement saying that the folder was created.
 func MakeFolder(folder string, muted bool) {
 	dirInfo, err := CheckFolderExists(folder)
 
