@@ -55,24 +55,6 @@ func versionCommand() *argbin.Command {
 	}
 }
 
-// Creates the "build" command and returns it
-func buildCommand() Command {
-	return Command{
-		Name:     "build",
-		HelpMenu: utils.BuildHelp,
-		Subcommands: map[string]func(args *[]string){
-			"-h":     func(args *[]string) { utils.BuildHelp() },
-			"--help": func(args *[]string) { utils.BuildHelp() },
-			"go":     func(args *[]string) { build.HandleBuildInput() },
-			"rust":   func(args *[]string) { build.HandleBuildInput() },
-			"c":      func(args *[]string) { build.HandleBuildInput() },
-			"zig":    func(args *[]string) { build.HandleBuildInput() },
-		},
-		SingleRun:     true,
-		ShortHandFunc: func(args *[]string) { build.BuildProject() },
-	}
-}
-
 // Creates the "run" command and returns it
 func runRunCommand() Command {
 	return Command{
@@ -183,9 +165,11 @@ func shortcutCommand() Command {
 
 func main() {
 	
-
+	// Command storage to add to root.AddCommand
 	commands := []*argbin.Command{
 		helpCommand(),
+		versionCommand(),
+		build.BuildCommand(),
 	}
 
 	// Adds all commands to app
