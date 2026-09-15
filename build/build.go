@@ -145,7 +145,9 @@ func buildLanguage(p *program) error {
 	return nil
 }
 
-// runLanguage handles the running the program.
+// runLanguage handles the "running" of a program.
+// It will take a run object from program and gather all the information required
+// to run the program.
 func runLanguage(p *program) error {
 	// Nil check for program
 	if p == nil {
