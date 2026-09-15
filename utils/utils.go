@@ -37,21 +37,6 @@ func RunCommand(command string, arguments ...string) error {
 	return err
 }
 
-// Gathers argument via the os library
-func gatherArgs() []string {
-	args := os.Args
-	return args
-}
-
-// Gathers arguments past the 3rd index, for example swiss init rust -g. Only -g is caught by this function as it is the third index.
-func gatherAdditionalArgs() []string {
-	if len(Arguments) < 3 {
-		return []string{}
-	}
-
-	return Arguments[3:]
-}
-
 // Checks if arguments are a certain length, if so, it grabs the requested index and returns the value of args[index].
 func CheckArguments(args []string, length int, index int) string {
 	if len(args) <= length {
