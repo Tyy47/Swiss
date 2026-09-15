@@ -1,84 +1,57 @@
 package main
 
 import (
+	"fmt"
 	"swiss/build"
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/network"
 	"swiss/shortcuts"
 	"swiss/utils"
+	
+	"github.com/Tyy47/clibox/colorbin"
+	"github.com/Tyy47/clibox/argbin"
 )
 
-// Command struct to store information about modules commands
-type Command struct {
-	Name          string
-	Flags         []string
-	Subcommands   map[string]func(args *[]string)
-	Handler       func()
-	HelpMenu      func()
-	SingleRun     bool                 // Boolean statement to check if the program can run with no arguments like "swiss build"
-	ShortHandFunc func(args *[]string) // Short hand function that runs if single run function is ran like "swiss build"
-}
-
-// Command storage struct
-type CommandDB struct {
-	Registry []Command
-}
-
-// Command storage
-var GlobalCommandDatabase = CommandDB{}
-
-// Add command to command storage
-func (c *CommandDB) registerCommand(command ...Command) {
-	c.Registry = append(c.Registry, command...)
-}
-
-// Looks through a map of the project registry and returns the lookup
-func commandLookup() map[string]*Command {
-	lookup := make(map[string]*Command)
-	for i := range GlobalCommandDatabase.Registry {
-		cmd := &GlobalCommandDatabase.Registry[i]
-		lookup[cmd.Name] = cmd
-		for _, flag := range cmd.Flags {
-			lookup[flag] = cmd
-		}
-	}
-	return lookup
+// Creating the root object of the application
+var root = argbin.Root{
+	AppName: "swiss",
+	AppVersion: "1.2",
+	Description: "the cli army knife",
+	CommandList: make([]*argbin.Command, 0),
 }
 
 // Creates the "help" command and returns it
-func helpCommand() Command {
-	return Command{
-		Name:    "help",
-		Flags:   []string{"-h"},
-		Handler: utils.DisplayHelp,
+func helpCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "-h",
+		AdditionalNames: []string{"--help"},
+		Execute: func(ctx *argbin.Context) error {
+			utils.DisplayHelp()
+			return nil
+		},
 	}
 }
 
 // Creates the "version" command and returns it
-func versionCommand() Command {
-	return Command{
-		Name:    "version",
-		Flags:   []string{"-v"},
-		Handler: utils.PrintVersionNumber,
-	}
-}
-
-// Creates the "install" command and returns it
-func swissInstallCommand() Command {
-	return Command{
-		Name:    "install",
-		Flags:   []string{"-i"},
-		Handler: build.SwissInstall,
-	}
-}
-
-// Creates the "update" command and returns it
-func swissUpdateCommand() Command {
-	return Command{
-		Name:    "update",
-		Flags:   []string{"update"},
-		Handler: func() { build.UpdateSwiss(&utils.Arguments) },
+func versionCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "-v",
+		AdditionalNames: []string{"--version"},
+		Execute: func(ctx *argbin.Context) error {
+			// Gather app version
+			version, err := root.GetAppVersion()
+			if err != nil {
+				return err
+			}
+			
+			// Color app version to green
+			version = colorbin.Green(version).ToHighIntensityBold().String()
+			
+			// Profit
+			fmt.Printf("swiss: version %s", version)
+			return nil
+		},
 	}
 }
 
@@ -207,69 +180,22 @@ func shortcutCommand() Command {
 	}
 }
 
-// Find and run command in registry
-func runCommand() {
-	// Checks if the length of the users given arguments are less then two, if so, displays the main swiss help menu.
-	if len(utils.Arguments) < 2 {
-		utils.DisplayHelp()
-		return
-	}
-
-	// Grabs arguments past swiss
-	args := utils.Arguments[1:]
-	// Creates the lookup map from the commandLookup function
-	lookup := commandLookup()
-
-	// Loops through the arguments with an integer place for each argument
-	for i, arg := range args {
-		// Loops through the lookup map for commands to see if the exist
-		if cmd, ok := lookup[arg]; ok {
-			// If there is a function made in Handler, it will run it.
-			if cmd.Handler != nil {
-				cmd.Handler()
-			}
-
-			// Statement to check if a command has SingleRun functionality. If it does, it runs the shorthand function.
-			// Else, if the length of the arguments is less then or equal to two and it has a help menu, it will display a help menu.
-			if cmd.SingleRun && cmd.ShortHandFunc != nil && len(utils.Arguments) == 2 {
-				cmd.ShortHandFunc(&utils.Arguments)
-			} else if len(utils.Arguments) <= 2 && cmd.HelpMenu != nil {
-				cmd.HelpMenu()
-			}
-
-			// Loops through all the valid subcommands
-			for _, subArg := range args[i+1:] {
-				// If the subcommand exists, it will execute the subcommand function
-				if subFunc, ok := cmd.Subcommands[subArg]; ok {
-					subFunc(&utils.Arguments)
-				}
-			}
-			return
-		}
-	}
-	utils.Warning(utils.Arguments[1] + " is not an available command.")
-}
 
 func main() {
-	runCommand()
-}
+	
 
-// Registers command into registry on program startup
-func init() {
-	// Register Commands
-	commandArray := []Command{
+	commands := []*argbin.Command{
 		helpCommand(),
-		versionCommand(),
-		swissInstallCommand(),
-		swissUpdateCommand(),
-		buildCommand(),
-		runRunCommand(),
-		dictionaryCommand(),
-		initCommand(),
-		netCommand(),
-		generateCommand(),
-		shortcutCommand(),
 	}
 
-	GlobalCommandDatabase.registerCommand(commandArray...)
+	// Adds all commands to app
+	if err := root.AddCommand(commands...); err != nil {
+		panic(err)
+	}
+
+	
+	// Starts the project using argbin
+	if err := root.Run(); err != nil {
+		panic(err)
+	}
 }

@@ -11,20 +11,6 @@ import (
 	"runtime"
 )
 
-// Swiss version number
-const VERSION_NUMBER string = "1.1.0"
-
-// Global Arguments
-var (
-	Arguments           = gatherArgs()
-	AdditionalArguments = gatherAdditionalArgs()
-)
-
-// Prints the Swiss version number to the console
-func PrintVersionNumber() {
-	fmt.Println("Swiss version number: " + Colors.Green(VERSION_NUMBER))
-}
-
 // The function displays a message stating Swiss has crashed and a message stating the crash reason
 func Crash(err error) {
 	Error("Swiss has crashed! View output below to learn more. If error is related to swiss and not to a missing dependency, put in a request on GitHub.")

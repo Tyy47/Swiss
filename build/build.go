@@ -9,6 +9,8 @@ import (
 	"syscall"
 
 	"swiss/utils"
+
+	"github.com/Tyy47/clibox/argbin"
 )
 
 const buildProgramList = `Rust: Cargo
@@ -150,128 +152,6 @@ func HandleBuildInput() {
 		}
 	}
 	utils.Error("Unable to find " + argument + " in registry list.")
-}
-
-func SwissInstall() {
-	system := utils.GetOperatingSystem()
-	if system == "linux" {
-		// Builds Go program
-		registry.builds[0].initialize()
-
-		command := exec.Command("mv", "swiss", "/home/"+utils.GetUsersName()+"/.local/bin/")
-
-		command.Stdout = os.Stdout
-		command.Stderr = os.Stderr
-
-		if err := command.Run(); err != nil {
-			utils.Error("Swiss install failed. Check output above.")
-			return
-		}
-
-		utils.Success("Swiss installed successfully! Use 'swiss' in the terminal to gain access to the program.")
-	} else {
-		utils.Warning("Swiss install is not supported for " + system + ".")
-		return
-	}
-}
-
-func UpdateSwiss(args *[]string) {
-	// Unstable check
-	installSwissUnstable := false
-
-	for _, toggle := range *args {
-		switch toggle {
-		case "-u":
-			installSwissUnstable = true
-		case "--unstable":
-			installSwissUnstable = true
-		}
-	}
-
-	// Make directory to clone into
-	utils.MakeFolder("swiss_install", true)
-
-	// Cleans up swiss_install directory if the update process is interrupted.
-	signalChannel := make(chan os.Signal, 1)
-	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
-	go func ()  {
-		<-signalChannel 
-		utils.Reason("\nSwiss install interrupted, cancelling and cleaning up install files.")
-		os.Chdir("..")
-		os.RemoveAll("swiss_install")
-		os.Exit(1)
-	}()
-
-	// Clone the repository
-	clone := exec.Command("git", "clone", "https://github.com/Tyy47/Swiss.git", "swiss_install/")
-	
-	// If there is an error in cloning the repository, it will crash and return an error statement.
-	if err := clone.Run(); err != nil {
-		utils.Error("Unable to clone Swiss repo. Install manually or create a bug report on the repository.")
-		utils.Crash(err)
-		return
-	}
-
-	// Change directory into cloned repo
-	if err := os.Chdir("swiss_install"); err != nil {
-		utils.Error("Unable to change directory into swiss_install. Exiting.")
-		utils.Crash(err)
-		return
-	}
-	
-	// If the unstable toggle is true, it will switch to the unstable branch and install the unstable version of Swiss.
-	if installSwissUnstable {
-		if err := utils.RunCommand("git", "switch", "unstable"); err != nil {
-			utils.CrashCheck(err)
-		}
-
-		utils.Note("Installing Swiss unstable.")
-	}
-
-	// Prompt the user to either go install or move to local/bin
-	utils.Note("Select the number associated with the option in order to continue.")
-	fmt.Println("How would you like to install Swiss?")
-	fmt.Println("1. Go Install\n2. Move to local/bin ( Linux only )")
-	for {
-		var userInput string
-		fmt.Scanln(&userInput)
-
-		switch userInput {
-		case "1":
-			// Go install here
-			install := exec.Command("go", "install")
-
-			if err := install.Run(); err != nil {
-				utils.Error("Unable to install Swiss using Go Install.")
-				utils.Crash(err)
-				break
-			}
-
-			utils.Success("Swiss successfully installed!")
-		case "2":
-			// Move to bin here
-			SwissInstall()
-		default:
-			// Not a correct option
-			utils.Warning("Incorrect option, try again.")
-			continue
-		}
-		break
-	}
-
-	utils.Note("Cleaning up install files...")
-	if err := os.Chdir(".."); err != nil {
-		utils.Error("Unable to change directory.")
-		utils.Crash(err)
-		return
-	}
-
-	if err := os.RemoveAll("swiss_install"); err != nil {
-		utils.Error("Unable to remove install files.")
-		utils.Crash(err)
-		return
-	}
-	utils.Success("Install files cleaned up and Swiss is installed!")
 }
 
 func init() {
