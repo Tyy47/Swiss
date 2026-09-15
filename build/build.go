@@ -28,6 +28,7 @@ var (
 	ErrNilRun = errors.New("run in program type cannot be nil")
 )
 
+// Language safely adds language guard rails
 type Language string
 
 const (
@@ -35,18 +36,21 @@ const (
 	Rust Language = "rust"
 )
 
+// build stores all the needed information to build a program
 type build struct {
 	Tool           string   // Tool stores the build tool of a language (e.g cargo, bun, etc)
 	BuildArguments []string // BuildArguments stores optional flags for the build Tool
 	BuildFile      string   // File thats associated with a certain language I.E main.go, Cargo.toml, etc.
 }
 
+// run stores all the needed information to run a program
 type run struct {
 	Tool           string   // Tool stores the run tool of a language (e.g cargo, bun, etc)
 	BuildArguments []string // BuildArguments stores optional flags for the run Tool
 	BuildFile      string   // File thats associated with a certain language I.E main.go, Cargo.toml, etc.
 }
 
+// program stores context between functions to get build and run objects for later function executions
 type program struct {
 	Build *build
 	Run *run
@@ -99,11 +103,13 @@ func getLanguage(lang string) (*program, error) {
 		return nil, ErrUnknownLanguage
 	}
 
+	// Gather the run object
 	runObject, ok := runMap[Language(fixed)]
 	if !ok {
 		return nil, ErrUnknownLanguage
 	}
 
+	// Create a program and assign the build and run objects to store for context
 	langs := program{
 		Build: &buildObject,
 		Run: &runObject,
@@ -141,10 +147,12 @@ func buildLanguage(p *program) error {
 
 // runLanguage handles the running the program.
 func runLanguage(p *program) error {
+	// Nil check for program
 	if p == nil {
 		return ErrNilProgram
 	}
 
+	// Nil check for stored build
 	if p.Build == nil {
 		return ErrNilRun
 	}
@@ -164,7 +172,6 @@ func runLanguage(p *program) error {
 }
 
 // BuildCommand creates the "build" command for swiss.
-//
 // Command is added in main.go in main function.
 func BuildCommand() *argbin.Command {
 	return &argbin.Command{
@@ -186,6 +193,8 @@ func BuildCommand() *argbin.Command {
 	}
 }
 
+// RunCommand create the "run" command for swiss.
+// Command is added in main.go in main function.
 func RunCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "run",

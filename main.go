@@ -170,6 +170,7 @@ func main() {
 		helpCommand(),
 		versionCommand(),
 		build.BuildCommand(),
+		build.RunCommand(),
 	}
 
 	// Adds all commands to app
