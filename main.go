@@ -2,7 +2,6 @@ package main
 
 import (
 	"swiss/build"
-	commanddict "swiss/command-dict"
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/network"
