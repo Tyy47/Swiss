@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"log"
@@ -83,7 +82,7 @@ func GetUsersName() string {
 	if err != nil {
 		log.Fatalf("Unable to get current user: %s", err)
 	}
-
+	
 	return user.Username
 }
 
@@ -131,9 +130,8 @@ func MakeFolder(folders ...string) error {
 	return nil
 }
 
-// Takes in two paths, an old path argument that holds the current path of the file you're trying to move.
-// The new path is the location you're moving the file to.
-// The muted argument allows you to toggle the moved message statement.
+// MoveFileToFolder takes two paths of files and moves the file from the oldPath to the newPath.
+// Returns an error if unable to move files.
 func MoveFileToFolder(oldPath string, newPath string) error {
 	if err := os.Rename(oldPath, newPath); err != nil {
 		return err
@@ -142,9 +140,8 @@ func MoveFileToFolder(oldPath string, newPath string) error {
 	return nil
 }
 
-// Takes in a tool string and runs the version command on that tool.
-// If it executes with no errors the function returns true.
-// If the tool is not installed or path'd correctly, it will print out an error statement and return false.
+// DoesToolExist takes in a string that is a tool and checks the version silently to check if it's installed.
+// Will return an error stating the tool is not installed.
 func DoesToolExist(tool string) error {
 	command := exec.Command(tool, "-v")
 

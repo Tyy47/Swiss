@@ -17,8 +17,19 @@ import (
 var root = argbin.Root{
 	AppName: "swiss",
 	AppVersion: "1.2",
-	Description: "the cli army knife",
 	CommandList: make([]*argbin.Command, 0),
+	Description: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+help: Opens the help menu.
+build <string>: Allows you to build program via swiss.
+init <string>: Inits a project using Swiss.
+net: A set of networking tools.
+gen: A variety of codes that can be generated via Swiss.
+sc: Shortcuts that are multiple commands in one.`,
 }
 
 // Creates the "help" command and returns it
@@ -27,7 +38,7 @@ func helpCommand() *argbin.Command {
 		Name: "-h",
 		AdditionalNames: []string{"--help"},
 		Execute: func(ctx *argbin.Context) error {
-			utils.DisplayHelp()
+			fmt.Println(root.GetDescription())
 			return nil
 		},
 	}

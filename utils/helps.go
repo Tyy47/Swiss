@@ -4,44 +4,6 @@ import (
 	"fmt"
 )
 
-// Prints the main help menu for Swiss
-func DisplayHelp() {
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-help: Opens the help menu.
-dict <string>: Shows system commands based on the shell argument provided.
-build <string>: Allows you to build program via swiss.
-init <string>: Inits a project using Swiss.
-net: A set of networking tools.
-gen: A variety of codes that can be generated via Swiss.
-sc: Shortcuts that are multiple commands in one.
-	`
-	fmt.Println(help_menu)
-}
-
-// Prints the help menu for the Command Dictionary module
-func CommandHelp() {
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-Command Dictionary Module - Contains a variety of sub commands that show the most used commands depending on the input.
-
--h --help: Opens the help menu
-ps: Prints Powershell command dictionary.
-bash: Prints Bash command dictionary.
-git: Prints git command dictionary.
-docker: Prints docker command dictionary.
-`
-	fmt.Println(help_menu)
-}
-
 // Prints the help menu for the Build module
 func BuildHelp() {
 	var help_menu string = `
