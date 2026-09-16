@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -25,32 +24,6 @@ React - Bun/Vite: swiss init web react
 Angular - Bun/Vite: swiss init web angular
 Vue - Bun/Vite: swiss init web vue`
 
-// Project structure for creation
-type project struct {
-	Name       string   // Captures the project name for use in other functions
-	Language   string   // Stores the language for the project
-	Tool       string   // Build tool
-	Arguments  []string // Arguments needed to init project
-	Folders    []string // Additional folders needed for project
-	Files      []string // Additional files needed for project
-	ManualInit bool     // Toggle if a project needs a manual init like C as C doesn't have a traditional init tool like typescript/bun.
-}
-
-// Projects storage type
-type projectRegistry struct {
-	projects []project
-}
-
-// Storage for containing valid initable projects
-var registry = projectRegistry{
-	projects: []project{},
-}
-
-// Prints a list of projects that can be init'd via Swiss commands
-func PrintInitProjectList() {
-	utils.Note("Languages are listed along side their build tools and the commands to init them via Swiss.\n")
-	fmt.Println(initProjectList)
-}
 
 // Project method that starts the creation of a project
 func (p *project) initialize() error {
@@ -90,29 +63,6 @@ func (p *project) initialize() error {
 	}
 
 	return nil
-}
-
-// Adds projects to the project registry by unpacking a project array
-func registerProjects(project ...project) {
-	registry.projects = append(registry.projects, project...)
-}
-
-// Handles additional flags that might be tossed into the init command when ran to execute additional functions.
-func flagHandler(additonalArgs *[]string, proj project) {
-	if len(*additonalArgs) >= 1 {
-		for _, arg := range *additonalArgs {
-			switch arg {
-			case "-g", "--git":
-				gitInit(proj)
-				return
-			case "-j", "--jujutsu":
-				jjInit()
-				return
-			}
-		}
-	} else {
-		return
-	}
 }
 
 // Inits git in current directory when called.

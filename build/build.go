@@ -31,6 +31,7 @@ var (
 // Language safely adds language guard rails
 type Language string
 
+// Available languages for swiss to build & run
 const (
 	Go   Language = "go"
 	Rust Language = "rust"

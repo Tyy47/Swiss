@@ -9,67 +9,75 @@ import (
 	"os/exec"
 	"os/user"
 	"runtime"
+
+	"github.com/Tyy47/clibox/outbin"
 )
 
-// The function displays a message stating Swiss has crashed and a message stating the crash reason
-func Crash(err error) {
-	Error("Swiss has crashed! View output below to learn more. If error is related to swiss and not to a missing dependency, put in a request on GitHub.")
-	crashMessage(err)
-	os.Exit(1)
-}
+var (
+	
 
-// Checks if err has a value other then nil, if it does, it runs the Crash function to safely exit Swiss.
-func CrashCheck(err error) {
-	if err != nil {
-		Crash(err)
-	}
-}
+	// util errors
+	ErrUnableToCreateFile = errors.New("unable to create file in current directory")
+	ErrToolNotInstalled = errors.New("is not installed")
+)
 
-// A function that takes an initial command arg and a packed string of other arguments.
-// It executes the command and returns the result for manual error handling depending on the circumstance.
-func RunCommand(command string, arguments ...string) error {
-	comm := exec.Command(command, arguments...)
+var output = outbin.NewOutput(os.Stdout, os.Stderr)
 
-	comm.Stdin = os.Stdin
-	comm.Stdout = os.Stdout
+// CheckFileExists takes in a list of file names and checks if they exist.
+// Results are added to a map to iterate on, an error is returned if the stats of a file cannot be retrieved.
+func CheckFileExists(files ...string) (map[string]bool, error) {
+	
+	fileMap := make(map[string]bool)
 
-	err := comm.Run()
-	return err
-}
+	for _, file := range files {
+		info, err := os.Stat(file)
+		if err != nil {
+			return nil, err
+		}
 
-// Checks if arguments are a certain length, if so, it grabs the requested index and returns the value of args[index].
-func CheckArguments(args []string, length int, index int) string {
-	if len(args) <= length {
-		return ""
-	} else {
-		return args[index]
-	}
-}
+		if info.Mode().IsRegular() {
+			fileMap[file] = true
+		} else {
+			fileMap[file] = false
+		}
 
-// Checks if a file exists, if it does it returns true, if not, returns false.
-func CheckFileExists(fileName string) bool {
-	info, err := os.Stat(fileName)
-	if errors.Is(err, os.ErrNotExist) {
-		return false
 	}
 
-	return err == nil && info.Mode().IsRegular()
+	return fileMap, nil
 }
 
-// Checks if a folder exists and returns a boolean value depending on the outcome and an error if checking fails. 
-func CheckFolderExists(folderName string) (bool, error) {
-	info, err := os.Stat(folderName)
-	if err == nil {
-		return info.IsDir(), nil
-	}
-	if errors.Is(err, os.ErrNotExist) {
-		return false, nil
-	}
-	return false, err
+// CheckFolderExists takes in a list of folder names and iterates over them to see if they exist.
+// Results are added to a map to iterate upon and an error is returned if there is a problem
+// gathering the folders.
+func CheckFolderExists(folders ...string) (map[string]bool, error) {
+	
+	// Create the map
+	folderMap := make(map[string]bool, 0)
 
+	// Loop over all the folders given
+	for _, folder := range folders {
+		
+		// Gather folder stats
+		info, err := os.Stat(folder)
+		if err != nil {
+			return nil, err
+		}
+
+		// Directory check
+		if info.IsDir() {
+			// Folder is a directory
+			folderMap[folder] = true
+		} else {
+			// Folder item is not a directory
+			folderMap[folder] = false
+		}
+	}
+
+	// Return the map
+	return folderMap, nil
 }
 
-// Gathers the users username and returns it
+// GetUsersName gathers the user's username from the user package and returns it.
 func GetUsersName() string {
 	user, err := user.Current()
 	if err != nil {
@@ -79,96 +87,70 @@ func GetUsersName() string {
 	return user.Username
 }
 
-// Gathers and returns the user operating system.
+// GetOperatingSystem gathers the users operating system from the runtime package and returns it as a string.
 func GetOperatingSystem() string {
 	// Returns Windows, Linux, or Darwin ( Apple )
 	return runtime.GOOS
 }
 
-// Takes in a file name and runs the CheckFileExists function to check if it exists. 
-// If so, it returns a warning statement stating that the file exists. 
-// If it doesn't exist, the function will create the file.
-// If the muted argument is toggled to false, it'll print a statement saying that the file was created. 
-func MakeFile(file string, muted bool) {
-	if CheckFileExists(file) {
-		Warning(file + " file exists.")
-		return
+
+// MakeFile takes in a collection of files and creates them in the current directory.
+// Returns an error if unable to create a file.
+func MakeFile(files ...string) error {
+	if data, err := CheckFileExists(files...); err != nil {
+		return err
 	} else {
-		err := os.WriteFile(file, []byte(""), 0o666)
-		if err != nil {
-			Crash(err)
-			return
+		for k, v := range data {
+			if !v {
+				if err := os.WriteFile(k, []byte(""), 0o666); err != nil {
+					return err
+				}
+			}
 		}
+
 	}
-	if !muted {
-		Success(file + " file created.")
-	}
+	return nil
 }
 
-// Takes in a folder name and runs the CheckFolderExists function to check if it exists. 
-// If so, it returns a warning statement stating that the folder exists. 
-// If it doesn't exist, the function will create the folder.
-// If the muted argument is toggled to false, it'll print a statement saying that the folder was created. 
-func MakeFolder(folder string, muted bool) {
-	dirInfo, err := CheckFolderExists(folder)
-
+// MakeFolder takes in a collection of folder names and creates them. 
+// Returns an error if unable to create the folder.
+func MakeFolder(folders ...string) error {
+	dirInfo, err := CheckFolderExists(folders...)
 	if err != nil {
-		Error("Unable to create directory.")
-		return
+		return err
 	}
 
-	if dirInfo {
-		Warning(folder + " folder exists.")
-		return
-	} else {
-		err := os.Mkdir(folder, 0755)
-		if err != nil {
-			Error(err.Error())
-			return
+	for k, v := range dirInfo {
+		if !v {
+			if err := os.Mkdir(k, 0755); err != nil {
+				return err
+			}
 		}
 	}
-	if !muted {
-		Success("Successfully created " + folder + ".")
-	}
+
+	return nil
 }
 
 // Takes in two paths, an old path argument that holds the current path of the file you're trying to move.
 // The new path is the location you're moving the file to.
 // The muted argument allows you to toggle the moved message statement.
-func MoveFileToFolder(oldPath string, newPath string, muted bool) {
+func MoveFileToFolder(oldPath string, newPath string) error {
 	if err := os.Rename(oldPath, newPath); err != nil {
-		Error("Unable to move file: " + err.Error())
-		return
+		return err
 	}
 
-	if !muted {
-		Success("Successfully moved " + oldPath + " to " + newPath + ".")
-	}
+	return nil
 }
 
 // Takes in a tool string and runs the version command on that tool.
 // If it executes with no errors the function returns true.
 // If the tool is not installed or path'd correctly, it will print out an error statement and return false.
-func DoesToolExist(tool string) bool {
+func DoesToolExist(tool string) error {
 	command := exec.Command(tool, "-v")
 
 	if err := command.Run(); err != nil {
-		Error(tool + " is not installed or added to path.")
-		return false
+		return fmt.Errorf("%s %w.", tool, ErrToolNotInstalled)
 	}
 
-	return true
-}
-
-// Prints the prompt provided and asks the user for an input. If an input is not provided or the scanner has failed. The fallback string will be returned instead.
-func GetUserInput(prompt string, fallback string) string {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print(prompt)
-
-	if scanner.Scan() {
-		input := scanner.Text()
-		return input
-	}
-
-	return fallback
+	return nil
 }
