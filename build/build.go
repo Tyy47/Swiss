@@ -179,7 +179,6 @@ func runLanguage(p *program) error {
 func BuildCommand() *argbin.Command {
 	return &argbin.Command{
 		Name:        "build",
-		Description: "build tool for swiss",
 		TakesValue:  true,
 		Execute: func(ctx *argbin.Context) error {
 			b, err := getLanguage(ctx.ParsedValue)
@@ -193,6 +192,18 @@ func BuildCommand() *argbin.Command {
 
 			return nil
 		},
+		Description: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Build module - Builds or Runs a program based on the language inputted.
+
+-h --help: Opens the help menu.
+-l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
+build <string>: Builds a program based on the language you input.
+run <string>: Runs a program based on the language you input.`,
 	}
 }
 

@@ -4,24 +4,6 @@ import (
 	"fmt"
 )
 
-// Prints the help menu for the Build module
-func BuildHelp() {
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-Build module - Builds or Runs a program based on the language inputted.
-
--h --help: Opens the help menu.
--l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
-build <string>: Builds a program based on the language you input.
-run <string>: Runs a program based on the language you input.
-`
-	fmt.Println(help_menu)
-}
-
 // Prints the help menu for the Init module
 func InitHelp() {
 	var help_menu string = `
