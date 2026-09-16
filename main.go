@@ -32,7 +32,7 @@ gen: A variety of codes that can be generated via Swiss.
 sc: Shortcuts that are multiple commands in one.`,
 }
 
-// Creates the "help" command and returns it
+// helpCommand creates the "help" command for the root.
 func helpCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "-h",
@@ -44,7 +44,7 @@ func helpCommand() *argbin.Command {
 	}
 }
 
-// Creates the "version" command and returns it
+// versionCommand creates the "version" command for the root.
 func versionCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "-v",
@@ -61,6 +61,16 @@ func versionCommand() *argbin.Command {
 			
 			// Profit
 			fmt.Printf("swiss: version %s", version)
+			return nil
+		},
+	}
+}
+
+// helpFlag creates a generic flag for a command to print out the commands help menu.
+func helpFlag() *argbin.Flag {
+	return &argbin.Flag{
+		Execute: func(ctx *argbin.Context) error {
+			fmt.Println(ctx.Command.GetDescription())
 			return nil
 		},
 	}
@@ -193,5 +203,17 @@ func main() {
 	// Starts the project using argbin
 	if err := root.Run(); err != nil {
 		panic(err)
+	}
+}
+
+func init() {
+	for _, cmd := range root.CommandList {
+		cmd.AddFlag("-h", helpFlag())
+		cmd.AddFlag("--help", helpFlag())
+
+		for _, subCmd := range cmd.Subcommands {
+			subCmd.AddFlag("-h", helpFlag())
+			subCmd.AddFlag("--help", helpFlag())
+		}
 	}
 }

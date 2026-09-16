@@ -4,26 +4,6 @@ import (
 	"fmt"
 )
 
-// Prints the help menu for the Init module
-func InitHelp() {
-	var help_menu string = `
-╭───────────────────  Swiss  ────────────────────╮
-│                                                │
-│       The army knife of CLI applications       │
-│                                                │
-╰────────────────────────────────────────────────╯
-Init module - Initialize a project using Swiss.
-
--h --help: Opens the help menu.
--l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
--g --git: Inits git alongside your project.
--j --jujutsu: Inits jj alongside your project.
-init <string> [name: string]: Inits a project based on the given input. 
-init web: Inits a web based project using Bun & Vite with a selected framework. 
-`
-	fmt.Println(help_menu)
-}
-
 // Prints the help menu for the Networking module
 func NetHelp() {
 	var help_menu string = `
