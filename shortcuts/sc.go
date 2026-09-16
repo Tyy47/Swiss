@@ -1,18 +1,14 @@
 package shortcuts
 
-import "swiss/utils"
+import (
+	"os/exec"
+	"swiss/utils"
+
+	"github.com/Tyy47/clibox/argbin"
+)
 
 // Adds all files to a commit using git with a required message
 func GitCommitSC() {
-	// Gathers a commit message
-	var commitMessage string
-	if len(utils.AdditionalArguments) <= 0 {
-		utils.Warning("Commit message is blank, fill in commit message to continue.")
-		return
-	} else {
-		commitMessage = utils.AdditionalArguments[0]
-	}
-
 	// Checks if adding files to commit will cause an error
 	if err := utils.RunCommand("git", "add", "."); err != nil {
 		utils.Error("Unable to add files to commit, make sure there is changes to add.")
@@ -74,4 +70,27 @@ func GitSyncSC() {
 
 	// Success message stating repository has been updated.
 	utils.Success("Local repository updated.")
+}
+
+// gitCommitCommand creates the "commit" command. commit is a compressed and shorthand form of commiting to a git repository.
+func gitCommitCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "commit",
+		Description: "commit shortcut",
+		TakesValue: true,
+		Execute: func(ctx *argbin.Context) error {
+			return nil
+		},
+	}
+}
+
+func ShortcutCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "sc",
+		Description: "shortcuts for swiss",
+		AdditionalNames: []string{"shortcut"},
+		Subcommands: []*argbin.Command{
+			gitCommitCommand(),
+		},
+	}
 }
