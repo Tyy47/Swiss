@@ -32,20 +32,6 @@ func stringGenerator(generatedLength int) string {
 	return builder.String()
 }
 
-// GenerateCommand creates the "gen" command for swiss
-//
-// Command is stored in main.go
-func GenerateCommand() *argbin.Command {
-	return &argbin.Command{
-		Name: "gen",
-		Description: "generator command for swiss.",
-		Subcommands: []*argbin.Command{
-			generateSecretCommand(),
-			generateUUIDCommand(),
-		},
-	}
-}
-
 // generateSecretCommand creates the "secret" subcommand for "gen".
 func generateSecretCommand() *argbin.Command {
 	return &argbin.Command{
@@ -105,3 +91,28 @@ func generateUUIDCommand() *argbin.Command {
 		},
 	}
 }
+
+// GenerateCommand creates the "gen" command for swiss
+//
+// Command is stored in main.go
+func GenerateCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "gen",
+		Subcommands: []*argbin.Command{
+			generateSecretCommand(),
+			generateUUIDCommand(),
+		},
+		Description: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Gen module - Generate codes through Swiss.
+
+-h --help: Opens the help menu.
+uuid: Generates an 128 bit hexadecimal string.
+secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.`,
+	}
+}
+
