@@ -66,6 +66,19 @@ func gitPush(commitMessage string) error {
 	return nil
 }
 
+func gitPull() error {
+
+	// Create the pull command
+	pullCmd := exec.Command("git", "pull")
+
+	// Execute the pull command
+	if err := pullCmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func gitSync() error  {
 	
 	// Create the fetch command
@@ -139,7 +152,6 @@ func gitSyncCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "sync",
 		Description: "sync shortcut",
-		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			
 			// Runs git fetch & git status
@@ -147,6 +159,14 @@ func gitSyncCommand() *argbin.Command {
 				return err
 			}
 
+			pull, _ := ctx.Values["pull"].(bool)
+			if pull {
+				if err := gitPull(); err != nil {
+					return err
+				}
+			}
+			
+			output.Success("Local repository updated.")
 			return nil
 		},
 		Flags: argbin.Flags{
