@@ -13,10 +13,10 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 ## Module testing checklist
 - A checklist of uncomplete and completed modules that have gone through testing to make sure they're in working order
 
-[] Build
+[x] Build
 [] Gen
 [] Init
 [] Shortcut
 
 ### Misc bugs found:
-- Global help menu additions arent added
+- Global help menu additions arent added - FIXED 
