@@ -24,4 +24,7 @@ type project struct {
 	// Toggle if a project needs a manual init like C.
 	// C doesn't have a traditional init tool like typescript/bun.
 	ManualInit bool     
+
+	// NeedsProjectName stores the state if a project needs a name for init
+	NeedsProjectName bool
 }

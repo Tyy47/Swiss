@@ -9,6 +9,7 @@ import (
 	"swiss/utils"
 
 	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/inputbin"
 	"github.com/Tyy47/clibox/outbin"
 )
 
@@ -63,6 +64,41 @@ func createProjectDirectory(p *project) error {
 // createExecuteCommand builds the command to create the project and returns it as a
 // pointer to and exec Cmd.
 func createExecuteCommand(proj *project) *exec.Cmd {
+
+	if proj.NeedsProjectName {
+	
+		ops := inputbin.InputOptions{
+			Question: "enter project name: ",
+		}
+
+		// Gather user input
+		userInput, err := inputbin.Text(&ops)
+		if err != nil {
+			// If input is blank it will get current working directory name
+			userInput, err = func() (string, error) {
+				// Grab working directory
+				wd, _ := os.Getwd()
+				
+				// Split the directory string
+				split := strings.Split(wd, "/")
+
+				// Grab last entry
+				if len(split) == 1 {
+					return split[0], nil
+				}
+
+				return split[len(split)-1], nil
+			}()
+			
+			// Defaults the project name to "project" if name cannot be gotten elsewhere
+			if err != nil {
+				userInput = "project"
+			}
+		}
+		
+		// Adds project name to arguments list
+		proj.Arguments = append(proj.Arguments, userInput)
+	}
 	
 	// Create the command
 	cmd := exec.Command(proj.Tool, proj.Arguments...)
@@ -121,20 +157,26 @@ func InitCommand() *argbin.Command{
 		Name: "init",
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
+			// Toggle for silent output
 			silent, _ := ctx.Values["silent"].(bool)
+			
+			utils.Output.Infof("initializing %s project", ctx.ParsedValue)
 
+			// Finds the project
 			proj, err := initialize(ctx.ParsedValue)
 			if err != nil {
 				return err
 			}
 			
 			cmd := createExecuteCommand(proj)
-
+			
+			// Toggles stdout & stderr based on silent flag
 			if !silent {
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
+				// Put cmds output to stdout and stderr
+				utils.ToggleOutputForCMD(cmd)
 			}
-
+			
+			// Execute init command
 			if err := cmd.Run(); err != nil {
 				return err
 			}

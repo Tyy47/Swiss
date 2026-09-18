@@ -26,20 +26,18 @@ var Output = outbin.NewOutput(os.Stdout, os.Stderr)
 // CheckFileExists takes in a list of file names and checks if they exist.
 // Results are added to a map to iterate on, an error is returned if the stats of a file cannot be retrieved.
 func CheckFileExists(files ...string) (map[string]bool, error) {
-	
+
 	fileMap := make(map[string]bool)
 
 	for _, file := range files {
-		info, err := os.Stat(file)
-		if err != nil {
-			return nil, err
-		}
 
-		if info.Mode().IsRegular() {
-			fileMap[file] = true
-		} else {
-			fileMap[file] = false
-		}
+		_, err := os.Stat(file)
+
+		// if the file doesn't exist add it to the map with a value of false
+		if os.IsNotExist(err) { fileMap[file] = false }
+
+		// If the file exists it adds it to the file mape with a value of true
+		if err == nil { fileMap[file] = true }
 
 	}
 
@@ -51,29 +49,20 @@ func CheckFileExists(files ...string) (map[string]bool, error) {
 // gathering the folders.
 func CheckFolderExists(folders ...string) (map[string]bool, error) {
 	
-	// Create the map
-	folderMap := make(map[string]bool, 0)
+	folderMap := make(map[string]bool)
 
-	// Loop over all the folders given
 	for _, folder := range folders {
-		
-		// Gather folder stats
-		info, err := os.Stat(folder)
-		if err != nil {
-			return nil, err
-		}
+	
+		// Grab folder info
+		_, err := os.Stat(folder)
 
-		// Directory check
-		if info.IsDir() {
-			// Folder is a directory
-			folderMap[folder] = true
-		} else {
-			// Folder item is not a directory
-			folderMap[folder] = false
-		}
+		// If the folder exists, add it to the map with a value of true
+		if err == nil { folderMap[folder] = true }
+
+		// If the folder doesnt exist, add it to the map with a value of false
+		if os.IsNotExist(err) { folderMap[folder] = false }
 	}
 
-	// Return the map
 	return folderMap, nil
 }
 

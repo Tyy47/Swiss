@@ -17,7 +17,9 @@ var initMap = map[Language]project{
 
 	Go : {	
 		Tool: "go",
-		Arguments: []string{"mod, init"},
+		Arguments: []string{"mod", "init"},
+		Files: []string{"main.go"},
+		NeedsProjectName: true,
 	},
 
 	Rust : {

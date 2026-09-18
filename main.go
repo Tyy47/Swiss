@@ -82,6 +82,7 @@ func main() {
 	if err := root.Run(); err != nil {
 		if errors.Is(err, argbin.ErrMissingArguments) {
 			fmt.Println(root.HelpMenu)
+			return
 		}
 
 		utils.Output.Error(err)
