@@ -2,8 +2,10 @@ package build
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"strings"
+	"swiss/utils"
 
 	"github.com/Tyy47/clibox/argbin"
 )
@@ -76,13 +78,13 @@ var buildMap = map[Language]build{
 var runMap = map[Language]run{
 	Go: {
 		Tool:           "go",
-		BuildArguments: []string{"build"},
+		BuildArguments: []string{"run", "main.go"},
 		BuildFile:      "go.mod",
 	},
 
 	Rust: {
 		Tool:           "cargo",
-		BuildArguments: []string{"build"},
+		BuildArguments: []string{"run"},
 		BuildFile:      "Cargo.toml",
 	},
 }
@@ -138,6 +140,9 @@ func buildLanguage(p *program) error {
 	// Takes in the tool and arguments to create a command
 	cmd := exec.Command(b.Tool, b.BuildArguments...)
 
+	// Assigns cmd's output to stdout and stderr
+	utils.ToggleOutputForCMD(cmd)
+
 	// Runs the command and returns the error if it fails
 	if err := cmd.Run(); err != nil {
 		return err
@@ -166,12 +171,33 @@ func runLanguage(p *program) error {
 	// Takes in the tool and arguments to create a command
 	cmd := exec.Command(r.Tool, r.BuildArguments...)
 
+	// Assigns cmd's output to stdout and stderr
+	utils.ToggleOutputForCMD(cmd)
+
 	// Runs the command and returns the error if it fails
 	if err := cmd.Run(); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// listFlag returns a flag for build and run to print the list of valid languages
+// that swiss can build and run.
+func listFlag() *argbin.Flag { 
+	return &argbin.Flag{
+		Execute: func(ctx *argbin.Context) error {
+			fmt.Println("Buildable and runable languages:")
+
+			// Loop over build map and print entries
+			for k, v := range buildMap {
+				fmt.Printf("%s: required tool = %s.\n", k, v.Tool)
+			}
+
+			return nil
+		},
+		Terminal: true,
+	}
 }
 
 // BuildCommand creates the "build" command for swiss.
@@ -181,18 +207,27 @@ func BuildCommand() *argbin.Command {
 		Name:        "build",
 		TakesValue:  true,
 		Execute: func(ctx *argbin.Context) error {
+			utils.Output.Info("searching for language.")
 			b, err := getLanguage(ctx.ParsedValue)
 			if err != nil {
 				return err
 			}
 
+			utils.Output.Info("building program.")
 			if err := buildLanguage(b); err != nil {
 				return err
 			}
 
+			utils.Output.Successf("%s program has been built", ctx.ParsedValue)
 			return nil
 		},
-		Description: `
+		Flags: argbin.Flags{
+			"-h" : utils.HelpFlag(),
+			"--help": utils.HelpFlag(),
+			"-l": listFlag(),
+			"--list": listFlag(),
+		},
+		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │
@@ -212,19 +247,39 @@ run <string>: Runs a program based on the language you input.`,
 func RunCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "run",
-		Description: "run tool for swiss",
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
+			utils.Output.Info("searching for language.")
 			r, err := getLanguage(ctx.ParsedValue)
 			if err != nil {
 				return err 
 			}
-
-			if err := buildLanguage(r); err != nil {
+			
+			utils.Output.Info("running program.")
+			if err := runLanguage(r); err != nil {
 				return err
 			}
 
+			utils.Output.Successf("%s program has been ran.", ctx.ParsedValue)
 			return nil
 		},
+		Flags: argbin.Flags{
+			"-h" : utils.HelpFlag(),
+			"--help": utils.HelpFlag(),
+			"-l": listFlag(),
+			"--list": listFlag(),
+		},
+		HelpMenu: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Build module - Builds or Runs a program based on the language inputted.
+
+-h --help: Opens the help menu.
+-l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
+build <string>: Builds a program based on the language you input.
+run <string>: Runs a program based on the language you input.`,
 	}
 }

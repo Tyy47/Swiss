@@ -220,7 +220,7 @@ func InitCommand() *argbin.Command{
 				},
 			},
 		},
-		Description: `
+		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │

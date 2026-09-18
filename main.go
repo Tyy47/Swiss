@@ -1,14 +1,16 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"swiss/build"
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/shortcuts"
-	
-	"github.com/Tyy47/clibox/colorbin"
+	"swiss/utils"
+
 	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/colorbin"
 )
 
 // Creating the root object of the application
@@ -16,7 +18,7 @@ var root = argbin.Root{
 	AppName: "swiss",
 	AppVersion: "1.2",
 	CommandList: make([]*argbin.Command, 0),
-	Description: `
+	HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │
@@ -32,10 +34,10 @@ sc: Shortcuts that are multiple commands in one.`,
 // helpCommand creates the "help" command for the root.
 func helpCommand() *argbin.Command {
 	return &argbin.Command{
-		Name: "-h",
-		AdditionalNames: []string{"--help"},
+		Name: "help",
+		AdditionalNames: []string{"--help", "-h"},
 		Execute: func(ctx *argbin.Context) error {
-			fmt.Println(root.GetDescription())
+			fmt.Println(root.HelpMenu)
 			return nil
 		},
 	}
@@ -44,17 +46,11 @@ func helpCommand() *argbin.Command {
 // versionCommand creates the "version" command for the root.
 func versionCommand() *argbin.Command {
 	return &argbin.Command{
-		Name: "-v",
-		AdditionalNames: []string{"--version"},
+		Name: "version",
+		AdditionalNames: []string{"--version", "-v"},
 		Execute: func(ctx *argbin.Context) error {
-			// Gather app version
-			version, err := root.GetAppVersion()
-			if err != nil {
-				return err
-			}
-			
 			// Color app version to green
-			version = colorbin.Green(version).ToHighIntensityBold().String()
+			version := colorbin.Green(root.AppVersion).ToHighIntensityBold().String()
 			
 			// Profit
 			fmt.Printf("swiss: version %s\n", version)
@@ -63,19 +59,9 @@ func versionCommand() *argbin.Command {
 	}
 }
 
-// helpFlag creates a generic flag for a command to print out the commands help menu.
-func helpFlag() *argbin.Flag {
-	return &argbin.Flag{
-		Execute: func(ctx *argbin.Context) error {
-			fmt.Println(ctx.Command.GetDescription())
-			return nil
-		},
-	}
-}
-
 
 func main() {
-	
+
 	// Command storage to add to root.AddCommand
 	commands := []*argbin.Command{
 		helpCommand(),
@@ -94,18 +80,10 @@ func main() {
 
 	// Starts the project using argbin
 	if err := root.Run(); err != nil {
-		panic(err)
-	}
-}
-
-func init() {
-	for _, cmd := range root.CommandList {
-		cmd.AddFlag("-h", helpFlag())
-		cmd.AddFlag("--help", helpFlag())
-
-		for _, subCmd := range cmd.Subcommands {
-			subCmd.AddFlag("-h", helpFlag())
-			subCmd.AddFlag("--help", helpFlag())
+		if errors.Is(err, argbin.ErrMissingArguments) {
+			fmt.Println(root.HelpMenu)
 		}
+
+		utils.Output.Error(err)
 	}
 }

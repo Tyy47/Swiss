@@ -17,3 +17,6 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 [] Gen
 [] Init
 [] Shortcut
+
+### Misc bugs found:
+- Global help menu additions arent added

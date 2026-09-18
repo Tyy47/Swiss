@@ -104,7 +104,7 @@ func gitSync() error  {
 func gitCommitCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "commit",
-		Description: "commit shortcut",
+		HelpMenu: "commit shortcut",
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			
@@ -124,7 +124,7 @@ func gitCommitCommand() *argbin.Command {
 func gitPushCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "push",
-		Description: "push shortcut",
+		HelpMenu: "push shortcut",
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			
@@ -151,7 +151,7 @@ func gitPushCommand() *argbin.Command {
 func gitSyncCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "sync",
-		Description: "sync shortcut",
+		HelpMenu: "sync shortcut",
 		Execute: func(ctx *argbin.Context) error {
 			
 			// Runs git fetch & git status
@@ -195,7 +195,7 @@ func ShortcutCommand() *argbin.Command {
 			gitPushCommand(),
 			gitSyncCommand(),
 		},
-		Description: `
+		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │

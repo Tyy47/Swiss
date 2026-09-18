@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"swiss/utils"
 
 	"github.com/Tyy47/clibox/argbin"
 	"github.com/Tyy47/clibox/outbin"
@@ -36,7 +37,7 @@ func stringGenerator(generatedLength int) string {
 func generateSecretCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "secret",
-		Description: "secret code generator.",
+		HelpMenu: "secret code generator.",
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			var secretLength string = ctx.ParsedValue
@@ -62,7 +63,7 @@ func generateSecretCommand() *argbin.Command {
 func generateUUIDCommand() *argbin.Command {
 	return &argbin.Command{
 		Name: "uuid",
-		Description: "uuid generator for swiss",
+		HelpMenu: "uuid generator for swiss",
 		Execute: func(ctx *argbin.Context) error {
 			var builder strings.Builder
 			builder.Grow(36)
@@ -102,7 +103,11 @@ func GenerateCommand() *argbin.Command {
 			generateSecretCommand(),
 			generateUUIDCommand(),
 		},
-		Description: `
+		Flags: argbin.Flags{
+			"-h" : utils.HelpFlag(),
+			"--help": utils.HelpFlag(),
+		},
+		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │
 │       The army knife of CLI applications       │

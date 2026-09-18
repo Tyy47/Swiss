@@ -10,6 +10,7 @@ import (
 	"runtime"
 
 	"github.com/Tyy47/clibox/outbin"
+	"github.com/Tyy47/clibox/argbin"
 )
 
 var (
@@ -20,7 +21,7 @@ var (
 	ErrToolNotInstalled = errors.New("is not installed")
 )
 
-var output = outbin.NewOutput(os.Stdout, os.Stderr)
+var Output = outbin.NewOutput(os.Stdout, os.Stderr)
 
 // CheckFileExists takes in a list of file names and checks if they exist.
 // Results are added to a map to iterate on, an error is returned if the stats of a file cannot be retrieved.
@@ -150,4 +151,23 @@ func DoesToolExist(tool string) error {
 	}
 
 	return nil
+}
+
+// helpFlag creates a generic flag for a command to print out the commands help menu.
+func HelpFlag() *argbin.Flag {
+	return &argbin.Flag{
+		Execute: func(ctx *argbin.Context) error {
+			help := ctx.Command.HelpMenu
+			fmt.Println(help)
+			return nil
+		},
+		Terminal: true,
+	}
+}
+
+
+// ToggleOutputForCMD makes the cmd's output route to stdout and stderr.
+func ToggleOutputForCMD(cmd *exec.Cmd) {
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 }
