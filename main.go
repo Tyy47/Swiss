@@ -24,11 +24,19 @@ var root = argbin.Root{
 │       The army knife of CLI applications       │
 │                                                │
 ╰────────────────────────────────────────────────╯
-help: Opens the help menu.
-build <string>: Allows you to build program via swiss.
-init <string>: Inits a project using Swiss.
-gen: A variety of codes that can be generated via Swiss.
-sc: Shortcuts that are multiple commands in one.`,
+	
+usage: swiss [command] [additional_arguments] <flags>
+	
+Commands:
+	build: Builds a program that uses swiss made shortcuts.
+	run: Runs a program that uses swiss made shortcuts.
+	init: Initializes a programming based project in current folder.
+	gen: Generates different codes that are most commonly used in development
+	sc: Command shortcuts for various CLI utilities to make development faster
+
+Flags:
+	-h, --help: Displays the swiss help menu
+	-v, --version: Displays the current swiss version number`,
 }
 
 // helpCommand creates the "help" command for the root.

@@ -15,8 +15,8 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 
 [x] Build
 [x] Gen
-[] Init
-[] Shortcut
+[x] Init
+[x] Shortcut
 
 ### Misc bugs found:
 - Global help menu additions arent added - FIXED 
@@ -24,3 +24,11 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 
 ## Init
 - rewrite file & folder creation process. 
+
+
+## Help Menu rewrite:
+- Main: 
+- Init:  
+- Build: 
+- Shortcut: 
+- Gen:  

@@ -270,12 +270,14 @@ func InitCommand() *argbin.Command{
 ╰────────────────────────────────────────────────╯
 Init module - Initialize a project using Swiss.
 
--h --help: Opens the help menu.
--l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
--g --git: Inits git alongside your project.
--j --jujutsu: Inits jj alongside your project.
-init <string> [name: string]: Inits a project based on the given input. 
-init web: Inits a web based project using Bun & Vite with a selected framework. 
+Commands:
+	init <string> [name: string]: Inits a project based on the given input. 
+
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
+	-g --git: Inits git alongside your project.
+	-j --jujutsu: Inits jj alongside your project.
 `,
 	}
 }
