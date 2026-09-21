@@ -3,4 +3,5 @@
 ## New Mod
 
 ### Improvements:
-Ported over arg parser and other functionality to clibox
+- Ported over arg parser and other functionality to clibox
+- Rewrote every module

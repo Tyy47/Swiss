@@ -3,6 +3,7 @@ package shortcuts
 import (
 	"os"
 	"os/exec"
+	"swiss/utils"
 
 	"github.com/Tyy47/clibox/argbin"
 	"github.com/Tyy47/clibox/outbin"
@@ -91,6 +92,8 @@ func gitSync() error  {
 
 	// Create the status command
 	statusCmd := exec.Command("git", "status")
+
+	utils.ToggleOutputForCMD(statusCmd)
 
 	// Run the status command
 	if err := statusCmd.Run(); err != nil {

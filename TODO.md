@@ -30,4 +30,7 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 - Init:  
 - Build:  
 - Shortcut: 
-- Gen: ,
+- Gen: 
+
+## Module Ideas:
+- fmt: format text or code files using their respective tools.
