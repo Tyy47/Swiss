@@ -200,6 +200,50 @@ func listFlag() *argbin.Flag {
 	}
 }
 
+// SwissInstall installs swiss for Linux users when ran inside of the cloned swiss repo.
+func SwissInstall() *argbin.Command {
+	return &argbin.Command{
+		Name: "install",
+		Execute: func(ctx *argbin.Context) error {
+			// Check if the user is running linux
+			if utils.GetOperatingSystem() != "linux" {
+				utils.Output.Warning("unable to install swiss. unsupported operating system")
+				return nil
+			}
+			
+			// Install message
+			utils.Output.Info("installing swiss.")
+
+			// Get language
+			lang, err := getLanguage("go")
+			if err != nil {
+				return err
+			}
+
+			// Build swiss
+			if err := buildLanguage(lang); err != nil {
+				return err
+			}
+
+			// Create destination path
+			desPath := fmt.Sprintf("/home/%s/.local/bin/swiss", utils.GetUsersName())
+
+			// Build the move command
+			moveCmd := exec.Command("mv", "swiss", desPath)
+
+			// Execute the move command
+			if err := moveCmd.Run(); err != nil {
+				return err
+			}
+
+			// Success message after install
+			utils.Output.Success("swiss has been installed! make sure .local/bin is added to your path")
+
+			return nil
+		},
+	}
+}
+
 // BuildCommand creates the "build" command for swiss.
 // Command is added in main.go in main function.
 func BuildCommand() *argbin.Command {
@@ -233,12 +277,14 @@ func BuildCommand() *argbin.Command {
 │       The army knife of CLI applications       │
 │                                                │
 ╰────────────────────────────────────────────────╯
-Build module - Builds or Runs a program based on the language inputted.
+Build & Run module - Builds or Runs a program based on the language inputted.
 
--h --help: Opens the help menu.
--l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
-build <string>: Builds a program based on the language you input.
-run <string>: Runs a program based on the language you input.`,
+Commands: 
+	build <string>: Builds a program based on the language you input.
+	run <string>: Runs a program based on the language you input.
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.`,
 	}
 }
 
@@ -275,11 +321,13 @@ func RunCommand() *argbin.Command {
 │       The army knife of CLI applications       │
 │                                                │
 ╰────────────────────────────────────────────────╯
-Build module - Builds or Runs a program based on the language inputted.
+Build & Run module - Builds or Runs a program based on the language inputted.
 
--h --help: Opens the help menu.
--l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.
-build <string>: Builds a program based on the language you input.
-run <string>: Runs a program based on the language you input.`,
+Commands: 
+	build <string>: Builds a program based on the language you input.
+	run <string>: Runs a program based on the language you input.
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of available languages to build and run with their respective build tools available in Swiss.`,
 	}
 }

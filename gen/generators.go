@@ -115,9 +115,12 @@ func GenerateCommand() *argbin.Command {
 ╰────────────────────────────────────────────────╯
 Gen module - Generate codes through Swiss.
 
--h --help: Opens the help menu.
-uuid: Generates an 128 bit hexadecimal string.
-secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.`,
+Commands:
+	uuid: Generates an 128 bit hexadecimal string.
+	secret [length : int]: Generates a hexadecimal string based on length provided, 16 characters long by default.
+
+Flags:
+	-h --help: Opens the help menu.`,
 	}
 }
 

@@ -3,20 +3,20 @@ package main
 import (
 	"errors"
 	"fmt"
+
+	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/colorbin"
 	"swiss/build"
 	"swiss/gen"
 	"swiss/initialize"
 	"swiss/shortcuts"
 	"swiss/utils"
-
-	"github.com/Tyy47/clibox/argbin"
-	"github.com/Tyy47/clibox/colorbin"
 )
 
 // Creating the root object of the application
 var root = argbin.Root{
-	AppName: "swiss",
-	AppVersion: "1.2",
+	AppName:     "swiss",
+	AppVersion:  "1.2",
 	CommandList: make([]*argbin.Command, 0),
 	HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -42,7 +42,7 @@ Flags:
 // helpCommand creates the "help" command for the root.
 func helpCommand() *argbin.Command {
 	return &argbin.Command{
-		Name: "help",
+		Name:            "help",
 		AdditionalNames: []string{"--help", "-h"},
 		Execute: func(ctx *argbin.Context) error {
 			fmt.Println(root.HelpMenu)
@@ -54,12 +54,12 @@ func helpCommand() *argbin.Command {
 // versionCommand creates the "version" command for the root.
 func versionCommand() *argbin.Command {
 	return &argbin.Command{
-		Name: "version",
+		Name:            "version",
 		AdditionalNames: []string{"--version", "-v"},
 		Execute: func(ctx *argbin.Context) error {
 			// Color app version to green
 			version := colorbin.Green(root.AppVersion).ToHighIntensityBold().String()
-			
+
 			// Profit
 			fmt.Printf("swiss: version %s\n", version)
 			return nil
@@ -67,15 +67,14 @@ func versionCommand() *argbin.Command {
 	}
 }
 
-
 func main() {
-
 	// Command storage to add to root.AddCommand
 	commands := []*argbin.Command{
 		helpCommand(),
 		versionCommand(),
 		build.BuildCommand(),
 		build.RunCommand(),
+		build.SwissInstall(),
 		gen.GenerateCommand(),
 		initialize.InitCommand(),
 		shortcuts.ShortcutCommand(),
@@ -83,6 +82,7 @@ func main() {
 
 	// Adds all commands to app
 	if err := root.AddCommand(commands...); err != nil {
+		// Panic for potential programmer errors
 		panic(err)
 	}
 
