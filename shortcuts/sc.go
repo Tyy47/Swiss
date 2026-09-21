@@ -59,6 +59,8 @@ func gitPush(commitMessage string) error {
 	// Create the push command
 	pushCmd := exec.Command("git", "push")
 
+	utils.ToggleOutputForCMD(pushCmd)
+
 	// Execute the push command
 	if err := pushCmd.Run(); err != nil {
 		return err
