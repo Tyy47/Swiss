@@ -4,7 +4,6 @@ import (
 	"os"
 	"os/exec"
 	"swiss/utils"
-	"time"
 
 	"github.com/Tyy47/clibox/argbin"
 	"github.com/Tyy47/clibox/outbin"
@@ -46,18 +45,6 @@ func gitCommit(commitMessage string) error {
 }
 
 func gitPush(commitMessage string) error {
-
-	// Run the git add command
-	if err := gitAddCommand(); err != nil {
-		return err
-	}
-
-	// Run the git commit command with a commit message from the user
-	if err := gitCommit(commitMessage); err != nil {
-		return err
-	}
-
-	time.Sleep(2 * time.Second)
 
 	// Create the push command
 	pushCmd := exec.Command("git", "push")
