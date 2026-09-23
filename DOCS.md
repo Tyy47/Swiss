@@ -8,7 +8,7 @@ A collection of misc commands
 `swiss` or `swiss -h` will print out the help menu. \
 `swiss -v` or `swiss version` will print out the version name. \
 `swiss -v` or `swiss install` will place a Swiss executable in your local/bin. ( Linux command only ) \
-`swiss -u` or `swiss update` will clone the repo into an install folder, then will prompt you for install choice. 
+`swiss -u` or `swiss update` will clone the repo into an install folder, then will prompt you for install choice.
 
 ### Build
 The Build module. Build/Compile or Run programs based on the language provided and that is available via Swiss.
@@ -16,7 +16,7 @@ The Build module. Build/Compile or Run programs based on the language provided a
 `swiss build -h` or `swiss build --help` to print out the build help menu. \
 `swiss build -l` or `--list` will print out a list of languages that can be built/compiled via Swiss.
 `swiss build <language : string>` will build/compile the program based on the language provided and that is available via Swiss. \
-`swiss run <language : string>` will run the program based on the language provided and that is available via Swiss. 
+`swiss run <language : string>` will run the program based on the language provided and that is available via Swiss.
 
 ### Init
 The Init module. Init a project using Swiss with the available project templates available.
@@ -44,7 +44,7 @@ The Gen module. Generate codes needed for development via Swiss.
 
 `swiss gen -h` or `swiss net --help` to print out the help menu for the Gen module. \
 `swiss gen uuid` generates a 128 bit number in the UUID format
-`swiss gen secret [length : int]` generates a secret code based on the input. Will generate a code thats 16 characters long with no length input. 
+`swiss gen secret [length : int]` generates a secret code based on the input. Will generate a code thats 16 characters long with no length input.
 
 ### Shortcut
 The Shortcut module. A list of command shortcuts that combine most used commands into one to provide a faster developing experience.
