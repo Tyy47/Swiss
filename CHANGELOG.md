@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Swiss 1.1a
 
 ## Version Number Change:
@@ -41,3 +42,12 @@ Changed version numbering to two numbers and letters. The numerarical increases 
 - `GetUsersName` used a different logging method than the rest of the project, producing inconsistent error output.
 - Commands executed through `RunCommand` had their stderr output silently discarded instead of being shown to the user.
 - `MakeFile` and `MakeFolder` showed "already exists" warnings even when the caller requested silent operation.
+=======
+# Swiss 1.2
+
+## New Mod
+
+### Improvements:
+- Ported over arg parser and other functionality to clibox
+- Rewrote every module
+>>>>>>> cleanup

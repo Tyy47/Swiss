@@ -1,27 +1,46 @@
 package main
 
 import (
+	"errors"
+	"fmt"
+
+	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/colorbin"
 	"swiss/build"
-	commanddict "swiss/command-dict"
 	"swiss/gen"
 	"swiss/help"
 	"swiss/initialize"
-	"swiss/network"
 	"swiss/shortcuts"
 	"swiss/utils"
 )
 
-// Command struct to store information about modules commands
-type Command struct {
-	Name          string
-	Flags         []string
-	Subcommands   map[string]func(args *[]string)
-	Handler       func()
-	HelpMenu      func()
-	SingleRun     bool                 // Boolean statement to check if the program can run with no arguments like "swiss build"
-	ShortHandFunc func(args *[]string) // Short hand function that runs if single run function is ran like "swiss build"
+// Creating the root object of the application
+var root = argbin.Root{
+	AppName:     "swiss",
+	AppVersion:  "1.2",
+	CommandList: make([]*argbin.Command, 0),
+	HelpMenu: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+	
+usage: swiss [command] [additional_arguments] <flags>
+	
+Commands:
+	build: Builds a program that uses swiss made shortcuts.
+	run: Runs a program that uses swiss made shortcuts.
+	init: Initializes a programming based project in current folder.
+	gen: Generates different codes that are most commonly used in development
+	sc: Command shortcuts for various CLI utilities to make development faster
+
+Flags:
+	-h, --help: Displays the swiss help menu
+	-v, --version: Displays the current swiss version number`,
 }
 
+<<<<<<< HEAD
 // Command storage struct
 type CommandDB struct {
 	Registry []Command
@@ -134,10 +153,21 @@ func dictionaryCommand() Command {
 			"bash":   func(args *[]string) { commanddict.PrintBashCommands() },
 			"git":    func(args *[]string) { commanddict.PrintGitCommands() },
 			"docker": func(args *[]string) { commanddict.PrintDockerCommands() },
+=======
+// helpCommand creates the "help" command for the root.
+func helpCommand() *argbin.Command {
+	return &argbin.Command{
+		Name:            "help",
+		AdditionalNames: []string{"--help", "-h"},
+		Execute: func(ctx *argbin.Context) error {
+			fmt.Println(root.HelpMenu)
+			return nil
+>>>>>>> cleanup
 		},
 	}
 }
 
+<<<<<<< HEAD
 // Creates the "init" command and returns it
 func initCommand() Command {
 	return Command{
@@ -156,10 +186,25 @@ func initCommand() Command {
 			"python": func(args *[]string) { initialize.CreateProject() },
 			"ts":     func(args *[]string) { initialize.CreateProject() },
 			"web":    func(args *[]string) { initialize.CreateWebProject() },
+=======
+// versionCommand creates the "version" command for the root.
+func versionCommand() *argbin.Command {
+	return &argbin.Command{
+		Name:            "version",
+		AdditionalNames: []string{"--version", "-v"},
+		Execute: func(ctx *argbin.Context) error {
+			// Color app version to green
+			version := colorbin.Green(root.AppVersion).ToHighIntensityBold().String()
+
+			// Profit
+			fmt.Printf("swiss: version %s\n", version)
+			return nil
+>>>>>>> cleanup
 		},
 	}
 }
 
+<<<<<<< HEAD
 // Creates the "net" command and returns it
 func netCommand() Command {
 	return Command{
@@ -270,19 +315,40 @@ func main() {
 func init() {
 	// Register Commands into an array
 	commandArray := []Command{
+=======
+func main() {
+	// Command storage to add to root.AddCommand
+	commands := []*argbin.Command{
+>>>>>>> cleanup
 		helpCommand(),
 		versionCommand(),
-		swissInstallCommand(),
-		swissUpdateCommand(),
-		buildCommand(),
-		runRunCommand(),
-		dictionaryCommand(),
-		initCommand(),
-		netCommand(),
-		generateCommand(),
-		shortcutCommand(),
+		build.BuildCommand(),
+		build.RunCommand(),
+		build.SwissInstall(),
+		gen.GenerateCommand(),
+		initialize.InitCommand(),
+		shortcuts.ShortcutCommand(),
 	}
+<<<<<<< HEAD
 	
 	// Registers commands one by one by unpacking command array
 	GlobalCommandDatabase.registerCommand(commandArray...)
+=======
+
+	// Adds all commands to app
+	if err := root.AddCommand(commands...); err != nil {
+		// Panic for potential programmer errors
+		panic(err)
+	}
+
+	// Starts the project using argbin
+	if err := root.Run(); err != nil {
+		if errors.Is(err, argbin.ErrMissingArguments) {
+			fmt.Println(root.HelpMenu)
+			return
+		}
+
+		utils.Output.Error(err)
+	}
+>>>>>>> cleanup
 }

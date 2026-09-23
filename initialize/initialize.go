@@ -1,102 +1,71 @@
 package initialize
 
 import (
-	"fmt"
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
 
 	"swiss/utils"
+
+	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/inputbin"
+	"github.com/Tyy47/clibox/outbin"
+)
+
+var (
+	ErrUnknownProject = errors.New("unknown project name")
 )
 
 const initProjectList = `Languages:
 Rust - Cargo: swiss init rust
-Go - Go: swiss init go [module name here]
+Go - Go: swiss init go
 C - Swiss: swiss init c
-HTML - Swiss: swiss init html
 Zig - Zig: swiss init zig
 Python - uv: swiss init python
-Typescript - bun: swiss init ts
+Typescript - bun: swiss init ts`
 
-Web:
-Vanilla TS Web App - Bun/Vite: swiss init web
-Svelte - Bun/Vite: swiss init web sv or svelte
-React - Bun/Vite: swiss init web react
-Angular - Bun/Vite: swiss init web angular
-Vue - Bun/Vite: swiss init web vue`
+var output = outbin.NewOutput(os.Stdout, os.Stderr)
 
-// Project structure for creation
-type project struct {
-	Name       string   // Captures the project name for use in other functions
-	Language   string   // Stores the language for the project
-	Tool       string   // Build tool
-	Arguments  []string // Arguments needed to init project
-	Folders    []string // Additional folders needed for project
-	Files      []string // Additional files needed for project
-	ManualInit bool     // Toggle if a project needs a manual init like C as C doesn't have a traditional init tool like typescript/bun.
-}
+// findProject reads through a map of projects. If a project is found,
+// It'll return. If not, it will return an error.
+func findProject(s string) (*project, error) {
+	lower := strings.ToLower(s)
 
-// Projects storage type
-type projectRegistry struct {
-	projects []project
-}
-
-// Storage for containing valid initable projects
-var registry = projectRegistry{
-	projects: []project{},
-}
-
-// Prints a list of projects that can be init'd via Swiss commands
-func PrintInitProjectList() {
-	utils.Note("Languages are listed along side their build tools and the commands to init them via Swiss.\n")
-	fmt.Println(initProjectList)
-}
-
-// Project method that starts the creation of a project
-func (p *project) initialize() error {
-	// Loops over files in projects structure and creates them if there is any
-	for file := range p.Files {
-		utils.MakeFile(p.Files[file], false)
+	proj, ok := initMap[Language(lower)] 
+	if !ok {
+		return nil, ErrUnknownProject
 	}
 
-	// Loops over folders in projects structure and creates them if there is any
-	for folder := range p.Folders {
-		utils.MakeFolder(p.Folders[folder], false)
-	}
+	return &proj, nil
+	
+}
 
-	// Checks if a project has to be "manually" init'd. This means that the language of the project thats being initialized has a special setup.
-	if p.ManualInit {
-		// Switch case statement to grab language and check to see if the files need to moved anywhere after creation
-		switch strings.ToLower(p.Language) {
-		case "c":
-			utils.MoveFileToFolder("./main.c", "./src/main.c", true)
-		default:
-			return nil
+// createProjectDirectory creates the files and folders required for the project init
+func createProjectDirectory(p *project) error {
+	
+	// Create folders based on the project request
+	if p.Folders != nil {
+		if err := utils.MakeFolder(p.Folders...); err != nil {
+			return err
 		}
-		return nil
 	}
 
-	// Executes a command using arguments from the Project structure
-	command := exec.Command(p.Tool, p.Arguments...)
-
-	// Sets the commands standard out and error to the the terminal so it's viewable when something occurs
-	command.Stdout = os.Stdout
-	command.Stderr = os.Stderr
-
-	// If the command cannot execute, it'll print a failed to init statement and return the error
-	if err := command.Run(); err != nil {
-		utils.Error(p.Language + " project failed to initialize. Check output below for more details.")
-		return err
+	// Create files based on the project request
+	if p.Files != nil {
+		if err := utils.MakeFile(p.Files...); err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-// Adds projects to the project registry by unpacking a project array
-func registerProjects(project ...project) {
-	registry.projects = append(registry.projects, project...)
-}
+// createExecuteCommand builds the command to create the project and returns it as a
+// pointer to and exec Cmd.
+func createExecuteCommand(proj *project) *exec.Cmd {
 
+<<<<<<< HEAD
 // Handles additional flags that might be tossed into the init command when ran to execute additional functions.
 func flagHandler(additionalArgs *[]string, proj project) {
 	for _, arg := range *additionalArgs {
@@ -106,9 +75,70 @@ func flagHandler(additionalArgs *[]string, proj project) {
 		case "-j", "--jujutsu":
 			jjInit()
 		}
+=======
+	if proj.NeedsProjectName {
+	
+		ops := inputbin.InputOptions{
+			Question: "enter project name: ",
+		}
+
+		// Gather user input
+		userInput, err := inputbin.Text(&ops)
+		if err != nil {
+			// If input is blank it will get current working directory name
+			userInput, err = func() (string, error) {
+				// Grab working directory
+				wd, _ := os.Getwd()
+				
+				// Split the directory string
+				split := strings.Split(wd, "/")
+
+				// Grab last entry
+				if len(split) == 1 {
+					return split[0], nil
+				}
+
+				return split[len(split)-1], nil
+			}()
+			
+			// Defaults the project name to "project" if name cannot be gotten elsewhere
+			if err != nil {
+				userInput = "project"
+			}
+		}
+		
+		// Adds project name to arguments list
+		proj.Arguments = append(proj.Arguments, userInput)
+>>>>>>> cleanup
 	}
+	
+	// Create the command
+	cmd := exec.Command(proj.Tool, proj.Arguments...)
+
+	return cmd
+} 
+
+
+// initialize is the main function on the init process for swiss.
+// It grabs the project from findProject and feeds it into createProjectDirectory.
+// It returns the project and err if the two functions fail.
+func initialize(projectName string) (*project, error) {
+
+	// Finds the project based on the users input 
+	proj, err := findProject(projectName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Creates the project folders & files.
+	if err := createProjectDirectory(proj); err != nil {
+		return nil, err
+	}
+
+	return proj, nil
 }
 
+<<<<<<< HEAD
 // Inits git in current directory when called.
 func gitInit(proj project) error {
 	// Changes directory into init'd project folder
@@ -125,16 +155,19 @@ func gitInit(proj project) error {
 		utils.MakeFile("README.md", false)
 	}
 
+=======
+// gitInit runs "git init" in the current directory
+func gitInit() error {
+>>>>>>> cleanup
 	// Initing git command
 	init := exec.Command("git", "init")
 
 	// Runs git init and returns an error if unable to
 	if err := init.Run(); err != nil {
-		utils.Error("Unable to init git")
-		utils.Reason(err.Error())
 		return err
 	}
 
+<<<<<<< HEAD
 	// Command to add all files to the repository
 	add := exec.Command("git", "add", ".")
 
@@ -191,27 +224,25 @@ func gitInit(proj project) error {
 	// Success message when finished
 	utils.Success("Git has been initialized.")
 
+=======
+>>>>>>> cleanup
 	return nil
 }
 
-// Inits jujutsu in current directory when called.
+// jjInit runs "jj git init" in the current directory
 func jjInit() error {
 	// Init jujutsu command
 	init := exec.Command("jj", "git", "init")
 
 	// Runs the init command and returns the error if unsuccessful
 	if err := init.Run(); err != nil {
-		utils.Error("Unable to init JJ")
-		utils.Reason(err.Error())
 		return err
 	}
-
-	// Success message if jj has been init'd
-	utils.Success("Jujutsu has been initialized.")
 
 	return nil
 }
 
+<<<<<<< HEAD
 func createRustProject() project {
 	return project{
 		Language:   "rust",
@@ -370,24 +401,134 @@ func CreateProject() {
 				flagHandler(&utils.AdditionalArguments, registry.projects[project])
 				utils.Success(registry.projects[project].Language + " project has been created.")
 				return
+=======
+func InitCommand() *argbin.Command{
+	return &argbin.Command{
+		Name: "init",
+		TakesValue: true,
+		Execute: func(ctx *argbin.Context) error {
+			// Toggle for silent output
+			silent, _ := ctx.Values["silent"].(bool)
+			
+			utils.Output.Infof("initializing %s project", ctx.ParsedValue)
+>>>>>>> cleanup
 
+			// Finds the project
+			proj, err := initialize(ctx.ParsedValue)
+			if err != nil {
+				return err
 			}
-		}
-	}
-	// Message to the user if a language is not found in the projects registry list.
-	utils.Error("Unable to find " + argument + " in registry list.")
-}
+			
+			cmd := createExecuteCommand(proj)
+			
+			// Toggles stdout & stderr based on silent flag
+			if !silent {
+				// Put cmds output to stdout and stderr
+				utils.ToggleOutputForCMD(cmd)
+			}
+			
+			// Execute init command
+			if err := cmd.Run(); err != nil {
+				return err
+			}
 
-func init() {
-	projectArray := []project{
-		createGoProject(),
-		createRustProject(),
-		createCProject(),
-		createHTMLProject(),
-		createZigProject(),
-		createPythonProject(),
-		createTSProject(),
-	}
+			output.Successf("%s project has been created.", ctx.ParsedValue)
+			return nil
+		},
+		Flags: argbin.Flags{
+			"--silent": {
+				Execute: func(ctx *argbin.Context) error {
+					ctx.Values["silent"] = true
+					return nil
+				},
+			},
+			"-s": {
+				Execute: func(ctx *argbin.Context) error {
+					ctx.Values["silent"] = true
+					return nil
+				},
+			},
+			"-g": {
+				Execute: func(ctx *argbin.Context) error {
+					silent, _ := ctx.Values["silent"].(bool)
 
-	registerProjects(projectArray...)
+					if err := gitInit(); err != nil {
+						output.Error("unable to init git")
+						return nil
+					}
+
+					if !silent {
+						output.Success("git initialized successfully")
+					}
+					
+					return nil
+				},
+			},
+			"--git": {
+				Execute: func(ctx *argbin.Context) error {
+					silent, _ := ctx.Values["silent"].(bool)
+
+					if err := gitInit(); err != nil {
+						output.Error("unable to init git")
+						return nil
+					}
+
+					if !silent {
+						output.Success("git initialized successfully")
+					}
+					
+					return nil
+				},
+			},
+			"-j": {
+				Execute: func(ctx *argbin.Context) error {
+					silent, _ := ctx.Values["silent"].(bool)
+
+					if err := jjInit(); err != nil {
+						output.Error("unable to init jujutsu")
+						return nil
+					}
+
+					if !silent {
+						output.Success("jujutsu initialized successfully")
+					}
+					
+					return nil
+				},
+			},
+			"--jujutsu": {
+				Execute: func(ctx *argbin.Context) error {
+					silent, _ := ctx.Values["silent"].(bool)
+
+					if err := jjInit(); err != nil {
+						output.Error("unable to init jujutsu")
+						return nil
+					}
+
+					if !silent {
+						output.Success("jujutsu initialized successfully")
+					}
+					
+					return nil
+				},
+			},
+		},
+		HelpMenu: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Init module - Initialize a project using Swiss.
+
+Commands:
+	init <string> [name: string]: Inits a project based on the given input. 
+
+Flags:
+	-h --help: Opens the help menu.
+	-l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
+	-g --git: Inits git alongside your project.
+	-j --jujutsu: Inits jj alongside your project.
+`,
+	}
 }

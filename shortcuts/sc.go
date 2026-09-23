@@ -1,76 +1,154 @@
 package shortcuts
 
-import "swiss/utils"
+import (
+	"os"
+	"os/exec"
+	"swiss/utils"
+
+	"github.com/Tyy47/clibox/argbin"
+	"github.com/Tyy47/clibox/outbin"
+)
+
+var output = outbin.NewOutput(os.Stdout, os.Stderr)
+
+// gitAddCommand creates a exec.Command and run's "git add .". Returns an exec error if unable to add files.
+func gitAddCommand() error {
+
+	// Create the add command
+	addCmd := exec.Command("git", "add", ".")
+
+	// Run the add command
+	if err := addCmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // Adds all files to a commit using git with a required message
-func GitCommitSC() {
-	// Gathers a commit message
-	var commitMessage string
-	if len(utils.AdditionalArguments) <= 0 {
-		utils.Warning("Commit message is blank, fill in commit message to continue.")
-		return
-	} else {
-		commitMessage = utils.AdditionalArguments[0]
+func gitCommit(commitMessage string) error { 
+
+	// Run git add command
+	if err := gitAddCommand(); err != nil {
+		return err
 	}
 
-	// Checks if adding files to commit will cause an error
-	if err := utils.RunCommand("git", "add", "."); err != nil {
-		utils.Error("Unable to add files to commit, make sure there is changes to add.")
-		return
-	}
+	// Create commit command
+	commitCmd := exec.Command("git", "commit", "-m", commitMessage)
 
-	// Checks if message can be added to commit
-	if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
-		utils.Error("Unable to add files to commit, make sure there is changes to add.")
-		return
+	// Run git commit command and return the potential error
+	if err := commitCmd.Run(); err != nil {
+		return err
 	}
-
-	// Message stating that the commit was created.
-	utils.Success("Commit created.")
+	
+	return nil
 }
 
-func GitPushSC() {
-	// Gathers a commit message if one is available.
-	var commitMessage string
-	if len(utils.AdditionalArguments) > 0 {
-		// Adds all changed files to commit
-		if err := utils.RunCommand("git", "add", "."); err != nil {
-			utils.Error("Unable to add files to commit, make sure there is changes to add.")
-			return
-		}
+func gitPush() error {
 
-		// Assigns message to commitMessage then commits
-		commitMessage = utils.AdditionalArguments[0]
-		if err := utils.RunCommand("git", "commit", "-m", commitMessage); err != nil {
-			utils.Error("Unable to add files to commit, make sure there is changes to add.")
-			return
-		}
+	// Create the push command
+	pushCmd := exec.Command("git", "push")
+
+	utils.ToggleOutputForCMD(pushCmd)
+
+	// Execute the push command
+	if err := pushCmd.Run(); err != nil {
+		return err
 	}
 
-	// Pushes changes to repository
-	if err := utils.RunCommand("git", "push"); err != nil {
-		utils.Error("Unable to push changes to repository")
-		return
-	}
-
-	// Message stating that changes were pushed
-	utils.Success("Commit pushed to repository.")
+	return nil
 }
 
-func GitSyncSC() {
-	utils.Note("Updating local repository...")
+func gitPull() error {
 
-	// Grabs any changes from repository and updates local repo
-	if err := utils.RunCommand("git", "fetch"); err != nil {
-		utils.Error("Unable to fetch git repository.")
-		return
+	// Create the pull command
+	pullCmd := exec.Command("git", "pull")
+
+	// Execute the pull command
+	if err := pullCmd.Run(); err != nil {
+		return err
 	}
 
-	// Prints a status message of changes to the repository.
-	if err := utils.RunCommand("git", "status"); err != nil {
-		utils.Error("Unable to display git status.")
-		return
+	return nil
+}
+
+func gitSync() error  {
+	
+	// Create the fetch command
+	fetchCmd := exec.Command("git", "fetch")
+
+	// Run the fetch command
+	if err := fetchCmd.Run(); err != nil {
+		return err
 	}
+
+	// Create the status command
+	statusCmd := exec.Command("git", "status")
+
+	utils.ToggleOutputForCMD(statusCmd)
+
+	// Run the status command
+	if err := statusCmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// gitCommitCommand creates the "commit" command. commit is a compressed and shorthand form of commiting to a git repository.
+func gitCommitCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "commit",
+		HelpMenu: "commit shortcut",
+		TakesValue: true,
+		Execute: func(ctx *argbin.Context) error {
+			
+			// Run commit command
+			if err := gitCommit(ctx.ParsedValue); err != nil {
+				return err
+			}
+			
+			// Success message
+			output.Success("Git commit created.")
+
+			return nil
+		},
+	}
+}
+
+func gitPushCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "push",
+		HelpMenu: "push shortcut",
+		TakesValue: true,
+		Execute: func(ctx *argbin.Context) error {
+			
+			// Runs the git add command
+			if err := gitAddCommand(); err != nil {
+				return err
+			}
+
+			utils.Output.Success("Added all changed files to commit.")
+
+			// Runs git commit -m ctx.ParsedValue
+			if err := gitCommit(ctx.ParsedValue); err != nil {
+				return err
+			}
+
+
+			utils.Output.Success("Commit created with message.")
+
+			// Runs the git push command
+			if err := gitPush(); err != nil {
+				return err
+			}
+
+			utils.Output.Success("Pushed commit to repository.")
+
+			return nil
+		},
+	}
+<<<<<<< HEAD
 	
 	// Loops over all arguments and searches for -p or --pull
 	// If detected, it will pull all available changes from the repo into your local folder.
@@ -92,5 +170,73 @@ func GitSyncSC() {
 	// If toggle is ticked to true, it will print a success message stating the changes we're pulled as well.
 	if toggle {
 		utils.Success("Changes from remote repository has been pulled.")
+=======
+}
+
+func gitSyncCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "sync",
+		HelpMenu: "sync shortcut",
+		Execute: func(ctx *argbin.Context) error {
+			
+			// Runs git fetch & git status
+			if err := gitSync(); err != nil {
+				return err
+			}
+
+			pull, _ := ctx.Values["pull"].(bool)
+			if pull {
+				if err := gitPull(); err != nil {
+					return err
+				}
+
+				output.Info("Pulling changes.")
+			}
+			
+			output.Success("Local repository updated.")
+			return nil
+		},
+		Flags: argbin.Flags{
+			"-p": {
+				Execute: func(ctx *argbin.Context) error {
+					ctx.Values["pull"] = true
+					return nil
+				},
+			},
+			"--pull": {
+				Execute: func(ctx *argbin.Context) error {
+					ctx.Values["pull"] = true
+					return nil
+				},
+			},
+		},
+	}
+}
+
+func ShortcutCommand() *argbin.Command {
+	return &argbin.Command{
+		Name: "sc",
+		AdditionalNames: []string{"shortcut"},
+		Subcommands: []*argbin.Command{
+			gitCommitCommand(),
+			gitPushCommand(),
+			gitSyncCommand(),
+		},
+		HelpMenu: `
+╭───────────────────  Swiss  ────────────────────╮
+│                                                │
+│       The army knife of CLI applications       │
+│                                                │
+╰────────────────────────────────────────────────╯
+Shortcut module - Commands that are multiple commands into one.
+
+Commands:
+	commit <message : string>: Adds all changed files to commit with a message.
+	push [message : string]: Adds all files, commits changes with a message, then pushes to your repository.
+	sync: Fetch's all changes to the repository and prints a status message with changes to the repository.
+
+Flags:
+	-h --help: Opens the help menu.`,
+>>>>>>> cleanup
 	}
 }
