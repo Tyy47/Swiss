@@ -3,6 +3,7 @@ package build
 import (
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"swiss/utils"
@@ -87,6 +88,48 @@ var runMap = map[Language]run{
 		BuildArguments: []string{"run"},
 		BuildFile:      "Cargo.toml",
 	},
+}
+
+// manualFindLanguage grabs all files in the current directory
+// and looks for a BuildFile to determine what language is being used and what needs to be ran or built.
+func manualFindLanguage(ctx *argbin.Context) (*program, error) {
+
+	// Grab all files in the current directory
+	files, err := os.ReadDir("./")
+	if err != nil {
+		return nil, err
+	}
+	
+	langs := &program{}
+	
+	// Loop over each file
+	for _, file := range files {
+		// If the file is a directory, then skip
+		if file.Type().IsDir() {
+			continue
+		}
+
+		// Loop over the build map to get the build object
+		for k, v := range buildMap {
+			if file.Name() != v.BuildFile {
+				continue
+			}
+			
+			ctx.Values["language"] = k
+			langs.Build = &v
+		}
+
+		// Loop over the run map to get the run object
+		for k, v := range runMap {
+			if file.Name() != v.BuildFile {
+				continue
+			}
+
+			ctx.Values["language"] = k
+			langs.Run = &v
+		}
+	}
+	return langs, nil
 }
 
 // getLanguage takes a language input and returns a build object thats related to that language.
@@ -249,12 +292,25 @@ func SwissInstall() *argbin.Command {
 func BuildCommand() *argbin.Command {
 	return &argbin.Command{
 		Name:       "build",
-		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			utils.Output.Info("searching for language.")
-			b, err := getLanguage(ctx.ParsedValue)
-			if err != nil {
-				return err
+
+			var b *program
+			var err error
+			var title string
+
+			if ctx.ParsedValue == "" {
+				b, err = manualFindLanguage(ctx)
+				if err != nil {
+					return err
+				}
+				title = string(ctx.Values["language"].(Language))
+			} else {
+				b, err = getLanguage(ctx.ParsedValue)
+				if err != nil {
+					return err
+				}
+				title = ctx.ParsedValue
 			}
 
 			utils.Output.Info("building program.")
@@ -262,7 +318,7 @@ func BuildCommand() *argbin.Command {
 				return err
 			}
 
-			utils.Output.Successf("%s program has been built", ctx.ParsedValue)
+			utils.Output.Successf("%s program has been built", title)
 			return nil
 		},
 		Flags: argbin.Flags{
@@ -293,12 +349,24 @@ Flags:
 func RunCommand() *argbin.Command {
 	return &argbin.Command{
 		Name:       "run",
-		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 			utils.Output.Info("searching for language.")
-			r, err := getLanguage(ctx.ParsedValue)
-			if err != nil {
-				return err
+			var r *program
+			var err error
+			var title string
+
+			if ctx.ParsedValue == "" {
+				r, err = manualFindLanguage(ctx)
+				if err != nil {
+					return err
+				}
+				title = string(ctx.Values["language"].(Language))
+			} else {
+				r, err = getLanguage(ctx.ParsedValue)
+				if err != nil {
+					return err
+				}
+				title = ctx.ParsedValue
 			}
 
 			utils.Output.Info("running program.")
@@ -306,7 +374,7 @@ func RunCommand() *argbin.Command {
 				return err
 			}
 
-			utils.Output.Successf("%s program has been ran.", ctx.ParsedValue)
+			utils.Output.Successf("%s program has been ran.", title)
 			return nil
 		},
 		Flags: argbin.Flags{
