@@ -34,3 +34,4 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 
 ## Module Ideas:
 - fmt: format text or code files using their respective tools.
+- shorthand build & run: readd this lost functionality. ( Turn off TakesValue on run and add and create a shorthand function to search current directory and find the language.
