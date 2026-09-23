@@ -1,18 +1,14 @@
 package shortcuts
 
 import (
-	"os"
 	"os/exec"
 	"swiss/utils"
 
 	"github.com/Tyy47/clibox/argbin"
-	"github.com/Tyy47/clibox/outbin"
 )
 
-var output = outbin.NewOutput(os.Stdout, os.Stderr)
-
-// gitAddCommand creates a exec.Command and run's "git add .". Returns an exec error if unable to add files.
-func gitAddCommand() error {
+// gitAdd creates a exec.Command and run's "git add .". Returns an exec error if unable to add files.
+func gitAdd() error {
 
 	// Create the add command
 	addCmd := exec.Command("git", "add", ".")
@@ -28,11 +24,6 @@ func gitAddCommand() error {
 // Adds all files to a commit using git with a required message
 func gitCommit(commitMessage string) error {
 
-	// Run git add command
-	if err := gitAddCommand(); err != nil {
-		return err
-	}
-
 	// Create commit command
 	commitCmd := exec.Command("git", "commit", "-m", commitMessage)
 
@@ -44,7 +35,7 @@ func gitCommit(commitMessage string) error {
 	return nil
 }
 
-func gitPush(commitMessage string) error {
+func gitPush() error {
 
 	// Create the push command
 	pushCmd := exec.Command("git", "push")
@@ -103,13 +94,18 @@ func gitCommitCommand() *argbin.Command {
 		TakesValue: true,
 		Execute: func(ctx *argbin.Context) error {
 
+			// Runs git add command
+			if err := gitAdd(); err != nil {
+				return err
+			}
+
 			// Run commit command
 			if err := gitCommit(ctx.ParsedValue); err != nil {
 				return err
 			}
 
 			// Success message
-			output.Success("git commit created.")
+			utils.Output.Success("git commit created.")
 
 			return nil
 		},
@@ -124,19 +120,25 @@ func gitPushCommand() *argbin.Command {
 		Execute: func(ctx *argbin.Context) error {
 
 			// Runs the git add command
-			if err := gitAddCommand(); err != nil {
+			if err := gitAdd(); err != nil {
 				return err
 			}
+
+			utils.Output.Success("Added files to commit.")
 
 			// Runs git commit -m ctx.ParsedValue
 			if err := gitCommit(ctx.ParsedValue); err != nil {
 				return err
 			}
 
+			utils.Output.Success("Commit created with message.")
+
 			// Runs the git push command
-			if err := gitPush(ctx.ParsedValue); err != nil {
+			if err := gitPush(); err != nil {
 				return err
 			}
+
+			utils.Output.Success("Pushed commit to repository.")
 
 			return nil
 		},
@@ -161,7 +163,7 @@ func gitSyncCommand() *argbin.Command {
 				}
 			}
 
-			output.Success("Local repository updated.")
+			utils.Output.Success("Local repository updated.")
 			return nil
 		},
 		Flags: argbin.Flags{
