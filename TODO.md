@@ -19,8 +19,8 @@ I developed clibox as a modular cli toolbox. These tools should cover a majority
 [x] Shortcut
 
 ### Misc bugs found:
-- Global help menu additions arent added - FIXED 
-- Git push shortcut command doesn't push; just adds & commits.
+- Global help menu additions arent added 
+- Git push shortcut command doesn't push; just adds & commits. 
 
 ## Init
 - rewrite file & folder creation process. 
