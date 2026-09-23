@@ -13,7 +13,7 @@ var output = outbin.NewOutput(os.Stdout, os.Stderr)
 
 // gitAddCommand creates a exec.Command and run's "git add .". Returns an exec error if unable to add files.
 func gitAddCommand() error {
-	
+
 	// Create the add command
 	addCmd := exec.Command("git", "add", ".")
 
@@ -44,7 +44,7 @@ func gitCommit(commitMessage string) error {
 	return nil
 }
 
-func gitPush(commitMessage string) error {
+func gitPush() error {
 
 	// Create the push command
 	pushCmd := exec.Command("git", "push")
@@ -109,7 +109,7 @@ func gitCommitCommand() *argbin.Command {
 			}
 			
 			// Success message
-			output.Success("git commit created.")
+			output.Success("Git commit created.")
 
 			return nil
 		},
@@ -128,15 +128,22 @@ func gitPushCommand() *argbin.Command {
 				return err
 			}
 
+			utils.Output.Success("Added all changed files to commit.")
+
 			// Runs git commit -m ctx.ParsedValue
 			if err := gitCommit(ctx.ParsedValue); err != nil {
 				return err
 			}
 
+
+			utils.Output.Success("Commit created with message.")
+
 			// Runs the git push command
-			if err := gitPush(ctx.ParsedValue); err != nil {
+			if err := gitPush(); err != nil {
 				return err
 			}
+
+			utils.Output.Success("Pushed commit to repository.")
 
 			return nil
 		},
@@ -159,6 +166,8 @@ func gitSyncCommand() *argbin.Command {
 				if err := gitPull(); err != nil {
 					return err
 				}
+
+				output.Info("Pulling changes.")
 			}
 			
 			output.Success("Local repository updated.")
