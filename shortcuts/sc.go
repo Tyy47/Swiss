@@ -21,7 +21,7 @@ func gitAdd() error {
 	return nil
 }
 
-// Adds all files to a commit using git with a required message
+// gitCommit creates a commit based on added files with a provided message
 func gitCommit(commitMessage string) error {
 
 	// Create commit command
@@ -35,6 +35,7 @@ func gitCommit(commitMessage string) error {
 	return nil
 }
 
+// gitPush pushes any commits created by get to the remote origin url
 func gitPush() error {
 
 	// Create the push command
@@ -50,6 +51,7 @@ func gitPush() error {
 	return nil
 }
 
+// gitPull pulls down any changes from the remote repository
 func gitPull() error {
 
 	// Create the pull command
@@ -63,6 +65,7 @@ func gitPull() error {
 	return nil
 }
 
+// gitSync fetches data from the remote repository to update the local one, then displays the current status of the branch.
 func gitSync() error {
 
 	// Create the fetch command
@@ -112,6 +115,7 @@ func gitCommitCommand() *argbin.Command {
 	}
 }
 
+// gitPushCommand creates the "push" command. push is a compressed shorthand form of adding files, commiting, and pushing to a git repository.
 func gitPushCommand() *argbin.Command {
 	return &argbin.Command{
 		Name:       "push",
@@ -145,6 +149,7 @@ func gitPushCommand() *argbin.Command {
 	}
 }
 
+// gitSyncCommand creates the "sync" command. sync updates the local repository with changes from the remote repo.
 func gitSyncCommand() *argbin.Command {
 	return &argbin.Command{
 		Name:     "sync",
@@ -156,6 +161,8 @@ func gitSyncCommand() *argbin.Command {
 				return err
 			}
 
+			// Checks if pull is toggled on,
+			// If so, it will pull the changes from the remote repo
 			pull, _ := ctx.Values["pull"].(bool)
 			if pull {
 				if err := gitPull(); err != nil {

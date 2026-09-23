@@ -62,7 +62,7 @@ func createProjectDirectory(p *project) error {
 }
 
 // createExecuteCommand builds the command to create the project and returns it as a
-// pointer to and exec Cmd.
+// pointer to an exec Cmd.
 func createExecuteCommand(proj *project) *exec.Cmd {
 
 	if proj.NeedsProjectName {
@@ -167,20 +167,22 @@ func InitCommand() *argbin.Command {
 				return err
 			}
 
-			cmd := createExecuteCommand(proj)
+			// Create the command to initalize a project.
+			initCmd := createExecuteCommand(proj)
 
 			// Toggles stdout & stderr based on silent flag
 			if !silent {
 				// Put cmds output to stdout and stderr
-				utils.ToggleOutputForCMD(cmd)
+				utils.ToggleOutputForCMD(initCmd)
 			}
 
 			// Execute init command
-			if err := cmd.Run(); err != nil {
+			if err := initCmd.Run(); err != nil {
 				return err
 			}
-
-			output.Successf("%s project has been created.", ctx.ParsedValue)
+			
+			// Displays success message if silent isnt toggled
+			if !silent { output.Successf("%s project has been created.", ctx.ParsedValue) }
 			return nil
 		},
 		Flags: argbin.Flags{
