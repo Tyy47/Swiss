@@ -11,6 +11,7 @@ import (
 	"swiss/initialize"
 	"swiss/shortcuts"
 	"swiss/utils"
+	"swiss/fileserver"
 )
 
 // Creating the root object of the application
@@ -78,6 +79,7 @@ func main() {
 		gen.GenerateCommand(),
 		initialize.InitCommand(),
 		shortcuts.ShortcutCommand(),
+		fileserver.FSCommand(),
 	}
 
 	// Adds all commands to app

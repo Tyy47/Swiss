@@ -199,6 +199,10 @@ func ShortcutCommand() *argbin.Command {
 			gitPushCommand(),
 			gitSyncCommand(),
 		},
+		Flags: argbin.Flags{
+			"-h":     utils.HelpFlag(),
+			"--help": utils.HelpFlag(),
+		},
 		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
 │                                                │

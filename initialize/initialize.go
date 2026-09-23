@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -34,7 +35,7 @@ func findProject(s string) (*project, error) {
 
 	proj, ok := initMap[Language(lower)]
 	if !ok {
-		return nil, ErrUnknownProject
+		return nil, fmt.Errorf("%w %s", ErrUnknownProject, lower)
 	}
 
 	return &proj, nil
@@ -186,6 +187,8 @@ func InitCommand() *argbin.Command {
 			return nil
 		},
 		Flags: argbin.Flags{
+			"-h":     utils.HelpFlag(),
+			"--help": utils.HelpFlag(),
 			"--silent": {
 				Execute: func(ctx *argbin.Context) error {
 					ctx.Values["silent"] = true
