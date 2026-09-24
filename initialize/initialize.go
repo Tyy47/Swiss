@@ -178,8 +178,10 @@ func InitCommand() *argbin.Command {
 			}
 
 			// Execute init command
-			if err := initCmd.Run(); err != nil {
-				return err
+			if !proj.ManualInit {
+				if err := initCmd.Run(); err != nil {
+					return err
+				}
 			}
 			
 			// Displays success message if silent isnt toggled
