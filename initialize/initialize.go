@@ -267,6 +267,28 @@ func InitCommand() *argbin.Command {
 					return nil
 				},
 			},
+			"-e": {
+				Execute: func(ctx *argbin.Context) error {
+					files := []string{"TODO.md", "README.md"}
+
+					if err := utils.MakeFile(files...); err != nil {
+						return err
+					}
+
+					return nil
+				},
+			},
+			"--extras": {
+				Execute: func(ctx *argbin.Context) error {
+					files := []string{"TODO.md", "README.md"}
+
+					if err := utils.MakeFile(files...); err != nil {
+						return err
+					}
+
+					return nil
+				},
+			},
 		},
 		HelpMenu: `
 ╭───────────────────  Swiss  ────────────────────╮
@@ -284,6 +306,7 @@ Flags:
 	-l --list: Prints a list of projects that can be initialized and if they are supported with additional arguments for names.
 	-g --git: Inits git alongside your project.
 	-j --jujutsu: Inits jj alongside your project.
+	-e, --extras: Creates extra files for your project. (TODO.md & README.md)
 `,
 	}
 }
